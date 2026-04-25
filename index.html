@@ -1809,6 +1809,122 @@
   }
   .modal-error.show { display: block; }
 
+  /* ============ DETAILED PLAN ============ */
+  .day-detailed {
+    padding: 0;
+    overflow: hidden;
+  }
+  .day-head {
+    padding: 16px 18px 12px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-soft);
+  }
+  .day-detailed .day-name {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent-deep);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .day-detailed .day-focus {
+    font-family: var(--serif);
+    font-size: 17px;
+    color: var(--ink);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin-bottom: 0;
+  }
+  .day-blocks { padding: 14px 18px 16px; }
+  .block { margin-bottom: 14px; }
+  .block:last-child { margin-bottom: 0; }
+  .block-head {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    font-weight: 700;
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px dashed var(--border);
+  }
+  .block-warmup .block-head { color: #B5882B; }
+  .block-main .block-head { color: var(--accent-deep); }
+  .block-cool .block-head { color: #4F6D87; }
+  .block-note {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-style: italic;
+    font-family: var(--serif);
+    margin-top: 8px;
+    padding: 6px 10px;
+    background: var(--bg-soft);
+    border-radius: 6px;
+  }
+  .ex-row {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .ex-row:last-child { border-bottom: none; }
+  .ex-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+    line-height: 1.35;
+  }
+  .ex-meta {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+  .ex-meta-pill {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+    line-height: 1.5;
+  }
+  .ex-meta-pill.prescription {
+    background: var(--accent-tint);
+    border-color: var(--accent-soft);
+    color: var(--accent-deep);
+    font-weight: 600;
+  }
+  .ex-meta-pill.weight {
+    background: #F0E8D8;
+    border-color: #DCD0AC;
+    color: #6B5B3F;
+  }
+  .ex-meta-pill.rest { color: var(--text-muted); }
+  .ex-meta-pill.rpe {
+    background: #F4E5DC;
+    border-color: #E8C7B5;
+    color: #8B4530;
+    font-weight: 600;
+  }
+  .ex-note {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    font-style: italic;
+    font-family: var(--serif);
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+
+  /* On wider screens, plan grid is 2 cols for readability */
+  @media (min-width: 760px) {
+    .week-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 1100px) {
+    .week-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
   /* ============ EXPERIENCE PILLS ============ */
   .exp-section { margin-top: 18px; }
   .exp-label {
@@ -2948,33 +3064,233 @@ const STATIONS = [
   },
 ];
 
+// Each day: { focus, blocks: [{ kind: 'warmup'|'main'|'cool', title, items: [{name, prescription, weight, rest, rpe, note}] }] }
 const PLANS = {
   base: [
-    { day: "Mon", focus: { en: "Easy run", fr: "Footing" }, content: { en: "45-60 min Z2, conversational pace. Solo OK.", fr: "45-60 min Z2, allure conversationnelle. Seul·e possible." } },
-    { day: "Tue", focus: { en: "Strength", fr: "Renforcement" }, content: { en: "Squat, deadlift, row — 4×6. Build base force.", fr: "Squat, soulevé de terre, rowing — 4×6. Construire la base." } },
-    { day: "Wed", focus: { en: "Stations 1-4", fr: "Stations 1-4" }, content: { en: "With partner: practice ski, sled push, sled pull, burpees. Technique only.", fr: "En duo : ski, poussée, traction, burpees. Technique uniquement." } },
-    { day: "Thu", focus: { en: "Recovery", fr: "Récupération" }, content: { en: "Mobility + walk 30-40 min. Stretch hips and shoulders.", fr: "Mobilité + marche 30-40 min. Étire hanches et épaules." } },
-    { day: "Fri", focus: { en: "Tempo run", fr: "Course tempo" }, content: { en: "3× 1 km at target race pace, 2 min rest. Partner optional.", fr: "3× 1 km allure objectif, 2 min récup. Duo optionnel." } },
-    { day: "Sat", focus: { en: "Stations 5-8", fr: "Stations 5-8" }, content: { en: "With partner: row, farmers, lunges, wall balls. Technique + splits.", fr: "En duo : rameur, farmers, fentes, wall balls. Technique + splits." } },
-    { day: "Sun", focus: { en: "Rest", fr: "Repos" }, content: { en: "Full off day. Sleep. Plan the week with your partner.", fr: "Jour off complet. Sommeil. Planifier la semaine ensemble." } },
+    { day: "Mon", focus: { en: "Aerobic base run", fr: "Footing aérobie" }, blocks: [
+      { kind: "warmup", title: { en: "Warm-up", fr: "Échauffement" }, items: [
+        { name: { en: "Easy walk → light jog", fr: "Marche → jogging léger" }, prescription: { en: "8 min", fr: "8 min" }, rpe: "3/10" },
+        { name: { en: "Leg swings + ankle circles", fr: "Balancés jambes + cercles chevilles" }, prescription: { en: "10 each side", fr: "10 chaque côté" } },
+      ]},
+      { kind: "main", title: { en: "Main set", fr: "Corps de séance" }, items: [
+        { name: { en: "Continuous run — Z2 (conversational)", fr: "Course continue — Z2 (conversationnelle)" }, prescription: { en: "45 min", fr: "45 min" }, rpe: "5/10", rest: { en: "no stops", fr: "sans arrêt" }, note: { en: "Heart rate 130-145 bpm. If you can't talk, slow down.", fr: "FC 130-145 bpm. Si tu ne peux pas parler, ralentis." } },
+      ]},
+      { kind: "cool", title: { en: "Cool-down", fr: "Retour au calme" }, items: [
+        { name: { en: "Easy walk", fr: "Marche facile" }, prescription: { en: "5 min", fr: "5 min" } },
+        { name: { en: "Static stretch — hips, calves, quads", fr: "Étirements — hanches, mollets, quadriceps" }, prescription: { en: "30 sec each", fr: "30 sec chaque" } },
+      ]},
+    ]},
+    { day: "Tue", focus: { en: "Foundation strength", fr: "Force de base" }, blocks: [
+      { kind: "warmup", title: { en: "Warm-up", fr: "Échauffement" }, items: [
+        { name: { en: "Bike or row", fr: "Vélo ou rameur" }, prescription: { en: "5 min easy", fr: "5 min facile" }, rpe: "4/10" },
+        { name: { en: "Goblet squat (bodyweight)", fr: "Goblet squat (poids du corps)" }, prescription: { en: "2 × 10", fr: "2 × 10" }, rest: { en: "30 sec", fr: "30 sec" } },
+      ]},
+      { kind: "main", title: { en: "Main lifts", fr: "Mouvements principaux" }, items: [
+        { name: { en: "Back squat", fr: "Back squat" }, prescription: { en: "4 × 6", fr: "4 × 6" }, weight: { en: "70-75% 1RM (~60-80 kg M / 35-50 kg F)", fr: "70-75% 1RM (~60-80 kg H / 35-50 kg F)" }, rest: { en: "2 min between sets", fr: "2 min entre séries" }, rpe: "7/10" },
+        { name: { en: "Romanian deadlift", fr: "Soulevé de terre roumain" }, prescription: { en: "4 × 8", fr: "4 × 8" }, weight: { en: "60-70% 1RM (~50-70 kg M / 30-45 kg F)", fr: "60-70% 1RM (~50-70 kg H / 30-45 kg F)" }, rest: { en: "90 sec", fr: "90 sec" }, rpe: "7/10" },
+        { name: { en: "Bent-over barbell row", fr: "Rowing barre penché" }, prescription: { en: "4 × 8", fr: "4 × 8" }, weight: { en: "~40-50 kg M / 25-32 kg F", fr: "~40-50 kg H / 25-32 kg F" }, rest: { en: "90 sec", fr: "90 sec" }, rpe: "7/10" },
+        { name: { en: "Plank", fr: "Planche" }, prescription: { en: "3 × 45 sec", fr: "3 × 45 sec" }, rest: { en: "30 sec", fr: "30 sec" } },
+      ]},
+      { kind: "cool", title: { en: "Cool-down", fr: "Retour au calme" }, items: [
+        { name: { en: "Hip flexor + lat stretch", fr: "Étir. fléchisseurs + dorsaux" }, prescription: { en: "1 min each", fr: "1 min chaque" } },
+      ]},
+    ]},
+    { day: "Wed", focus: { en: "Stations 1–4 technique", fr: "Stations 1–4 technique" }, blocks: [
+      { kind: "warmup", title: { en: "Warm-up (with partner)", fr: "Échauffement (en duo)" }, items: [
+        { name: { en: "Run", fr: "Course" }, prescription: { en: "800 m easy", fr: "800 m facile" }, rpe: "5/10" },
+        { name: { en: "Air squats + push-ups", fr: "Squat + pompes" }, prescription: { en: "2 × 12", fr: "2 × 12" } },
+      ]},
+      { kind: "main", title: { en: "Station rounds", fr: "Tour des stations" }, items: [
+        { name: { en: "SkiErg — alternate 250 m", fr: "SkiErg — alterner 250 m" }, prescription: { en: "4 × 250 m (split each)", fr: "4 × 250 m (alternés)" }, rest: { en: "60 sec between rounds", fr: "60 sec entre tours" }, rpe: "7/10", note: { en: "Damper 5. Focus on hinge, not arms.", fr: "Damper 5. Charnière, pas les bras." } },
+        { name: { en: "Sled push (or heavy push-up walk)", fr: "Sled push (ou push-up walk lourd)" }, prescription: { en: "4 × 25 m", fr: "4 × 25 m" }, weight: { en: "~50-100 kg added (M) / 30-60 kg (F)", fr: "~50-100 kg ajoutés (H) / 30-60 kg (F)" }, rest: { en: "90 sec", fr: "90 sec" }, rpe: "8/10" },
+        { name: { en: "Sled pull (or heavy row)", fr: "Sled pull (ou rowing lourd)" }, prescription: { en: "4 × 25 m", fr: "4 × 25 m" }, weight: { en: "~30-60 kg added (M) / 20-40 kg (F)", fr: "~30-60 kg ajoutés (H) / 20-40 kg (F)" }, rest: { en: "90 sec", fr: "90 sec" }, rpe: "8/10" },
+        { name: { en: "Burpee broad jumps", fr: "Burpees + saut" }, prescription: { en: "3 × 10 reps", fr: "3 × 10 reps" }, rest: { en: "60 sec", fr: "60 sec" }, rpe: "7/10", note: { en: "Chest + thighs touch. Land soft.", fr: "Poitrine + cuisses au sol. Réception souple." } },
+      ]},
+      { kind: "cool", title: { en: "Cool-down", fr: "Retour au calme" }, items: [
+        { name: { en: "Easy walk + breathing", fr: "Marche + respiration" }, prescription: { en: "5 min", fr: "5 min" } },
+      ]},
+    ]},
+    { day: "Thu", focus: { en: "Active recovery", fr: "Récupération active" }, blocks: [
+      { kind: "main", title: { en: "Recovery", fr: "Récupération" }, items: [
+        { name: { en: "Walk or easy bike", fr: "Marche ou vélo facile" }, prescription: { en: "30-40 min", fr: "30-40 min" }, rpe: "3/10" },
+        { name: { en: "Mobility flow — hips, T-spine, shoulders", fr: "Mobilité — hanches, dos haut, épaules" }, prescription: { en: "10 min", fr: "10 min" } },
+        { name: { en: "Foam roll quads, calves, glutes", fr: "Foam roll quad, mollets, fessiers" }, prescription: { en: "1 min each", fr: "1 min chaque" } },
+      ]},
+    ]},
+    { day: "Fri", focus: { en: "Tempo intervals", fr: "Intervalles tempo" }, blocks: [
+      { kind: "warmup", title: { en: "Warm-up", fr: "Échauffement" }, items: [
+        { name: { en: "Easy jog", fr: "Jogging facile" }, prescription: { en: "10 min", fr: "10 min" }, rpe: "5/10" },
+        { name: { en: "Strides — 80 m progressions", fr: "Lignes droites — 80 m progressives" }, prescription: { en: "4 × 80 m", fr: "4 × 80 m" }, rest: { en: "walk back", fr: "marche retour" } },
+      ]},
+      { kind: "main", title: { en: "Tempo set", fr: "Tempo" }, items: [
+        { name: { en: "1 km repeats @ goal race pace", fr: "1 km à l'allure course" }, prescription: { en: "3 × 1 km", fr: "3 × 1 km" }, rpe: "8/10", rest: { en: "2 min easy jog between", fr: "2 min jog entre chaque" }, note: { en: "Sub-90 goal: ~5:30/km. Sub-75: ~4:45/km. Sub-65: ~4:10/km.", fr: "Objectif sub-90 : ~5:30/km. Sub-75 : ~4:45/km. Sub-65 : ~4:10/km." } },
+      ]},
+      { kind: "cool", title: { en: "Cool-down", fr: "Retour au calme" }, items: [
+        { name: { en: "Easy jog → walk", fr: "Jog → marche" }, prescription: { en: "8 min", fr: "8 min" } },
+      ]},
+    ]},
+    { day: "Sat", focus: { en: "Stations 5–8 technique", fr: "Stations 5–8 technique" }, blocks: [
+      { kind: "warmup", title: { en: "Warm-up", fr: "Échauffement" }, items: [
+        { name: { en: "Row easy", fr: "Rameur facile" }, prescription: { en: "500 m", fr: "500 m" }, rpe: "5/10" },
+        { name: { en: "Empty barbell complex", fr: "Complexe barre vide" }, prescription: { en: "2 × 5 of each", fr: "2 × 5 de chaque" }, note: { en: "RDL → row → press → squat", fr: "RDL → tirage → développé → squat" } },
+      ]},
+      { kind: "main", title: { en: "Station rounds", fr: "Tour des stations" }, items: [
+        { name: { en: "Rowing — alternate 250 m", fr: "Rameur — alterner 250 m" }, prescription: { en: "4 × 250 m (split each)", fr: "4 × 250 m (alternés)" }, rest: { en: "60 sec", fr: "60 sec" }, rpe: "7/10", note: { en: "Damper 5-7. 1:2 drive:recovery.", fr: "Damper 5-7. Ratio 1:2 traction:retour." } },
+        { name: { en: "Farmer's carry", fr: "Farmers carry" }, prescription: { en: "4 × 100 m", fr: "4 × 100 m" }, weight: { en: "24 kg per hand (M) / 16 kg (F)", fr: "24 kg par main (H) / 16 kg (F)" }, rest: { en: "90 sec", fr: "90 sec" }, rpe: "7/10" },
+        { name: { en: "Sandbag walking lunges", fr: "Fentes marchées sac de sable" }, prescription: { en: "4 × 25 m", fr: "4 × 25 m" }, weight: { en: "20 kg sandbag (M) / 10 kg (F)", fr: "20 kg sandbag (H) / 10 kg (F)" }, rest: { en: "75 sec", fr: "75 sec" }, rpe: "8/10", note: { en: "Back knee touches each rep.", fr: "Genou arrière au sol à chaque rep." } },
+        { name: { en: "Wall balls", fr: "Wall balls" }, prescription: { en: "4 × 20 reps", fr: "4 × 20 reps" }, weight: { en: "6 kg ball, 3 m target (M) / 4 kg, 2.7 m (F)", fr: "Ballon 6 kg, cible 3 m (H) / 4 kg, 2.7 m (F)" }, rest: { en: "60 sec", fr: "60 sec" }, rpe: "8/10" },
+      ]},
+      { kind: "cool", title: { en: "Cool-down", fr: "Retour au calme" }, items: [
+        { name: { en: "Hip & shoulder stretches", fr: "Étirements hanches & épaules" }, prescription: { en: "8 min", fr: "8 min" } },
+      ]},
+    ]},
+    { day: "Sun", focus: { en: "Full rest", fr: "Repos total" }, blocks: [
+      { kind: "main", title: { en: "Rest", fr: "Repos" }, items: [
+        { name: { en: "Sleep 8+ hours", fr: "Dormir 8h+" }, prescription: { en: "—", fr: "—" } },
+        { name: { en: "Plan next week with partner", fr: "Planifier la semaine avec le duo" }, prescription: { en: "15 min", fr: "15 min" } },
+      ]},
+    ]},
   ],
   build: [
-    { day: "Mon", focus: { en: "Tempo run", fr: "Course tempo" }, content: { en: "5× 1 km @ race pace, 90 sec jog recovery. Run together.", fr: "5× 1 km allure course, 90 sec récup joggée. En duo." } },
-    { day: "Tue", focus: { en: "Duo combo A", fr: "Combo duo A" }, content: { en: "1 km + SkiErg 1000 m + 1 km + Sled push 50 m. Repeat ×2.", fr: "1 km + SkiErg 1000 m + 1 km + poussée 50 m. Répète ×2." } },
-    { day: "Wed", focus: { en: "Strength", fr: "Renforcement" }, content: { en: "Lunges 4×12, Bulgarian split squat 3×10, pull-ups 4×AMRAP.", fr: "Fentes 4×12, squat bulgare 3×10, tractions 4×AMRAP." } },
-    { day: "Thu", focus: { en: "Recovery run", fr: "Footing récup" }, content: { en: "30-40 min very easy. No partner needed.", fr: "30-40 min très facile. Pas besoin du duo." } },
-    { day: "Fri", focus: { en: "Duo combo B", fr: "Combo duo B" }, content: { en: "1 km + Row 1000 m + 1 km + 100 wall balls. Time it.", fr: "1 km + Rameur 1000 m + 1 km + 100 wall balls. Chronomètre." } },
-    { day: "Sat", focus: { en: "Half sim", fr: "Mi-simulation" }, content: { en: "4 runs + 4 stations (halved distances). Practice transitions.", fr: "4 courses + 4 stations (distances divisées). Travaille les transitions." } },
-    { day: "Sun", focus: { en: "Rest", fr: "Repos" }, content: { en: "Rest. Review times, adjust splits for next week.", fr: "Repos. Analyser les temps, ajuster les splits." } },
+    { day: "Mon", focus: { en: "Race-pace tempo", fr: "Tempo allure course" }, blocks: [
+      { kind: "warmup", title: { en: "Warm-up", fr: "Échauffement" }, items: [
+        { name: { en: "Easy jog", fr: "Jogging facile" }, prescription: { en: "12 min", fr: "12 min" }, rpe: "5/10" },
+        { name: { en: "Drills + 4 strides", fr: "Drills + 4 lignes droites" }, prescription: { en: "100 m strides", fr: "lignes 100 m" } },
+      ]},
+      { kind: "main", title: { en: "Tempo intervals", fr: "Intervalles tempo" }, items: [
+        { name: { en: "1 km @ race pace", fr: "1 km allure course" }, prescription: { en: "5 × 1 km", fr: "5 × 1 km" }, rpe: "8/10", rest: { en: "90 sec jog", fr: "90 sec jog" }, note: { en: "Run together. Sub-75 = ~4:45/km, sub-65 = ~4:10/km.", fr: "En duo. Sub-75 = ~4:45/km, sub-65 = ~4:10/km." } },
+      ]},
+      { kind: "cool", title: { en: "Cool-down", fr: "Retour au calme" }, items: [
+        { name: { en: "Easy jog", fr: "Jog facile" }, prescription: { en: "10 min", fr: "10 min" } },
+      ]},
+    ]},
+    { day: "Tue", focus: { en: "Duo combo A — front half", fr: "Combo duo A — première moitié" }, blocks: [
+      { kind: "warmup", title: { en: "Warm-up", fr: "Échauffement" }, items: [
+        { name: { en: "Run", fr: "Course" }, prescription: { en: "1 km easy", fr: "1 km facile" }, rpe: "5/10" },
+      ]},
+      { kind: "main", title: { en: "Repeat × 2", fr: "Répéter × 2" }, items: [
+        { name: { en: "Run", fr: "Course" }, prescription: { en: "1 km", fr: "1 km" }, rpe: "7/10" },
+        { name: { en: "SkiErg — split", fr: "SkiErg — alterner" }, prescription: { en: "1000 m total", fr: "1000 m total" }, rpe: "8/10", note: { en: "250 m each, 4 rotations.", fr: "250 m chacun·e, 4 rotations." } },
+        { name: { en: "Run", fr: "Course" }, prescription: { en: "1 km", fr: "1 km" }, rpe: "7/10" },
+        { name: { en: "Sled push", fr: "Sled push" }, prescription: { en: "50 m total (25 m each)", fr: "50 m total (25 m chacun·e)" }, weight: { en: "100 kg added (M) / 60 kg (F)", fr: "100 kg ajoutés (H) / 60 kg (F)" }, rpe: "9/10" },
+      ], note: { en: "Rest 5 min between rounds. Time the whole thing.", fr: "5 min entre tours. Chronomètre l'ensemble." } },
+      { kind: "cool", title: { en: "Cool-down", fr: "Retour au calme" }, items: [
+        { name: { en: "Walk + breathing", fr: "Marche + respiration" }, prescription: { en: "8 min", fr: "8 min" } },
+      ]},
+    ]},
+    { day: "Wed", focus: { en: "Strength endurance", fr: "Force endurance" }, blocks: [
+      { kind: "warmup", title: { en: "Warm-up", fr: "Échauffement" }, items: [
+        { name: { en: "Bike", fr: "Vélo" }, prescription: { en: "5 min", fr: "5 min" }, rpe: "5/10" },
+        { name: { en: "Goblet squat + scap pull-ups", fr: "Goblet squat + tractions scapulaires" }, prescription: { en: "2 × 10", fr: "2 × 10" } },
+      ]},
+      { kind: "main", title: { en: "Circuit", fr: "Circuit" }, items: [
+        { name: { en: "Walking lunges (loaded)", fr: "Fentes marchées (chargées)" }, prescription: { en: "4 × 12 each leg", fr: "4 × 12 par jambe" }, weight: { en: "20 kg sandbag", fr: "sandbag 20 kg" }, rest: { en: "75 sec", fr: "75 sec" }, rpe: "8/10" },
+        { name: { en: "Bulgarian split squat", fr: "Squat bulgare" }, prescription: { en: "3 × 10 each", fr: "3 × 10 chaque" }, weight: { en: "2 × 16 kg dumbbells", fr: "2 × 16 kg haltères" }, rest: { en: "60 sec", fr: "60 sec" }, rpe: "8/10" },
+        { name: { en: "Pull-ups (or assisted)", fr: "Tractions (ou assistées)" }, prescription: { en: "4 × AMRAP-2", fr: "4 × AMRAP-2" }, rest: { en: "90 sec", fr: "90 sec" }, rpe: "8/10", note: { en: "Stop 2 reps before failure.", fr: "Stop 2 reps avant l'échec." } },
+        { name: { en: "Dead hang", fr: "Suspension" }, prescription: { en: "3 × max", fr: "3 × max" }, rest: { en: "60 sec", fr: "60 sec" } },
+      ]},
+      { kind: "cool", title: { en: "Cool-down", fr: "Retour au calme" }, items: [
+        { name: { en: "Stretch lats, hip flexors", fr: "Étir. dorsaux, fléchisseurs" }, prescription: { en: "8 min", fr: "8 min" } },
+      ]},
+    ]},
+    { day: "Thu", focus: { en: "Recovery jog", fr: "Footing récup" }, blocks: [
+      { kind: "main", title: { en: "Easy run", fr: "Footing facile" }, items: [
+        { name: { en: "Z2 jog", fr: "Jog Z2" }, prescription: { en: "30-40 min", fr: "30-40 min" }, rpe: "4/10", note: { en: "Solo. No pace pressure.", fr: "Seul·e. Aucune contrainte d'allure." } },
+      ]},
+    ]},
+    { day: "Fri", focus: { en: "Duo combo B — back half", fr: "Combo duo B — seconde moitié" }, blocks: [
+      { kind: "warmup", title: { en: "Warm-up", fr: "Échauffement" }, items: [
+        { name: { en: "Run + 200 m row easy", fr: "Course + 200 m rameur" }, prescription: { en: "1 km + 200 m", fr: "1 km + 200 m" }, rpe: "5/10" },
+      ]},
+      { kind: "main", title: { en: "For time", fr: "Au chrono" }, items: [
+        { name: { en: "Run", fr: "Course" }, prescription: { en: "1 km", fr: "1 km" }, rpe: "8/10" },
+        { name: { en: "Row — split", fr: "Rameur — alterner" }, prescription: { en: "1000 m total", fr: "1000 m total" }, rpe: "8/10", note: { en: "250 m each.", fr: "250 m chacun·e." } },
+        { name: { en: "Run", fr: "Course" }, prescription: { en: "1 km", fr: "1 km" }, rpe: "8/10" },
+        { name: { en: "Wall balls", fr: "Wall balls" }, prescription: { en: "100 reps total", fr: "100 reps total" }, weight: { en: "6 kg / 4 kg", fr: "6 kg / 4 kg" }, rpe: "9/10", note: { en: "Split 15/10 then 5/5 at the end.", fr: "Split 15/10 puis 5/5 sur la fin." } },
+      ]},
+      { kind: "cool", title: { en: "Cool-down", fr: "Retour au calme" }, items: [
+        { name: { en: "Walk + foam roll", fr: "Marche + foam roll" }, prescription: { en: "10 min", fr: "10 min" } },
+      ]},
+    ]},
+    { day: "Sat", focus: { en: "Half-Hyrox simulation", fr: "Demi-simulation Hyrox" }, blocks: [
+      { kind: "warmup", title: { en: "Warm-up", fr: "Échauffement" }, items: [
+        { name: { en: "Run + dynamic mobility", fr: "Course + mobilité dynamique" }, prescription: { en: "12 min", fr: "12 min" }, rpe: "5/10" },
+      ]},
+      { kind: "main", title: { en: "Half simulation", fr: "Demi-simulation" }, items: [
+        { name: { en: "Run + station × 4", fr: "Course + station × 4" }, prescription: { en: "4 × (500 m + station at half distance)", fr: "4 × (500 m + station mi-distance)" }, rpe: "9/10", note: { en: "Stations 1-4: ski 500 m, sled push 25 m, sled pull 25 m, BBJ 40 m. Practice transitions.", fr: "Stations 1-4 : ski 500 m, sled push 25 m, sled pull 25 m, BBJ 40 m. Travaille transitions." } },
+      ]},
+      { kind: "cool", title: { en: "Cool-down", fr: "Retour au calme" }, items: [
+        { name: { en: "Easy spin + stretch", fr: "Vélo facile + étirements" }, prescription: { en: "10 min", fr: "10 min" } },
+      ]},
+    ]},
+    { day: "Sun", focus: { en: "Rest", fr: "Repos" }, blocks: [
+      { kind: "main", title: { en: "Rest", fr: "Repos" }, items: [
+        { name: { en: "Full rest. Review week.", fr: "Repos total. Bilan de la semaine." }, prescription: { en: "—", fr: "—" } },
+      ]},
+    ]},
   ],
   peak: [
-    { day: "Mon", focus: { en: "Intervals", fr: "Intervalles" }, content: { en: "8× 400 m @ 5k pace, 60 sec rest. Solo or duo.", fr: "8× 400 m allure 5k, 60 sec récup. Seul ou en duo." } },
-    { day: "Tue", focus: { en: "Full simulation", fr: "Simulation complète" }, content: { en: "Complete Hyrox Doubles — full format. Record everything.", fr: "Hyrox Doubles complet — format total. Enregistre tout." } },
-    { day: "Wed", focus: { en: "Recovery", fr: "Récupération" }, content: { en: "Active recovery: 30 min cycling + mobility.", fr: "Récup active : 30 min vélo + mobilité." } },
-    { day: "Thu", focus: { en: "Transitions", fr: "Transitions" }, content: { en: "Run 500 m + station + run 500 m, 8 rounds. Obsess over handoffs.", fr: "500 m + station + 500 m, 8 rounds. Focus sur les relais." } },
-    { day: "Fri", focus: { en: "Easy run", fr: "Footing" }, content: { en: "30 min easy. Taper starts now.", fr: "30 min facile. Début du tapering." } },
-    { day: "Sat", focus: { en: "Openers", fr: "Réveil musculaire" }, content: { en: "20 min jog + 3 short efforts. Nothing heavy. Race tomorrow/soon.", fr: "20 min jog + 3 efforts courts. Rien de lourd. Course bientôt." } },
-    { day: "Sun", focus: { en: "RACE or rest", fr: "COURSE ou repos" }, content: { en: "Race day or final rest day before event.", fr: "Jour de course ou dernier repos avant l'événement." } },
+    { day: "Mon", focus: { en: "VO2 intervals", fr: "Intervalles VO2" }, blocks: [
+      { kind: "warmup", title: { en: "Warm-up", fr: "Échauffement" }, items: [
+        { name: { en: "Easy jog + 4 strides", fr: "Jog facile + 4 lignes droites" }, prescription: { en: "15 min", fr: "15 min" }, rpe: "5/10" },
+      ]},
+      { kind: "main", title: { en: "VO2 set", fr: "VO2 max" }, items: [
+        { name: { en: "400 m @ 5k pace", fr: "400 m allure 5k" }, prescription: { en: "8 × 400 m", fr: "8 × 400 m" }, rpe: "9/10", rest: { en: "60 sec walk", fr: "60 sec marche" }, note: { en: "5k pace ≈ 30-45 sec/km faster than race goal pace.", fr: "Allure 5k ≈ 30-45 sec/km plus rapide que l'allure course." } },
+      ]},
+      { kind: "cool", title: { en: "Cool-down", fr: "Retour au calme" }, items: [
+        { name: { en: "Easy jog", fr: "Jog facile" }, prescription: { en: "10 min", fr: "10 min" } },
+      ]},
+    ]},
+    { day: "Tue", focus: { en: "Full Hyrox simulation", fr: "Simulation Hyrox complète" }, blocks: [
+      { kind: "warmup", title: { en: "Warm-up", fr: "Échauffement" }, items: [
+        { name: { en: "Run + mobility", fr: "Course + mobilité" }, prescription: { en: "15 min", fr: "15 min" }, rpe: "5/10" },
+      ]},
+      { kind: "main", title: { en: "Full doubles simulation", fr: "Simulation doubles complète" }, items: [
+        { name: { en: "8 × (1 km + station)", fr: "8 × (1 km + station)" }, prescription: { en: "Full format", fr: "Format complet" }, rpe: "9/10", note: { en: "All 8 stations at full distance. Record splits per station + per km. Don't go all-out — rehearse pacing.", fr: "Les 8 stations à pleine distance. Note les splits par station et par km. Pas en mode full max — répétition d'allure." } },
+      ]},
+      { kind: "cool", title: { en: "Cool-down", fr: "Retour au calme" }, items: [
+        { name: { en: "Walk + foam roll", fr: "Marche + foam roll" }, prescription: { en: "15 min", fr: "15 min" } },
+      ]},
+    ]},
+    { day: "Wed", focus: { en: "Active recovery", fr: "Récupération active" }, blocks: [
+      { kind: "main", title: { en: "Recovery", fr: "Récupération" }, items: [
+        { name: { en: "Easy bike", fr: "Vélo facile" }, prescription: { en: "30 min", fr: "30 min" }, rpe: "3/10" },
+        { name: { en: "Mobility flow", fr: "Mobilité" }, prescription: { en: "15 min", fr: "15 min" } },
+      ]},
+    ]},
+    { day: "Thu", focus: { en: "Transitions practice", fr: "Travail transitions" }, blocks: [
+      { kind: "warmup", title: { en: "Warm-up", fr: "Échauffement" }, items: [
+        { name: { en: "Run + mobility", fr: "Course + mobilité" }, prescription: { en: "10 min", fr: "10 min" }, rpe: "5/10" },
+      ]},
+      { kind: "main", title: { en: "Transitions circuit", fr: "Circuit transitions" }, items: [
+        { name: { en: "500 m run + station + 500 m run", fr: "500 m course + station + 500 m course" }, prescription: { en: "8 rounds (one station each)", fr: "8 tours (une station par tour)" }, rpe: "8/10", rest: { en: "2 min between rounds", fr: "2 min entre tours" }, note: { en: "Obsess over the run-to-station handoff. Time it.", fr: "Focus sur le passage course-station. Chronomètre." } },
+      ]},
+      { kind: "cool", title: { en: "Cool-down", fr: "Retour au calme" }, items: [
+        { name: { en: "Walk + stretch", fr: "Marche + étirements" }, prescription: { en: "10 min", fr: "10 min" } },
+      ]},
+    ]},
+    { day: "Fri", focus: { en: "Easy run (taper begins)", fr: "Footing facile (début taper)" }, blocks: [
+      { kind: "main", title: { en: "Taper run", fr: "Footing taper" }, items: [
+        { name: { en: "Z2 jog", fr: "Jog Z2" }, prescription: { en: "30 min", fr: "30 min" }, rpe: "4/10", note: { en: "Cut volume. Sleep more.", fr: "Réduit le volume. Dors plus." } },
+      ]},
+    ]},
+    { day: "Sat", focus: { en: "Race openers", fr: "Réveil pré-course" }, blocks: [
+      { kind: "warmup", title: { en: "Warm-up", fr: "Échauffement" }, items: [
+        { name: { en: "Easy jog", fr: "Jogging facile" }, prescription: { en: "10 min", fr: "10 min" }, rpe: "5/10" },
+      ]},
+      { kind: "main", title: { en: "Sharp openers", fr: "Réveil court" }, items: [
+        { name: { en: "Strides", fr: "Lignes droites" }, prescription: { en: "4 × 100 m", fr: "4 × 100 m" }, rpe: "8/10", rest: { en: "90 sec walk back", fr: "90 sec marche retour" } },
+        { name: { en: "Wall ball touches", fr: "Wall balls touches" }, prescription: { en: "2 × 10", fr: "2 × 10" }, rpe: "6/10", note: { en: "Light effort. Reactivation only.", fr: "Effort léger. Juste réactiver." } },
+      ]},
+      { kind: "cool", title: { en: "Cool-down", fr: "Retour au calme" }, items: [
+        { name: { en: "Walk", fr: "Marche" }, prescription: { en: "5 min", fr: "5 min" } },
+      ]},
+    ]},
+    { day: "Sun", focus: { en: "RACE DAY or full rest", fr: "JOUR DE COURSE ou repos total" }, blocks: [
+      { kind: "main", title: { en: "Race or rest", fr: "Course ou repos" }, items: [
+        { name: { en: "Race day", fr: "Jour de course" }, prescription: { en: "Hyrox Doubles", fr: "Hyrox Doubles" }, note: { en: "Or full rest if race is later. Hydrate. Carbs. Sleep 9h.", fr: "Ou repos total si course plus tard. Hydratation. Glucides. Dormir 9h." } },
+      ]},
+    ]},
   ],
 };
 
@@ -3640,13 +3956,50 @@ function renderPlan() {
   const dayNames = currentLang === "en"
     ? ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
     : ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
+  const blockLbl = {
+    warmup: { en: "WARM-UP", fr: "ÉCHAUFFEMENT" },
+    main:   { en: "MAIN",    fr: "PRINCIPAL" },
+    cool:   { en: "COOL-DOWN", fr: "RETOUR AU CALME" },
+  };
+  const fld = (obj, key) => obj && obj[key] ? (obj[key][currentLang] || obj[key]) : null;
   PLANS[state.phase].forEach((d, i) => {
     const el = document.createElement("div");
-    el.className = "day";
+    el.className = "day day-detailed";
+    let blocksHtml = "";
+    (d.blocks || []).forEach(b => {
+      const items = (b.items || []).map(it => {
+        const meta = [];
+        const prescription = fld(it, "prescription");
+        const weight = fld(it, "weight");
+        const rest = fld(it, "rest");
+        if (prescription) meta.push(`<span class="ex-meta-pill prescription">${prescription}</span>`);
+        if (weight) meta.push(`<span class="ex-meta-pill weight">⚖ ${weight}</span>`);
+        if (rest) meta.push(`<span class="ex-meta-pill rest">⏱ ${rest}</span>`);
+        if (it.rpe) meta.push(`<span class="ex-meta-pill rpe">RPE ${it.rpe}</span>`);
+        const note = fld(it, "note");
+        return `
+          <div class="ex-row">
+            <div class="ex-name">${fld(it, "name") || ""}</div>
+            ${meta.length ? `<div class="ex-meta">${meta.join("")}</div>` : ""}
+            ${note ? `<div class="ex-note">${note}</div>` : ""}
+          </div>
+        `;
+      }).join("");
+      const blockNote = fld(b, "note");
+      blocksHtml += `
+        <div class="block block-${b.kind}">
+          <div class="block-head">${blockLbl[b.kind][currentLang]} · ${fld(b, "title") || ""}</div>
+          ${items}
+          ${blockNote ? `<div class="block-note">${blockNote}</div>` : ""}
+        </div>
+      `;
+    });
     el.innerHTML = `
-      <div class="day-name">${dayNames[i]}</div>
-      <div class="day-focus">${d.focus[currentLang]}</div>
-      <div class="day-content">${d.content[currentLang]}</div>
+      <div class="day-head">
+        <div class="day-name">${dayNames[i]}</div>
+        <div class="day-focus">${fld(d, "focus") || ""}</div>
+      </div>
+      <div class="day-blocks">${blocksHtml}</div>
     `;
     grid.appendChild(el);
   });
