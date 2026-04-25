@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
-<meta name="build" content="2026-04-26-short-link-codes" />
+<meta name="build" content="2026-04-26-autosave-background" />
 <title>Hyrox Duo — Training Companion</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2950,7 +2950,7 @@
           <button type="button" class="exp-pill" data-value="obstacle">OCR / Spartan</button>
         </div>
       </div>
-      <button class="btn" id="prof-exp-save" style="margin-top: 16px;" data-i18n="btnSaveExp">Save background</button>
+      <p style="font-size: 12px; color: var(--text-dim); font-style: italic; font-family: var(--serif); margin-top: 12px;" data-i18n="profExpAutoSave">Selections save automatically as you tap them.</p>
     </div>
 
     <div class="profile-section">
@@ -2970,7 +2970,7 @@
 
   <footer>
     <p>Hyrox Duo Training Companion · Built for duos who want to finish strong, together.</p>
-    <p style="margin-top: 6px; font-size: 11px; color: var(--text-dim); font-style: normal; font-family: monospace;">build: 2026-04-26 · short link codes</p>
+    <p style="margin-top: 6px; font-size: 11px; color: var(--text-dim); font-style: normal; font-family: monospace;">build: 2026-04-26 · auto-save background</p>
   </footer>
 </div>
 </div>
@@ -5606,33 +5606,25 @@ document.getElementById("prof-save").addEventListener("click", () => {
 document.getElementById("prof-signout").addEventListener("click", () => signOut());
 document.getElementById("prof-delete").addEventListener("click", () => deleteAccount());
 
-// Profile experience pills
+// Profile experience pills — auto-save on click
 document.querySelectorAll('[data-prof-exp]').forEach(row => {
   const dim = row.dataset.profExp;
   row.querySelectorAll(".exp-pill").forEach(pill => {
     pill.addEventListener("click", () => {
+      if (!state.user) return;
       row.querySelectorAll(".exp-pill").forEach(x => x.classList.remove("selected"));
       pill.classList.add("selected");
+      // Auto-save the experience field
+      state.user.exp = state.user.exp || { running: null, gym: null, events: "none" };
+      state.user.exp[dim] = pill.dataset.value;
+      // Recompute level from current exp
+      state.user.level = deriveLevel(state.user.exp);
+      persistUser();
+      renderUserHeader();
+      // Subtle toast confirmation
+      toast(currentLang === "en" ? "Saved" : "Enregistré", "success");
     });
   });
-});
-document.getElementById("prof-exp-save").addEventListener("click", () => {
-  const exp = state.user.exp || { running: null, gym: null, events: "none" };
-  document.querySelectorAll('[data-prof-exp]').forEach(row => {
-    const dim = row.dataset.profExp;
-    const sel = row.querySelector(".exp-pill.selected");
-    if (sel) exp[dim] = sel.dataset.value;
-  });
-  if (!exp.running || !exp.gym) {
-    toast(currentLang === "en" ? "Pick running and gym" : "Choisis course et gym");
-    return;
-  }
-  state.user.exp = exp;
-  state.user.level = deriveLevel(exp);
-  persistUser();
-  renderDashboard();
-  renderProfile();
-  toast(currentLang === "en" ? "Background saved" : "Profil enregistré", "success");
 });
 
 // =============== DASHBOARD ACTIONS ===============
