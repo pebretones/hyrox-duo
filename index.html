@@ -1809,6 +1809,139 @@
   }
   .modal-error.show { display: block; }
 
+  /* ============ ANATOMY + EXERCISES ============ */
+  .ex-goal {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 0;
+    margin-bottom: 18px;
+    overflow: hidden;
+  }
+  .ex-goal-head {
+    background: linear-gradient(135deg, var(--bg-soft) 0%, #FBF7EC 100%);
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .ex-goal-icon {
+    font-size: 24px;
+    width: 44px; height: 44px;
+    background: var(--bg-card);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .ex-goal-text { flex: 1; }
+  .ex-goal-title {
+    font-family: var(--serif);
+    font-size: 19px;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    margin-bottom: 2px;
+  }
+  .ex-goal-sub {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  .ex-alts { padding: 6px 0; }
+  .ex-alt {
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    gap: 14px;
+    padding: 14px 22px;
+    align-items: start;
+    border-bottom: 1px solid var(--border);
+  }
+  .ex-alt:last-child { border-bottom: none; }
+  @media (max-width: 480px) {
+    .ex-alt { grid-template-columns: 56px 1fr; gap: 10px; padding: 12px 16px; }
+  }
+  .anatomy {
+    width: 70px; height: 100px;
+    flex-shrink: 0;
+  }
+  @media (max-width: 480px) { .anatomy { width: 56px; height: 80px; } }
+  .anatomy path, .anatomy circle, .anatomy rect {
+    transition: fill 0.3s ease;
+  }
+  .anatomy .muscle-bg { fill: #E8E2D0; }
+  .anatomy .muscle-secondary { fill: #E8C99A; }
+  .anatomy .muscle-primary { fill: var(--accent); }
+  .anatomy .skin { fill: #F0E8DA; stroke: #D9D1BB; stroke-width: 0.4; }
+  .ex-alt-body { min-width: 0; }
+  .ex-alt-tier {
+    display: inline-block;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .ex-alt-tier-full { background: var(--accent-soft); color: var(--accent-deep); }
+  .ex-alt-tier-basic { background: #E8DDC3; color: #6B5B3F; }
+  .ex-alt-tier-home { background: #DCE6D8; color: #3D5C3F; }
+  .ex-alt-name {
+    font-weight: 600;
+    color: var(--ink);
+    font-size: 14.5px;
+    margin-bottom: 4px;
+    line-height: 1.35;
+  }
+  .ex-alt-prescription {
+    font-size: 12.5px;
+    color: var(--accent-deep);
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .ex-alt-desc {
+    color: var(--text-muted);
+    font-size: 12.5px;
+    line-height: 1.55;
+  }
+  .ex-muscles {
+    margin-top: 6px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .muscle-tag {
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 999px;
+    background: var(--bg-soft);
+    color: var(--text-muted);
+    font-weight: 500;
+    text-transform: capitalize;
+  }
+  .muscle-tag.primary {
+    background: var(--accent-tint);
+    color: var(--accent-deep);
+    font-weight: 600;
+  }
+  .anatomy-legend {
+    display: flex;
+    gap: 14px;
+    font-size: 11px;
+    color: var(--text-muted);
+    padding: 10px 22px;
+    background: var(--bg-soft);
+    border-top: 1px dashed var(--border);
+  }
+  .anatomy-legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+    vertical-align: middle;
+  }
+
   /* ============ DETAILED PLAN ============ */
   .day-detailed {
     padding: 0;
@@ -2478,7 +2611,7 @@
           <span class="today-tag" id="today-phase">BASE</span>
         </h3>
         <div class="today-focus" id="today-focus">Easy run</div>
-        <div class="today-content" id="today-content">45–60 min Z2, conversational pace.</div>
+        <div class="today-content" id="today-content">Easy 45–60 min run at a pace where you can hold a conversation.</div>
         <div class="today-actions">
           <button class="btn" id="today-log" data-i18n="todayLog">Log this session</button>
           <button class="btn btn-secondary" id="today-timer" data-i18n="todayTimer">Open timer</button>
@@ -2584,7 +2717,7 @@
     <div class="card" style="margin-top: 24px;">
       <h3 data-i18n="planTipsTitle">Pacing guidelines</h3>
       <ul class="principle-list">
-        <li data-i18n="planTip1">Base: Zone 2 runs, technique over intensity, learn the movements</li>
+        <li data-i18n="planTip1">Base: easy conversational runs, technique before intensity, learn the movements</li>
         <li data-i18n="planTip2">Build: Race-specific intervals, simulate 2-3 station combos together</li>
         <li data-i18n="planTip3">Peak: Full or half simulations, taper last 7 days, rehearse transitions</li>
         <li data-i18n="planTip4">Rest days are non-negotiable — duos need synchronized recovery</li>
@@ -3073,7 +3206,7 @@ const PLANS = {
         { name: { en: "Leg swings + ankle circles", fr: "Balancés jambes + cercles chevilles" }, prescription: { en: "10 each side", fr: "10 chaque côté" } },
       ]},
       { kind: "main", title: { en: "Main set", fr: "Corps de séance" }, items: [
-        { name: { en: "Continuous run — Z2 (conversational)", fr: "Course continue — Z2 (conversationnelle)" }, prescription: { en: "45 min", fr: "45 min" }, rpe: "5/10", rest: { en: "no stops", fr: "sans arrêt" }, note: { en: "Heart rate 130-145 bpm. If you can't talk, slow down.", fr: "FC 130-145 bpm. Si tu ne peux pas parler, ralentis." } },
+        { name: { en: "Continuous easy run — talk-pace", fr: "Course continue — allure conversationnelle" }, prescription: { en: "45 min", fr: "45 min" }, rpe: "5/10", rest: { en: "no stops", fr: "sans arrêt" }, note: { en: "Pace where you can hold a conversation. If you're gasping, slow down. Heart rate roughly 130-145 if you wear a watch.", fr: "Allure où tu peux parler. Si tu suffoques, ralentis. FC 130-145 si tu portes une montre." } },
       ]},
       { kind: "cool", title: { en: "Cool-down", fr: "Retour au calme" }, items: [
         { name: { en: "Easy walk", fr: "Marche facile" }, prescription: { en: "5 min", fr: "5 min" } },
@@ -3195,7 +3328,7 @@ const PLANS = {
     ]},
     { day: "Thu", focus: { en: "Recovery jog", fr: "Footing récup" }, blocks: [
       { kind: "main", title: { en: "Easy run", fr: "Footing facile" }, items: [
-        { name: { en: "Z2 jog", fr: "Jog Z2" }, prescription: { en: "30-40 min", fr: "30-40 min" }, rpe: "4/10", note: { en: "Solo. No pace pressure.", fr: "Seul·e. Aucune contrainte d'allure." } },
+        { name: { en: "Easy jog", fr: "Jogging facile" }, prescription: { en: "30-40 min", fr: "30-40 min" }, rpe: "4/10", note: { en: "Solo. No pace pressure — talk-pace the whole time.", fr: "Seul·e. Pas de contrainte d'allure — allure conversationnelle tout le long." } },
       ]},
     ]},
     { day: "Fri", focus: { en: "Duo combo B — back half", fr: "Combo duo B — seconde moitié" }, blocks: [
@@ -3271,7 +3404,7 @@ const PLANS = {
     ]},
     { day: "Fri", focus: { en: "Easy run (taper begins)", fr: "Footing facile (début taper)" }, blocks: [
       { kind: "main", title: { en: "Taper run", fr: "Footing taper" }, items: [
-        { name: { en: "Z2 jog", fr: "Jog Z2" }, prescription: { en: "30 min", fr: "30 min" }, rpe: "4/10", note: { en: "Cut volume. Sleep more.", fr: "Réduit le volume. Dors plus." } },
+        { name: { en: "Easy jog", fr: "Jogging facile" }, prescription: { en: "30 min", fr: "30 min" }, rpe: "4/10", note: { en: "Talk-pace. Cut volume. Sleep more.", fr: "Allure conversationnelle. Réduit le volume. Dors plus." } },
       ]},
     ]},
     { day: "Sat", focus: { en: "Race openers", fr: "Réveil pré-course" }, blocks: [
@@ -3294,20 +3427,182 @@ const PLANS = {
   ],
 };
 
-const EXERCISES = [
-  { tag: { en: "Run", fr: "Course" }, title: { en: "Broken 5 km", fr: "5 km fractionné" }, desc: { en: "5× 1 km @ race pace with 60 sec rest. Simulates the fatigue of running between stations.", fr: "5× 1 km allure course avec 60 sec de récup. Simule la fatigue entre stations." } },
-  { tag: { en: "Run", fr: "Course" }, title: { en: "Threshold 4×2 km", fr: "Seuil 4×2 km" }, desc: { en: "4 repeats of 2 km at threshold, 3 min jog. Raises your ceiling.", fr: "4 fois 2 km au seuil, 3 min jog. Repousse tes limites." } },
-  { tag: { en: "Strength", fr: "Force" }, title: { en: "Back Squat", fr: "Back Squat" }, desc: { en: "5×5 at 75-85% 1RM. Foundation for wall balls, lunges and sled.", fr: "5×5 à 75-85% 1RM. Base pour wall balls, fentes et traîneau." } },
-  { tag: { en: "Strength", fr: "Force" }, title: { en: "Romanian Deadlift", fr: "Soulevé de terre roumain" }, desc: { en: "4×8. Posterior chain for sled pull, ski, farmers carry.", fr: "4×8. Chaîne postérieure pour traction, ski, farmers." } },
-  { tag: { en: "Specific", fr: "Spécifique" }, title: { en: "Sandbag carry + lunge", fr: "Sac de sable port + fentes" }, desc: { en: "100 m carry, 50 m lunges, 3 rounds. Transfers directly to station 7.", fr: "100 m port, 50 m fentes, 3 tours. Transfert direct station 7." } },
-  { tag: { en: "Specific", fr: "Spécifique" }, title: { en: "Wall ball EMOM", fr: "Wall ball EMOM" }, desc: { en: "Every minute on the minute: 15 wall balls for 10 minutes. Builds rep stamina.", fr: "Chaque minute : 15 wall balls pendant 10 min. Endurance spécifique." } },
-  { tag: { en: "Conditioning", fr: "Conditionnement" }, title: { en: "Erg stack", fr: "Empilement erg" }, desc: { en: "2 km row + 2 km ski for time. Tests dual-erg capacity.", fr: "2 km rameur + 2 km ski au chrono. Teste la capacité sur les deux ergs." } },
-  { tag: { en: "Conditioning", fr: "Conditionnement" }, title: { en: "Burpee broad jump ladder", fr: "Échelle burpee saut" }, desc: { en: "10, 8, 6, 4, 2 BBJ with 200 m run between. Pacing under fatigue.", fr: "10, 8, 6, 4, 2 BBJ avec 200 m course entre. Gestion sous fatigue." } },
-  { tag: { en: "Grip", fr: "Prise" }, title: { en: "Dead hang + farmer", fr: "Suspension + farmer" }, desc: { en: "Max dead hang, then 40 m heavy farmer. 4 rounds. Grip insurance.", fr: "Suspension max, puis 40 m farmer lourd. 4 tours. Assurance prise." } },
-  { tag: { en: "Grip", fr: "Prise" }, title: { en: "Rope pull intervals", fr: "Tirage corde" }, desc: { en: "Rig a sled or weight: 5× 25 m pulls. Directly mimics station 3.", fr: "Traîneau ou poids : 5× 25 m de traction. Mime directement la station 3." } },
-  { tag: { en: "Mobility", fr: "Mobilité" }, title: { en: "Hip flow 10 min", fr: "Mobilité hanches 10 min" }, desc: { en: "90-90s, couch stretch, deep squat hold. Do daily — lunges thank you.", fr: "90-90, couch stretch, squat profond. Quotidien — les fentes te remercient." } },
-  { tag: { en: "Partner", fr: "Duo" }, title: { en: "Transition drill", fr: "Drill de transition" }, desc: { en: "Both run 200 m, one does 20 wall balls, swap, repeat 4×. Focus on the swap only.", fr: "Les deux 200 m, un fait 20 wall balls, relais, 4×. Focus sur le relais." } },
+// Muscles available: chest, shoulders, back, lats, lowerback, abs, obliques, biceps, triceps, forearms, glutes, quads, hamstrings, calves, hipflexors
+// Each goal has alternatives for: full (full gym), basic (basic gym + KBs), home (no equipment / minimal)
+const EXERCISE_GOALS = [
+  {
+    id: "run-endurance",
+    icon: "🏃",
+    title: { en: "Run endurance — the 8 km base", fr: "Endurance course — la base des 8 km" },
+    sub: { en: "Half your race is running. Build the engine that doesn't fade between stations.", fr: "La moitié de la course est de la course à pied. Construis le moteur qui ne lâche pas entre les stations." },
+    primary: ["quads", "calves", "hamstrings"],
+    secondary: ["glutes", "abs", "hipflexors"],
+    alts: [
+      { tier: "full", name: { en: "Track 5×1 km @ race pace", fr: "Piste 5×1 km allure course" }, prescription: { en: "60 sec rest", fr: "60 sec récup" }, desc: { en: "Simulates the fatigue of running between stations. Use a track or measured loop.", fr: "Simule la fatigue entre stations. Sur piste ou boucle mesurée." } },
+      { tier: "basic", name: { en: "Treadmill 4×1.5 km @ tempo", fr: "Tapis 4×1.5 km allure tempo" }, prescription: { en: "90 sec rest, 1% incline", fr: "90 sec récup, 1% inclinaison" }, desc: { en: "Same effect on a treadmill. Set the pace you want — no excuses.", fr: "Même effet sur tapis. Règle l'allure — pas d'excuse." } },
+      { tier: "home", name: { en: "30-min outdoor tempo run", fr: "30 min tempo extérieur" }, prescription: { en: "Comfortably hard pace", fr: "Allure soutenue mais soutenable" }, desc: { en: "No track? Just run. Aim for a pace where you can speak in 4-5 word phrases.", fr: "Pas de piste ? Cours. Allure où tu peux parler en phrases de 4-5 mots." } },
+    ],
+  },
+  {
+    id: "sled-power",
+    icon: "🛷",
+    title: { en: "Sled push & pull power", fr: "Puissance sled push & pull" },
+    sub: { en: "Stations 2 + 3. Pure leg drive and brutal posterior chain.", fr: "Stations 2 + 3. Poussée jambes pure et chaîne postérieure brutale." },
+    primary: ["quads", "glutes", "calves"],
+    secondary: ["hamstrings", "lowerback", "lats"],
+    alts: [
+      { tier: "full", name: { en: "Sled push 6×25 m heavy", fr: "Sled push 6×25 m lourd" }, prescription: { en: "+100 kg M / +60 kg F · 90 sec rest", fr: "+100 kg H / +60 kg F · 90 sec récup" }, desc: { en: "Direct transfer. Low body angle, drive through toes, never stop moving.", fr: "Transfert direct. Angle bas, pousse sur les orteils, ne t'arrête pas." } },
+      { tier: "basic", name: { en: "Heavy walking lunge + bear crawl", fr: "Fentes marchées lourdes + bear crawl" }, prescription: { en: "4×30 m lunge + 30 m crawl", fr: "4×30 m fentes + 30 m crawl" }, desc: { en: "Lunges with 2× 20 kg dumbbells, then bear crawl back. Mimics the leg burn.", fr: "Fentes avec 2× 20 kg, puis bear crawl retour. Mime la brûlure jambes." } },
+      { tier: "home", name: { en: "Wall sit + jump squat ladder", fr: "Wall sit + squats sautés" }, prescription: { en: "5 rounds: 30s wall sit + 15 jump squats", fr: "5 tours : 30s wall sit + 15 squats sautés" }, desc: { en: "No sled? Build leg endurance with isometric hold + explosive jumps.", fr: "Pas de sled ? Endurance jambes en iso + sauts explosifs." } },
+    ],
+  },
+  {
+    id: "carry-grip",
+    icon: "💪",
+    title: { en: "Grip & farmers carry", fr: "Prise & farmers carry" },
+    sub: { en: "Station 6. Grip is the silent killer — train it weekly.", fr: "Station 6. La prise est le tueur silencieux — entraîne-la chaque semaine." },
+    primary: ["forearms", "lats", "abs"],
+    secondary: ["triceps", "shoulders", "calves"],
+    alts: [
+      { tier: "full", name: { en: "Heavy farmer + dead hang superset", fr: "Farmer lourd + suspension" }, prescription: { en: "4×80 m + max dead hang", fr: "4×80 m + suspension max" }, desc: { en: "Farmer at 28 kg/hand (M) / 18 kg/hand (F). Then hang from a bar to failure. Brutal grip stimulus.", fr: "Farmer à 28 kg/main (H) / 18 kg/main (F). Puis suspension max. Brutal pour la prise." } },
+      { tier: "basic", name: { en: "Kettlebell suitcase carry", fr: "Suitcase carry kettlebell" }, prescription: { en: "4×40 m each side", fr: "4×40 m chaque côté" }, desc: { en: "One KB per hand at a time, alternate sides. Builds anti-rotational core + grip.", fr: "Un KB par main alterné. Renforce gainage anti-rotation + prise." } },
+      { tier: "home", name: { en: "Backpack carry + towel hang", fr: "Port sac à dos + suspension serviette" }, prescription: { en: "3×100 m carry + 3× max hang", fr: "3×100 m port + 3× suspension max" }, desc: { en: "Load a backpack with books/water. Find a sturdy bar with a towel for thicker grip.", fr: "Charge un sac à dos. Trouve une barre solide avec une serviette pour épaissir la prise." } },
+    ],
+  },
+  {
+    id: "wall-ball-engine",
+    icon: "🏐",
+    title: { en: "Wall ball stamina", fr: "Endurance wall balls" },
+    sub: { en: "Station 8 — 100 reps. The race-decider for most duos.", fr: "Station 8 — 100 reps. Décide la course pour la plupart des duos." },
+    primary: ["quads", "shoulders", "glutes"],
+    secondary: ["abs", "triceps", "calves"],
+    alts: [
+      { tier: "full", name: { en: "Wall ball EMOM", fr: "Wall ball EMOM" }, prescription: { en: "10 min: 15 reps every minute", fr: "10 min : 15 reps chaque minute" }, desc: { en: "Builds rep stamina. Catch in squat, use the rebound, exhale on the throw.", fr: "Endurance spécifique. Réception en squat, profite du rebond, expire au lancer." } },
+      { tier: "basic", name: { en: "Thruster + medicine ball slam", fr: "Thruster + slam ball" }, prescription: { en: "5×(10 thrusters + 10 slams)", fr: "5×(10 thrusters + 10 slams)" }, desc: { en: "No wall? Light barbell thrusters (~30 kg) plus med ball slams cover the same patterns.", fr: "Pas de mur ? Thrusters barre légère (~30 kg) + slam balls couvrent les mêmes mouvements." } },
+      { tier: "home", name: { en: "Squat-to-reach intervals", fr: "Squat tendu intervalles" }, prescription: { en: "8×30 reps, 30 sec rest", fr: "8×30 reps, 30 sec repos" }, desc: { en: "Squat low, explode up, reach overhead with both arms. Trains the pattern; not the weight.", fr: "Squat profond, explose, mains au-dessus de la tête. Entraîne le pattern, pas le poids." } },
+    ],
+  },
+  {
+    id: "ski-row-engine",
+    icon: "🚣",
+    title: { en: "Erg stamina (ski + row)", fr: "Endurance erg (ski + rameur)" },
+    sub: { en: "Stations 1 + 5. 2000 m of erg work split between you. Engine plus technique.", fr: "Stations 1 + 5. 2000 m d'erg partagés. Moteur + technique." },
+    primary: ["lats", "quads", "abs"],
+    secondary: ["shoulders", "glutes", "biceps"],
+    alts: [
+      { tier: "full", name: { en: "Erg stack — 2 km row + 2 km ski", fr: "Erg combo — 2 km rameur + 2 km ski" }, prescription: { en: "Back to back, for time", fr: "Enchaînés, au chrono" }, desc: { en: "Tests dual-erg capacity under fatigue. Keep damper 5-7 on both. Drive with legs first.", fr: "Teste la capacité bi-erg sous fatigue. Damper 5-7 sur les deux. Pousse les jambes d'abord." } },
+      { tier: "basic", name: { en: "Single erg pyramid", fr: "Pyramide erg seul" }, prescription: { en: "200, 400, 600, 400, 200 m", fr: "200, 400, 600, 400, 200 m" }, desc: { en: "Only one erg available? Pyramid intervals build power and endurance in one.", fr: "Un seul erg ? Pyramide pour puissance + endurance en une séance." } },
+      { tier: "home", name: { en: "Battle rope or jump rope intervals", fr: "Corde ondulatoire ou corde à sauter" }, prescription: { en: "10×30 sec on / 30 sec off", fr: "10×30 sec on / 30 sec off" }, desc: { en: "No erg? Battle ropes mimic ski hinge pattern. Jump rope hits the same aerobic system.", fr: "Pas d'erg ? La corde ondulatoire mime le pattern ski. La corde à sauter sollicite l'aérobie." } },
+    ],
+  },
+  {
+    id: "burpee-conditioning",
+    icon: "🔥",
+    title: { en: "Burpee broad jump conditioning", fr: "Conditionnement burpees" },
+    sub: { en: "Station 4. The pace-killer if you don't pace it. Train the rhythm.", fr: "Station 4. Tue l'allure si tu ne la régules pas. Entraîne le rythme." },
+    primary: ["chest", "quads", "abs"],
+    secondary: ["shoulders", "triceps", "glutes"],
+    alts: [
+      { tier: "full", name: { en: "Burpee broad jump ladder", fr: "Échelle burpee saut" }, prescription: { en: "10-8-6-4-2 with 200 m run between", fr: "10-8-6-4-2 avec 200 m entre" }, desc: { en: "Pacing under fatigue. Chest + thighs touch, soft landing — no hero leaps.", fr: "Gestion sous fatigue. Poitrine + cuisses au sol, réception souple — pas de héros." } },
+      { tier: "basic", name: { en: "Burpee + box jump combo", fr: "Burpee + box jump" }, prescription: { en: "5 rounds: 8 burpees + 8 box jumps", fr: "5 tours : 8 burpees + 8 box jumps" }, desc: { en: "Box at 50 cm. Same explosive demands without needing horizontal space.", fr: "Box 50 cm. Mêmes contraintes explosives sans espace horizontal." } },
+      { tier: "home", name: { en: "Burpee tabata", fr: "Burpees tabata" }, prescription: { en: "8 rounds: 20 sec on / 10 sec off", fr: "8 tours : 20 sec on / 10 sec off" }, desc: { en: "Pure bodyweight. Count reps each round and aim to maintain. Brutal in 4 minutes.", fr: "Poids du corps pur. Compte les reps et maintiens. Brutal en 4 minutes." } },
+    ],
+  },
+  {
+    id: "lunges-legs",
+    icon: "🦵",
+    title: { en: "Loaded lunge endurance", fr: "Endurance fentes chargées" },
+    sub: { en: "Station 7. 100 m of sandbag lunges with cooked legs. Train this honestly.", fr: "Station 7. 100 m de fentes sac de sable avec les jambes cuites. Entraîne ça sincèrement." },
+    primary: ["quads", "glutes", "hamstrings"],
+    secondary: ["calves", "abs", "hipflexors"],
+    alts: [
+      { tier: "full", name: { en: "Sandbag walking lunge + farmer", fr: "Fentes sandbag + farmer" }, prescription: { en: "3×(50 m lunge + 100 m farmer)", fr: "3×(50 m fentes + 100 m farmer)" }, desc: { en: "Sandbag at 20 kg M / 10 kg F. Back knee touches every rep.", fr: "Sandbag 20 kg H / 10 kg F. Genou arrière au sol à chaque rep." } },
+      { tier: "basic", name: { en: "Bulgarian split squat", fr: "Squat bulgare" }, prescription: { en: "4×10 each leg with 16 kg DBs", fr: "4×10 par jambe avec 16 kg" }, desc: { en: "Massive single-leg stimulus without space for walking lunges. Crush the rear leg.", fr: "Gros stimulus jambe seule sans espace pour fentes marchées. Détruit la jambe arrière." } },
+      { tier: "home", name: { en: "Reverse lunge + step-up", fr: "Fentes arrière + step-up" }, prescription: { en: "5×(20 reverse lunges + 20 step-ups)", fr: "5×(20 fentes arrière + 20 step-ups)" }, desc: { en: "Use a chair or step. Bodyweight or hold a backpack. Hits the same chain.", fr: "Sur une chaise ou marche. Poids du corps ou sac à dos. Même chaîne musculaire." } },
+    ],
+  },
+  {
+    id: "core-stability",
+    icon: "🎯",
+    title: { en: "Core under load", fr: "Gainage sous charge" },
+    sub: { en: "Carries the entire race. Strong core = stable carries, efficient running, no leak.", fr: "Porte toute la course. Gainage fort = port stable, course efficace, aucune fuite." },
+    primary: ["abs", "obliques", "lowerback"],
+    secondary: ["glutes", "shoulders"],
+    alts: [
+      { tier: "full", name: { en: "Loaded carry circuit", fr: "Circuit ports chargés" }, prescription: { en: "Farmer 80 m → suitcase 40 m each → overhead 30 m", fr: "Farmer 80 m → suitcase 40 m chaque côté → overhead 30 m" }, desc: { en: "All three carry positions in one round. Brutal anti-extension and anti-lateral-flexion.", fr: "Trois positions de port en un tour. Brutal anti-extension et anti-flexion latérale." } },
+      { tier: "basic", name: { en: "Plank stack", fr: "Combo planches" }, prescription: { en: "3×(45 sec front + 30 sec each side)", fr: "3×(45 sec avant + 30 sec chaque côté)" }, desc: { en: "Front plank, then side plank each side. No equipment needed beyond a floor.", fr: "Planche avant, puis latérale chaque côté. Pas d'équipement requis." } },
+      { tier: "home", name: { en: "Hollow body + dead bug", fr: "Hollow body + dead bug" }, prescription: { en: "4×(30 sec hollow + 10 dead bug each side)", fr: "4×(30 sec hollow + 10 dead bug chaque côté)" }, desc: { en: "Hollow body holds anti-extension; dead bug trains anti-rotation. Foundational.", fr: "Hollow body : anti-extension ; dead bug : anti-rotation. Fondamental." } },
+    ],
+  },
 ];
+
+// Body silhouette regions: list of muscle keys to SVG path data
+const ANATOMY_PATHS = {
+  head:        '<circle class="skin" cx="100" cy="20" r="14" />',
+  neck:        '<rect class="skin" x="92" y="32" width="16" height="10" />',
+  shoulders:   '<path class="m" data-m="shoulders" d="M65 50 Q100 38 135 50 L135 60 Q100 50 65 60 Z" />',
+  chest:       '<path class="m" data-m="chest" d="M70 60 Q100 60 130 60 L128 92 Q100 100 72 92 Z" />',
+  abs:         '<path class="m" data-m="abs" d="M82 92 Q100 100 118 92 L116 130 Q100 134 84 130 Z" />',
+  obliques_l:  '<path class="m" data-m="obliques" d="M70 78 Q72 90 84 92 L82 130 Q72 130 68 122 Z" />',
+  obliques_r:  '<path class="m" data-m="obliques" d="M130 78 Q128 90 116 92 L118 130 Q128 130 132 122 Z" />',
+  biceps_l:    '<path class="m" data-m="biceps" d="M58 56 Q66 56 70 60 L70 96 Q60 100 56 96 Z" />',
+  biceps_r:    '<path class="m" data-m="biceps" d="M142 56 Q134 56 130 60 L130 96 Q140 100 144 96 Z" />',
+  forearms_l:  '<path class="m" data-m="forearms" d="M56 96 Q66 100 70 96 L70 130 Q60 134 54 130 Z" />',
+  forearms_r:  '<path class="m" data-m="forearms" d="M144 96 Q134 100 130 96 L130 130 Q140 134 146 130 Z" />',
+  hipflexors:  '<path class="m" data-m="hipflexors" d="M84 130 L116 130 L114 142 L86 142 Z" />',
+  glutes:      '<path class="m" data-m="glutes" d="M82 142 Q100 148 118 142 L120 158 Q100 164 80 158 Z" />',
+  quads_l:     '<path class="m" data-m="quads" d="M82 158 Q92 164 99 158 L98 200 Q90 204 82 200 Z" />',
+  quads_r:     '<path class="m" data-m="quads" d="M118 158 Q108 164 101 158 L102 200 Q110 204 118 200 Z" />',
+  calves_l:    '<path class="m" data-m="calves" d="M82 200 Q90 204 98 200 L96 232 Q90 234 84 232 Z" />',
+  calves_r:    '<path class="m" data-m="calves" d="M118 200 Q110 204 102 200 L104 232 Q110 234 116 232 Z" />',
+};
+
+function renderAnatomy(primary = [], secondary = []) {
+  const isPrimary = m => primary.includes(m);
+  const isSecondary = m => secondary.includes(m);
+  const fillFor = m => isPrimary(m) ? "muscle-primary" : isSecondary(m) ? "muscle-secondary" : "muscle-bg";
+  // Map composite muscle keys
+  const muscleClass = (m) => {
+    if (m === "back" || m === "lats" || m === "lowerback") {
+      // Simplified: use chest area as back proxy on front-view; show with overlay if needed
+      return fillFor(m);
+    }
+    return fillFor(m);
+  };
+  // Build SVG with each muscle group classed appropriately
+  const muscles = {
+    shoulders: muscleClass("shoulders"),
+    chest: muscleClass(primary.includes("back") || primary.includes("lats") || secondary.includes("back") || secondary.includes("lats") ? (primary.includes("back") || primary.includes("lats") ? "back" : "lats") : "chest"),
+    abs: muscleClass(primary.includes("lowerback") || secondary.includes("lowerback") ? "lowerback" : "abs"),
+    obliques: muscleClass("obliques"),
+    biceps: muscleClass("biceps"),
+    forearms: muscleClass("forearms"),
+    triceps: muscleClass("triceps"),
+    hipflexors: muscleClass("hipflexors"),
+    glutes: muscleClass("glutes"),
+    quads: muscleClass(primary.includes("hamstrings") || secondary.includes("hamstrings") ? "hamstrings" : "quads"),
+    calves: muscleClass("calves"),
+  };
+  return `<svg class="anatomy" viewBox="0 0 200 240">
+    ${ANATOMY_PATHS.head}
+    ${ANATOMY_PATHS.neck}
+    <path class="${muscles.shoulders}" d="M65 50 Q100 38 135 50 L135 60 Q100 50 65 60 Z" />
+    <path class="${muscles.chest}" d="M70 60 Q100 60 130 60 L128 92 Q100 100 72 92 Z" />
+    <path class="${muscles.abs}" d="M82 92 Q100 100 118 92 L116 130 Q100 134 84 130 Z" />
+    <path class="${muscles.obliques}" d="M70 78 Q72 90 84 92 L82 130 Q72 130 68 122 Z" />
+    <path class="${muscles.obliques}" d="M130 78 Q128 90 116 92 L118 130 Q128 130 132 122 Z" />
+    <path class="${muscles.biceps}" d="M58 56 Q66 56 70 60 L70 96 Q60 100 56 96 Z" />
+    <path class="${muscles.biceps}" d="M142 56 Q134 56 130 60 L130 96 Q140 100 144 96 Z" />
+    <path class="${muscles.forearms}" d="M56 96 Q66 100 70 96 L70 130 Q60 134 54 130 Z" />
+    <path class="${muscles.forearms}" d="M144 96 Q134 100 130 96 L130 130 Q140 134 146 130 Z" />
+    <path class="${muscles.hipflexors}" d="M84 130 L116 130 L114 142 L86 142 Z" />
+    <path class="${muscles.glutes}" d="M82 142 Q100 148 118 142 L120 158 Q100 164 80 158 Z" />
+    <path class="${muscles.quads}" d="M82 158 Q92 164 99 158 L98 200 Q90 204 82 200 Z" />
+    <path class="${muscles.quads}" d="M118 158 Q108 164 101 158 L102 200 Q110 204 118 200 Z" />
+    <path class="${muscles.calves}" d="M82 200 Q90 204 98 200 L96 232 Q90 234 84 232 Z" />
+    <path class="${muscles.calves}" d="M118 200 Q110 204 102 200 L104 232 Q110 234 116 232 Z" />
+  </svg>`;
+}
 
 const STRATEGY = [
   {
@@ -3608,7 +3903,7 @@ const I18N = {
     planIntro: "Un build 12 semaines pour duos en trois phases. Entraîne-toi en duo au moins 2× / semaine — l'alchimie est un muscle.",
     phaseBase: "Base (sem 1-4)", phaseBuild: "Build (sem 5-8)", phasePeak: "Peak (sem 9-12)",
     planTipsTitle: "Allures conseillées",
-    planTip1: "Base : courses Z2, technique avant intensité, apprendre les mouvements",
+    planTip1: "Base : courses faciles allure conversationnelle, technique avant intensité",
     planTip2: "Build : intervalles spécifiques, combos 2-3 stations en duo",
     planTip3: "Peak : simulations complètes ou demi, taper les 7 derniers jours",
     planTip4: "Les jours de repos sont non négociables — duos = récup synchronisée",
@@ -3975,7 +4270,7 @@ function renderPlan() {
         if (prescription) meta.push(`<span class="ex-meta-pill prescription">${prescription}</span>`);
         if (weight) meta.push(`<span class="ex-meta-pill weight">⚖ ${weight}</span>`);
         if (rest) meta.push(`<span class="ex-meta-pill rest">⏱ ${rest}</span>`);
-        if (it.rpe) meta.push(`<span class="ex-meta-pill rpe">RPE ${it.rpe}</span>`);
+        if (it.rpe) meta.push(`<span class="ex-meta-pill rpe">${rpeLabel(it.rpe)}</span>`);
         const note = fld(it, "note");
         return `
           <div class="ex-row">
@@ -4005,19 +4300,99 @@ function renderPlan() {
   });
 }
 
+function muscleLabel(m) {
+  const map = {
+    en: { chest:"chest", shoulders:"shoulders", back:"back", lats:"lats", lowerback:"lower back", abs:"core", obliques:"obliques", biceps:"biceps", triceps:"triceps", forearms:"grip / forearms", glutes:"glutes", quads:"quads", hamstrings:"hamstrings", calves:"calves", hipflexors:"hip flexors" },
+    fr: { chest:"pecs", shoulders:"épaules", back:"dos", lats:"dorsaux", lowerback:"bas du dos", abs:"abdos", obliques:"obliques", biceps:"biceps", triceps:"triceps", forearms:"prise / avant-bras", glutes:"fessiers", quads:"quadriceps", hamstrings:"ischios", calves:"mollets", hipflexors:"fléchisseurs" },
+  };
+  return map[currentLang][m] || m;
+}
+
+function tierLabel(tier) {
+  const map = {
+    en: { full: "Full gym", basic: "Basic gym / KBs", home: "Home / no gear" },
+    fr: { full: "Salle complète", basic: "Salle simple / KBs", home: "Maison / sans matériel" },
+  };
+  return map[currentLang][tier] || tier;
+}
+
 function renderExercises() {
   const grid = document.getElementById("ex-grid");
+  if (!grid) return;
   grid.innerHTML = "";
-  EXERCISES.forEach(ex => {
+  // Use single column for goal-based layout
+  grid.style.gridTemplateColumns = "1fr";
+
+  EXERCISE_GOALS.forEach(goal => {
     const el = document.createElement("div");
-    el.className = "exercise";
+    el.className = "ex-goal";
+    const muscleTags = [
+      ...goal.primary.map(m => `<span class="muscle-tag primary">${muscleLabel(m)}</span>`),
+      ...goal.secondary.map(m => `<span class="muscle-tag">${muscleLabel(m)}</span>`),
+    ].join("");
+
     el.innerHTML = `
-      <div><span class="ex-tag">${ex.tag[currentLang]}</span></div>
-      <div class="ex-title">${ex.title[currentLang]}</div>
-      <div class="ex-desc">${ex.desc[currentLang]}</div>
+      <div class="ex-goal-head">
+        <div class="ex-goal-icon">${goal.icon}</div>
+        <div class="ex-goal-text">
+          <div class="ex-goal-title">${goal.title[currentLang]}</div>
+          <div class="ex-goal-sub">${goal.sub[currentLang]}</div>
+          <div class="ex-muscles">${muscleTags}</div>
+        </div>
+      </div>
+      <div class="ex-alts">
+        ${goal.alts.map(a => `
+          <div class="ex-alt">
+            ${renderAnatomy(goal.primary, goal.secondary)}
+            <div class="ex-alt-body">
+              <span class="ex-alt-tier ex-alt-tier-${a.tier}">${tierLabel(a.tier)}</span>
+              <div class="ex-alt-name">${a.name[currentLang]}</div>
+              <div class="ex-alt-prescription">${a.prescription[currentLang]}</div>
+              <div class="ex-alt-desc">${a.desc[currentLang]}</div>
+            </div>
+          </div>
+        `).join("")}
+      </div>
+      <div class="anatomy-legend">
+        <span><span class="anatomy-legend-dot" style="background: var(--accent);"></span>${currentLang === "en" ? "Primary" : "Principaux"}</span>
+        <span><span class="anatomy-legend-dot" style="background: #E8C99A;"></span>${currentLang === "en" ? "Secondary" : "Secondaires"}</span>
+      </div>
     `;
     grid.appendChild(el);
   });
+}
+
+// Plain-language RPE label
+function rpeLabel(rpeStr) {
+  if (!rpeStr) return null;
+  const m = String(rpeStr).match(/^(\d+(?:\.\d+)?)/);
+  if (!m) return rpeStr;
+  const n = parseFloat(m[1]);
+  const labels = {
+    en: [
+      [3,  "Very easy — full conversation"],
+      [4,  "Easy — comfortable"],
+      [5,  "Easy — chatty pace"],
+      [6,  "Moderate — short sentences"],
+      [7,  "Moderately hard — getting breathy"],
+      [8,  "Hard — single words only"],
+      [9,  "Very hard — last few minutes"],
+      [10, "All out — empty the tank"],
+    ],
+    fr: [
+      [3,  "Très facile — peut bien parler"],
+      [4,  "Facile — confortable"],
+      [5,  "Facile — peut parler"],
+      [6,  "Modéré — phrases courtes"],
+      [7,  "Modéré-dur — souffle court"],
+      [8,  "Dur — mots isolés"],
+      [9,  "Très dur — derniers efforts"],
+      [10, "Max — vide-toi"],
+    ],
+  };
+  const arr = labels[currentLang];
+  for (const [k, v] of arr) { if (n <= k) return v; }
+  return arr[arr.length - 1][1];
 }
 
 function renderStrategy() {
