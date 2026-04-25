@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
-<meta name="build" content="2026-04-26-anatomy-and-profile-fields" />
+<meta name="build" content="2026-04-26-short-link-codes" />
 <title>Hyrox Duo — Training Companion</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2970,7 +2970,7 @@
 
   <footer>
     <p>Hyrox Duo Training Companion · Built for duos who want to finish strong, together.</p>
-    <p style="margin-top: 6px; font-size: 11px; color: var(--text-dim); font-style: normal; font-family: monospace;">build: 2026-04-26 · anatomy + profile fields</p>
+    <p style="margin-top: 6px; font-size: 11px; color: var(--text-dim); font-style: normal; font-family: monospace;">build: 2026-04-26 · short link codes</p>
   </footer>
 </div>
 </div>
@@ -4653,17 +4653,96 @@ function encodeSnapshot(snap) {
 
 function decodeSnapshot(code) {
   const trimmed = code.trim().replace(/\s+/g, "");
-  if (!trimmed.startsWith("HX-")) throw new Error("invalid_format");
-  const rest = trimmed.slice(3);
-  const dashIdx = rest.indexOf("-");
-  if (dashIdx === -1) throw new Error("invalid_format");
-  const b64 = rest.slice(dashIdx + 1);
+  // Format A: legacy "HX-XXXXXX-{base64}"
+  if (trimmed.startsWith("HX-")) {
+    const rest = trimmed.slice(3);
+    const dashIdx = rest.indexOf("-");
+    if (dashIdx === -1) throw new Error("invalid_format");
+    const b64 = rest.slice(dashIdx + 1);
+    return decodeBase64Snapshot(b64);
+  }
+  // Format B: raw base64 (auto-link from URL ?link=...)
+  if (trimmed.match(/^[A-Za-z0-9+/=_-]+$/) && trimmed.length > 30) {
+    return decodeBase64Snapshot(trimmed);
+  }
+  throw new Error("invalid_format");
+}
+
+function decodeBase64Snapshot(b64) {
   try {
-    const json = decodeURIComponent(escape(atob(b64)));
+    const padded = b64.replace(/-/g, "+").replace(/_/g, "/");
+    const json = decodeURIComponent(escape(atob(padded)));
     const data = JSON.parse(json);
     if (!data.n || !data.s) throw new Error("invalid_data");
     return data;
   } catch (e) { throw new Error("invalid_data"); }
+}
+
+// Build long URL with snapshot encoded in ?link param
+function buildLongLinkUrl(snap) {
+  const json = JSON.stringify(snap);
+  const b64 = btoa(unescape(encodeURIComponent(json)));
+  return `${window.location.origin}${window.location.pathname}?link=${b64}`;
+}
+
+// Try shortening via TinyURL through a CORS proxy. Returns { shortUrl, code } or null on failure.
+async function shortenUrl(longUrl) {
+  const apiCalls = [
+    `https://corsproxy.io/?${encodeURIComponent("https://tinyurl.com/api-create.php?url=" + encodeURIComponent(longUrl))}`,
+    `https://api.allorigins.win/raw?url=${encodeURIComponent("https://tinyurl.com/api-create.php?url=" + encodeURIComponent(longUrl))}`,
+  ];
+  for (const apiUrl of apiCalls) {
+    try {
+      const resp = await fetch(apiUrl, { method: "GET" });
+      if (!resp.ok) continue;
+      const text = (await resp.text()).trim();
+      if (text.startsWith("http")) {
+        const segments = text.split("/").filter(Boolean);
+        const code = segments[segments.length - 1] || "";
+        return { shortUrl: text, code };
+      }
+    } catch (e) { /* try next */ }
+  }
+  return null;
+}
+
+// Auto-apply ?link= param if present in URL
+function applyLinkFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const linkB64 = params.get("link");
+  if (!linkB64) return false;
+  try {
+    const snap = decodeBase64Snapshot(linkB64);
+    if (state.user) {
+      savePartnerSnapshot(snap);
+      history.replaceState({}, document.title, window.location.pathname);
+      setTimeout(() => {
+        toast((currentLang === "en" ? "Linked with " : "Lié·e avec ") + snap.n, "success");
+        if (typeof renderDuoCard === "function") renderDuoCard();
+      }, 200);
+    } else {
+      sessionStorage.setItem("hyrox-pending-link", linkB64);
+      history.replaceState({}, document.title, window.location.pathname);
+    }
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+// After login/onboarding, check for a pending link captured before auth
+function applyPendingLink() {
+  const pending = sessionStorage.getItem("hyrox-pending-link");
+  if (!pending || !state.user) return;
+  try {
+    const snap = decodeBase64Snapshot(pending);
+    savePartnerSnapshot(snap);
+    sessionStorage.removeItem("hyrox-pending-link");
+    setTimeout(() => {
+      toast((currentLang === "en" ? "Linked with " : "Lié·e avec ") + snap.n, "success");
+      renderDuoCard();
+    }, 300);
+  } catch (e) { sessionStorage.removeItem("hyrox-pending-link"); }
 }
 
 function timeAgo(ts) {
@@ -4819,40 +4898,70 @@ function hideModal() {
   document.getElementById("modal-overlay").classList.remove("show");
 }
 
-function showGenerateModal() {
+async function showGenerateModal() {
   const snap = buildSnapshot();
-  const code = encodeSnapshot(snap);
-  const prefix = code.split("-")[1];
+  const longUrl = buildLongLinkUrl(snap);
+  // Show loading first
   showModal(
     currentLang === "en" ? "Your link code" : "Ton code de liaison",
     `
+      <p>${currentLang === "en" ? "Generating your code…" : "Génération du code…"}</p>
+      <div style="text-align: center; padding: 30px 0; color: var(--text-dim); font-family: var(--serif); font-style: italic;">⏳</div>
+    `
+  );
+  const result = await shortenUrl(longUrl);
+  if (result && result.code) {
+    const { shortUrl, code } = result;
+    document.getElementById("modal-body").innerHTML = `
       <p>${currentLang === "en"
-        ? "Share this entire code with your partner. They'll paste it on their side to see your latest stats. Generate a new one anytime to send fresh updates."
-        : "Partage ce code complet avec ton·ta partenaire. Il·elle le collera de son côté pour voir tes stats. Génère-en un nouveau quand tu veux pour mettre à jour."}</p>
-      <div class="code-prefix">${prefix}</div>
-      <div class="code-display" id="code-display">${code}</div>
+        ? "Send this code to your partner. They can either type it in their app, or just click the link to link instantly."
+        : "Envoie ce code à ton·ta partenaire. Il·elle peut le taper dans son app ou cliquer sur le lien pour se lier directement."}</p>
+      <div class="code-prefix">${code}</div>
+      <div style="text-align: center; margin-bottom: 14px; font-size: 13px; color: var(--text-muted); word-break: break-all;">
+        <a href="${shortUrl}" target="_blank" rel="noopener" style="color: var(--accent-deep); font-weight: 500;">${shortUrl}</a>
+      </div>
       <div class="modal-actions">
         <button class="btn" id="copy-code-btn">${currentLang === "en" ? "Copy code" : "Copier le code"}</button>
+        <button class="btn btn-secondary" id="copy-url-btn">${currentLang === "en" ? "Copy link" : "Copier le lien"}</button>
         <button class="btn btn-secondary" id="modal-cancel-1">${currentLang === "en" ? "Done" : "Terminé"}</button>
       </div>
       <p style="margin-top: 14px; font-size: 12px; color: var(--text-dim); font-style: italic; font-family: var(--serif);">${currentLang === "en"
-        ? "Codes contain a snapshot of your training (no password, no email). Safe to share via SMS, WhatsApp, etc."
-        : "Les codes contiennent un instantané de ton entraînement (pas de mot de passe, pas d'email). OK à partager via SMS, WhatsApp, etc."}</p>
-    `
-  );
-  document.getElementById("copy-code-btn").addEventListener("click", () => {
-    navigator.clipboard.writeText(code).then(() => {
-      toast(currentLang === "en" ? "Code copied to clipboard" : "Code copié", "success");
-    }).catch(() => {
-      // Fallback: select the textarea
-      const range = document.createRange();
-      range.selectNode(document.getElementById("code-display"));
-      window.getSelection().removeAllRanges();
-      window.getSelection().addRange(range);
-      toast(currentLang === "en" ? "Code selected — press Ctrl/Cmd+C" : "Code sélectionné — Ctrl/Cmd+C");
+        ? "Each new code carries your latest stats. Send a fresh code anytime to update your partner's view."
+        : "Chaque nouveau code contient tes dernières stats. Envoie un nouveau code pour mettre à jour la vue de ton·ta partenaire."}</p>
+    `;
+    document.getElementById("copy-code-btn").addEventListener("click", () => {
+      navigator.clipboard.writeText(code).then(() => {
+        toast(currentLang === "en" ? "Code copied" : "Code copié", "success");
+      }).catch(() => {});
     });
-  });
-  document.getElementById("modal-cancel-1").addEventListener("click", hideModal);
+    document.getElementById("copy-url-btn").addEventListener("click", () => {
+      navigator.clipboard.writeText(shortUrl).then(() => {
+        toast(currentLang === "en" ? "Link copied" : "Lien copié", "success");
+      }).catch(() => {});
+    });
+    document.getElementById("modal-cancel-1").addEventListener("click", hideModal);
+  } else {
+    // Fallback: long blob copy-paste
+    const code = encodeSnapshot(snap);
+    const prefix = code.split("-")[1];
+    document.getElementById("modal-body").innerHTML = `
+      <p style="background: #FAE4DC; padding: 10px 14px; border-radius: 8px; color: var(--accent-deep); font-size: 13px; margin-bottom: 14px;">
+        ${currentLang === "en"
+          ? "Couldn't reach the URL shortener. You can still link by copying this full code below."
+          : "Impossible de contacter le raccourcisseur. Tu peux quand même lier en copiant ce code complet."}
+      </p>
+      <div class="code-prefix">${prefix}</div>
+      <div class="code-display" id="code-display">${code}</div>
+      <div class="modal-actions">
+        <button class="btn" id="copy-code-btn">${currentLang === "en" ? "Copy full code" : "Copier le code"}</button>
+        <button class="btn btn-secondary" id="modal-cancel-1">${currentLang === "en" ? "Done" : "Terminé"}</button>
+      </div>
+    `;
+    document.getElementById("copy-code-btn").addEventListener("click", () => {
+      navigator.clipboard.writeText(code).then(() => toast(currentLang === "en" ? "Code copied" : "Code copié", "success")).catch(() => {});
+    });
+    document.getElementById("modal-cancel-1").addEventListener("click", hideModal);
+  }
 }
 
 function showEnterModal() {
@@ -4860,39 +4969,70 @@ function showEnterModal() {
     currentLang === "en" ? "Enter partner's code" : "Entrer le code du·de la partenaire",
     `
       <p>${currentLang === "en"
-        ? "Paste the full code your partner sent you. Starts with HX-."
-        : "Colle le code complet que ton·ta partenaire t'a envoyé. Commence par HX-."}</p>
+        ? "Type the short code your partner sent (e.g. <strong>3a4b5c</strong>). If they sent a tinyurl.com link, click it instead — it links you instantly."
+        : "Tape le code court envoyé par ton·ta partenaire (ex. <strong>3a4b5c</strong>). S'il·elle a envoyé un lien tinyurl.com, clique-le — ça lie automatiquement."}</p>
       <div class="modal-error" id="modal-error"></div>
       <div class="modal-success" id="modal-success"></div>
-      <textarea class="code-textarea" id="code-input" placeholder="HX-..."></textarea>
+      <input type="text" class="code-input-short" id="code-input-short" placeholder="3a4b5c" autocapitalize="off" autocomplete="off" spellcheck="false" style="font-family: 'Courier New', monospace; font-size: 18px; text-align: center; letter-spacing: 0.15em; padding: 14px;" />
+      <details style="margin-top: 14px; font-size: 13px;">
+        <summary style="cursor: pointer; color: var(--text-muted);">${currentLang === "en" ? "Got a long code instead?" : "Tu as un long code ?"}</summary>
+        <textarea class="code-textarea" id="code-input-long" placeholder="HX-..." style="margin-top: 8px;"></textarea>
+      </details>
       <div class="modal-actions">
         <button class="btn" id="apply-code-btn">${currentLang === "en" ? "Link" : "Lier"}</button>
         <button class="btn btn-secondary" id="modal-cancel-2">${currentLang === "en" ? "Cancel" : "Annuler"}</button>
       </div>
     `
   );
-  document.getElementById("apply-code-btn").addEventListener("click", () => {
-    const input = document.getElementById("code-input").value;
+  const tryShortCode = async (rawCode) => {
+    const code = rawCode.trim();
+    if (!code) return null;
+    // Resolve via TinyURL (which we control via shortenUrl behaviour) — we redirect by navigation.
+    // Instead of fetching (CORS-blocked), open the URL: tinyurl.com/{code} → redirects → our site loads with ?link=...
+    const tinyUrl = `https://tinyurl.com/${encodeURIComponent(code)}`;
+    // Try to fetch through CORS proxy and follow redirect to grab final URL
+    try {
+      const proxied = `https://corsproxy.io/?${encodeURIComponent(tinyUrl)}`;
+      const resp = await fetch(proxied, { method: "GET", redirect: "follow" });
+      if (resp.ok) {
+        const finalUrl = resp.url;
+        const params = new URL(finalUrl).searchParams;
+        const linkB64 = params.get("link");
+        if (linkB64) return decodeBase64Snapshot(linkB64);
+      }
+    } catch (e) {}
+    // Fallback: navigate the user to the tinyurl which will redirect them
+    window.location.href = tinyUrl;
+    return "navigating";
+  };
+  document.getElementById("apply-code-btn").addEventListener("click", async () => {
+    const shortInput = document.getElementById("code-input-short").value.trim();
+    const longInput = document.getElementById("code-input-long").value.trim();
     const err = document.getElementById("modal-error");
     const ok = document.getElementById("modal-success");
-    err.classList.remove("show");
-    ok.classList.remove("show");
+    err.classList.remove("show"); ok.classList.remove("show");
     try {
-      const snap = decodeSnapshot(input);
+      let snap = null;
+      if (longInput) {
+        snap = decodeSnapshot(longInput);
+      } else if (shortInput) {
+        const result = await tryShortCode(shortInput);
+        if (result === "navigating") return;
+        snap = result;
+      }
+      if (!snap) throw new Error("nothing_provided");
       savePartnerSnapshot(snap);
-      ok.textContent = currentLang === "en"
-        ? `Linked with ${snap.n} ✓`
-        : `Lié·e avec ${snap.n} ✓`;
+      ok.textContent = currentLang === "en" ? `Linked with ${snap.n} ✓` : `Lié·e avec ${snap.n} ✓`;
       ok.classList.add("show");
       setTimeout(() => {
         hideModal();
         renderDuoCard();
-        toast(currentLang === "en" ? `Linked with ${snap.n}` : `Lié·e avec ${snap.n}`, "success");
-      }, 900);
+        toast((currentLang === "en" ? "Linked with " : "Lié·e avec ") + snap.n, "success");
+      }, 800);
     } catch (e) {
       err.textContent = currentLang === "en"
-        ? "That code doesn't look right. Make sure you copied the full string starting with HX-."
-        : "Le code ne semble pas correct. Vérifie que tu as bien copié toute la chaîne commençant par HX-.";
+        ? "Couldn't read that code. Check the code is right, or try the full URL link instead."
+        : "Impossible de lire ce code. Vérifie le code, ou essaie le lien complet à la place.";
       err.classList.add("show");
     }
   });
@@ -5543,10 +5683,12 @@ function enterApp() {
   renderLogs();
   renderDashboard();
   switchTab("dashboard");
+  applyPendingLink();
 }
 
 // Initialize
 document.getElementById("log-date").value = new Date().toISOString().split("T")[0];
+applyLinkFromUrl();  // capture ?link= param ASAP, before any UI decisions
 if (loadSavedSession()) {
   if (state.user.onboarded) enterApp();
   else startOnboarding();
