@@ -1,0 +1,4265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hyrox Duo — Training Companion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FAF9F5;
+    --bg-soft: #F5F2E9;
+    --bg-card: #FFFFFF;
+    --bg-sunk: #F0ECE0;
+    --border: #E8E2D0;
+    --border-strong: #D9D1BB;
+    --text: #1A1915;
+    --text-muted: #5C574C;
+    --text-dim: #8A8376;
+    --accent: #CC785C;
+    --accent-deep: #A65940;
+    --accent-soft: #EFD9CE;
+    --accent-tint: rgba(204, 120, 92, 0.08);
+    --ink: #2B2A25;
+    --serif: 'Fraunces', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.55;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  ::selection { background: var(--accent-soft); color: var(--ink); }
+
+  .app {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 28px 32px 80px;
+  }
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0 28px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .logo-mark {
+    width: 42px; height: 42px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--bg);
+    letter-spacing: -0.02em;
+  }
+  .logo h1 {
+    font-family: var(--serif);
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .logo p {
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.02em;
+    margin-top: 1px;
+  }
+  .lang-toggle {
+    display: flex;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    overflow: hidden;
+    padding: 3px;
+  }
+  .lang-toggle button {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 6px 14px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 13px;
+    font-family: var(--sans);
+    border-radius: 999px;
+    transition: all 0.2s ease;
+  }
+  .lang-toggle button.active {
+    background: var(--ink);
+    color: var(--bg);
+  }
+  nav.tabs {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 40px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0;
+  }
+  nav.tabs::-webkit-scrollbar { display: none; }
+  nav.tabs button {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 12px 18px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    font-family: var(--sans);
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+  }
+  nav.tabs button:hover { color: var(--ink); }
+  nav.tabs button.active {
+    color: var(--ink);
+    border-bottom-color: var(--accent);
+    font-weight: 600;
+  }
+  .panel { display: none; animation: fadeIn 0.3s ease; }
+  .panel.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+  h2 {
+    font-family: var(--serif);
+    font-size: 34px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    line-height: 1.15;
+  }
+  h3 {
+    font-family: var(--serif);
+    font-size: 19px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  h4 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 14px;
+  }
+  p { color: var(--text-muted); }
+  a { color: var(--accent-deep); }
+  a:hover { color: var(--accent); }
+
+  .section-intro {
+    color: var(--text-muted);
+    margin-bottom: 32px;
+    max-width: 640px;
+    line-height: 1.65;
+    font-size: 16px;
+  }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .card-accent {
+    background: var(--bg-card);
+    border-left: 3px solid var(--accent);
+  }
+
+  .grid { display: grid; gap: 16px; }
+  .grid-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .grid-3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+
+  /* ------- OVERVIEW ------- */
+  .hero {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 44px 44px 40px;
+    margin-bottom: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: 0; right: 0;
+    width: 60%; height: 100%;
+    background: radial-gradient(ellipse at top right, var(--accent-tint), transparent 60%);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    right: -80px; bottom: -80px;
+    width: 240px; height: 240px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--accent-soft) 0%, transparent 70%);
+    opacity: 0.4;
+    pointer-events: none;
+  }
+  .hero > * { position: relative; z-index: 1; }
+  .hero h2 {
+    font-size: 44px;
+    margin-bottom: 16px;
+    line-height: 1.05;
+    max-width: 620px;
+  }
+  .hero h2 em {
+    font-style: italic;
+    color: var(--accent-deep);
+    font-weight: 400;
+  }
+  .hero p {
+    color: var(--text-muted);
+    max-width: 580px;
+    line-height: 1.65;
+    font-size: 16px;
+  }
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 14px;
+    margin-top: 32px;
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+  }
+  .stat { }
+  .stat-val {
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.01em;
+    margin-top: 6px;
+  }
+
+  /* ------- STATIONS ------- */
+  .station {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 10px;
+    transition: border-color 0.2s ease;
+  }
+  .station:hover { border-color: var(--border-strong); }
+  .station.open { border-color: var(--accent); }
+  .station-head {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 20px 24px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .station-num {
+    width: 38px; height: 38px;
+    background: var(--bg-sunk);
+    color: var(--ink);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 16px;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+  }
+  .station.open .station-num {
+    background: var(--accent);
+    color: var(--bg);
+  }
+  .station-title { flex: 1; min-width: 0; }
+  .station-title h3 {
+    margin: 0;
+    font-size: 18px;
+  }
+  .station-title p {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+  .station-toggle {
+    color: var(--text-dim);
+    transition: transform 0.3s ease;
+    font-size: 12px;
+  }
+  .station.open .station-toggle { transform: rotate(180deg); color: var(--accent); }
+  .station-body {
+    display: none;
+    padding: 0 24px 24px;
+  }
+  .station.open .station-body { display: block; }
+  .station-body h4 {
+    font-family: var(--sans);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent-deep);
+    margin: 20px 0 10px;
+    font-weight: 600;
+  }
+  .station-body ul { list-style: none; padding-left: 0; }
+  .station-body li {
+    padding: 7px 0 7px 22px;
+    position: relative;
+    color: var(--text-muted);
+    line-height: 1.55;
+    font-size: 14.5px;
+  }
+  .station-body li::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 14px;
+    width: 10px; height: 1px;
+    background: var(--accent);
+  }
+  .station-body li strong { color: var(--ink); font-weight: 600; }
+
+  .split-box {
+    background: var(--bg-soft);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-top: 10px;
+  }
+  .split-box > div { padding: 5px 0; font-size: 14px; color: var(--text-muted); }
+  .split-box > div strong { color: var(--ink); }
+  .split-label {
+    display: inline-block;
+    font-size: 10px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.08em;
+    margin-right: 10px;
+    font-weight: 700;
+  }
+  .split-a { background: var(--accent-soft); color: var(--accent-deep); }
+  .split-b { background: #E4DBCA; color: #6B5B3F; }
+
+  /* ------- TRAINING PLAN ------- */
+  .week-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+  }
+  .day {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    transition: all 0.2s ease;
+  }
+  .day:hover {
+    border-color: var(--border-strong);
+    transform: translateY(-1px);
+  }
+  .day-name {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent-deep);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .day-focus {
+    font-family: var(--serif);
+    font-weight: 500;
+    margin-bottom: 10px;
+    font-size: 17px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .day-content {
+    color: var(--text-muted);
+    font-size: 13.5px;
+    line-height: 1.55;
+  }
+  .phase-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .phase-tab {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 9px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 13px;
+    font-family: var(--sans);
+    transition: all 0.2s ease;
+  }
+  .phase-tab:hover {
+    border-color: var(--border-strong);
+    color: var(--ink);
+  }
+  .phase-tab.active {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--bg);
+  }
+
+  /* ------- EXERCISES ------- */
+  .exercise {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.2s ease;
+  }
+  .exercise:hover {
+    border-color: var(--border-strong);
+    transform: translateY(-1px);
+  }
+  .ex-title {
+    font-family: var(--serif);
+    font-weight: 500;
+    margin: 8px 0 8px;
+    font-size: 18px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .ex-tag {
+    display: inline-block;
+    font-size: 10px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: var(--bg-sunk);
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-right: 6px;
+    font-weight: 600;
+  }
+  .ex-desc {
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.55;
+    margin-top: 6px;
+  }
+
+  /* ------- TIMER ------- */
+  .timer-display {
+    text-align: center;
+    padding: 56px 24px 44px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .timer-display::before {
+    content: "";
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, var(--accent-tint) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .timer-display > * { position: relative; z-index: 1; }
+  .timer-time {
+    font-family: var(--serif);
+    font-size: 96px;
+    font-weight: 400;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .timer-label {
+    color: var(--text-dim);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin-top: 14px;
+    font-weight: 500;
+  }
+  .timer-stage {
+    color: var(--accent-deep);
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 500;
+    font-style: italic;
+    margin-bottom: 12px;
+  }
+  .timer-controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 28px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    background: var(--ink);
+    color: var(--bg);
+    border: 1px solid var(--ink);
+    padding: 11px 22px;
+    border-radius: 999px;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: var(--sans);
+    transition: all 0.2s ease;
+  }
+  .btn:hover {
+    background: var(--accent-deep);
+    border-color: var(--accent-deep);
+  }
+  .btn-secondary {
+    background: var(--bg-card);
+    border: 1px solid var(--border-strong);
+    color: var(--ink);
+  }
+  .btn-secondary:hover {
+    background: var(--bg-soft);
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+  .btn-danger {
+    background: transparent;
+    border: 1px solid var(--border-strong);
+    color: var(--text-muted);
+  }
+  .btn-danger:hover {
+    background: #F5E6E2;
+    border-color: var(--accent-deep);
+    color: var(--accent-deep);
+  }
+
+  .wod-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+  }
+  .wod-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .wod-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .wod-card h4 {
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+  .wod-card p {
+    color: var(--text-muted);
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+
+  /* ------- EVENTS ------- */
+  .event {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 18px;
+    align-items: center;
+    padding: 18px 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 10px;
+    transition: all 0.2s ease;
+  }
+  .event:hover { border-color: var(--border-strong); }
+  .event-date {
+    text-align: center;
+    background: var(--bg-soft);
+    padding: 10px 14px;
+    border-radius: 10px;
+    min-width: 64px;
+  }
+  .event-date .m {
+    color: var(--accent-deep);
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .event-date .d {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--ink);
+    margin-top: 2px;
+  }
+  .event-info h4 {
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 500;
+    margin-bottom: 3px;
+    color: var(--ink);
+  }
+  .event-info p {
+    color: var(--text-muted);
+    font-size: 13.5px;
+  }
+  .event-link {
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 13px;
+    padding: 7px 14px;
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+    transition: all 0.2s ease;
+  }
+  .event-link:hover {
+    background: var(--ink);
+    color: var(--bg);
+    border-color: var(--ink);
+  }
+
+  /* ------- PROGRESS ------- */
+  .log-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  input, select, textarea {
+    background: var(--bg-card);
+    border: 1px solid var(--border-strong);
+    color: var(--ink);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: var(--sans);
+    width: 100%;
+    transition: border-color 0.2s ease;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-tint);
+  }
+  label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .log-entry {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 14px;
+    align-items: center;
+    padding: 14px 18px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 8px;
+  }
+  .log-entry .log-date {
+    font-size: 12px;
+    color: var(--text-dim);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  .log-entry .log-type {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--ink);
+  }
+  .log-entry .log-notes {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .log-del {
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    cursor: pointer;
+    font-size: 20px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+  }
+  .log-del:hover {
+    color: var(--accent-deep);
+    background: var(--bg-soft);
+  }
+  .empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-dim);
+    font-size: 14px;
+    font-style: italic;
+    font-family: var(--serif);
+  }
+
+  /* ------- STRATEGY ------- */
+  .strategy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .strat-card {
+    padding: 24px;
+  }
+  .strat-card h3 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .strat-icon {
+    width: 36px; height: 36px;
+    background: var(--accent-soft);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    flex-shrink: 0;
+  }
+  .strat-card ul { list-style: none; padding: 0; }
+  .strat-card li {
+    padding: 8px 0 8px 18px;
+    position: relative;
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .strat-card li + li { border-top: 1px solid var(--border); }
+  .strat-card li::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 16px;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  /* Principles list in overview */
+  .principle-list { list-style: none; padding: 0; }
+  .principle-list li {
+    padding: 10px 0;
+    color: var(--text-muted);
+    line-height: 1.55;
+    border-bottom: 1px solid var(--border);
+    font-size: 14.5px;
+  }
+  .principle-list li:last-child { border-bottom: none; }
+  .principle-list li::before {
+    content: "— ";
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  footer {
+    margin-top: 64px;
+    padding: 28px 0;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 13px;
+    font-family: var(--serif);
+    font-style: italic;
+  }
+
+  @media (max-width: 700px) {
+    .app { padding: 20px 20px 60px; }
+    .hero { padding: 32px 24px 28px; }
+    .hero h2 { font-size: 32px; }
+    h2 { font-size: 28px; }
+    .timer-time { font-size: 72px; }
+    .event { grid-template-columns: auto 1fr; }
+    .event-link { grid-column: 1 / -1; text-align: center; }
+  }
+
+  /* ============ SCREENS ============ */
+  .screen { display: none; min-height: 100vh; }
+  .screen.active { display: block; }
+
+  /* ============ AUTH ============ */
+  .auth-screen {
+    min-height: 100vh;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px;
+    background: radial-gradient(ellipse at top, #F5EDE0 0%, var(--bg) 60%);
+  }
+  .auth-screen.active { display: flex; }
+  .auth-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 44px 40px 36px;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(26, 25, 21, 0.06);
+  }
+  .auth-logo { text-align: center; margin-bottom: 28px; }
+  .auth-logo .logo-mark {
+    width: 60px; height: 60px;
+    font-size: 24px;
+    margin: 0 auto 16px;
+  }
+  .auth-logo h1 {
+    font-family: var(--serif);
+    font-size: 32px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .auth-logo p {
+    color: var(--text-muted);
+    font-size: 14px;
+    font-family: var(--serif);
+    font-style: italic;
+  }
+  .auth-tabs {
+    display: flex;
+    background: var(--bg-soft);
+    border-radius: 999px;
+    padding: 4px;
+    margin-bottom: 24px;
+  }
+  .auth-tab {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 10px;
+    border-radius: 999px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .auth-tab.active {
+    background: var(--bg-card);
+    color: var(--ink);
+    box-shadow: 0 1px 3px rgba(26, 25, 21, 0.06);
+    font-weight: 600;
+  }
+  .auth-field { margin-bottom: 14px; }
+  .auth-field.hidden { display: none; }
+  .auth-field input {
+    padding: 12px 14px;
+    font-size: 14.5px;
+  }
+  .auth-error {
+    background: #FAE4DC;
+    color: var(--accent-deep);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 12px;
+    display: none;
+  }
+  .auth-error.show { display: block; }
+  .btn-lg {
+    width: 100%;
+    padding: 14px;
+    font-size: 14.5px;
+    margin-top: 8px;
+  }
+  .auth-footer {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 13.5px;
+  }
+  .auth-footer a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .auth-footer a:hover { color: var(--accent-deep); }
+  .auth-disclaimer {
+    margin-top: 24px;
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 11.5px;
+    font-style: italic;
+    font-family: var(--serif);
+  }
+
+  /* ============ ONBOARDING ============ */
+  .onboard-screen {
+    min-height: 100vh;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px;
+  }
+  .onboard-screen.active { display: flex; }
+  .onboard-container {
+    max-width: 560px;
+    width: 100%;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 36px 36px 28px;
+    box-shadow: 0 20px 60px rgba(26, 25, 21, 0.06);
+  }
+  .onboard-progress {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin-bottom: 32px;
+  }
+  .onboard-dot {
+    width: 24px; height: 4px;
+    background: var(--bg-sunk);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+  .onboard-dot.active { background: var(--accent); width: 36px; }
+  .onboard-slide { display: none; min-height: 320px; }
+  .onboard-slide.active { display: block; animation: fadeIn 0.4s ease; }
+  .onboard-slide h2 {
+    font-size: 30px;
+    margin-bottom: 14px;
+    line-height: 1.1;
+  }
+  .onboard-slide h2 em { color: var(--accent-deep); font-weight: 400; }
+  .onboard-slide p {
+    color: var(--text-muted);
+    line-height: 1.65;
+    font-size: 15.5px;
+    margin-bottom: 14px;
+  }
+  .fact-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .fact {
+    background: var(--bg-soft);
+    border-radius: 12px;
+    padding: 14px;
+  }
+  .fact-val {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .fact-lbl {
+    color: var(--text-muted);
+    font-size: 12px;
+    margin-top: 4px;
+  }
+  .choice-list {
+    display: grid;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .choice {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+    font-family: var(--sans);
+    color: var(--ink);
+    width: 100%;
+  }
+  .choice:hover { border-color: var(--border-strong); transform: translateX(2px); }
+  .choice.selected {
+    border-color: var(--accent);
+    background: var(--accent-tint);
+  }
+  .choice-icon {
+    width: 38px; height: 38px;
+    background: var(--bg-soft);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .choice.selected .choice-icon { background: var(--accent); color: var(--bg); }
+  .choice-text { flex: 1; }
+  .choice-title {
+    font-weight: 600;
+    font-size: 14.5px;
+    color: var(--ink);
+  }
+  .choice-desc {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-top: 2px;
+  }
+  .onboard-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+  .onboard-nav .btn { min-width: 100px; }
+
+  .avatar-picker {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+  }
+  .avatar-swatch {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .avatar-swatch.selected { border-color: var(--ink); transform: scale(1.1); }
+
+  /* ============ HEADER USER MENU ============ */
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .user-menu { position: relative; }
+  .user-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 5px 12px 5px 5px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-family: var(--sans);
+    font-size: 13.5px;
+    color: var(--ink);
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+  .user-btn:hover { border-color: var(--border-strong); }
+  .avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+  .user-dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 6px;
+    min-width: 200px;
+    box-shadow: 0 8px 32px rgba(26, 25, 21, 0.1);
+    display: none;
+    z-index: 100;
+  }
+  .user-dropdown.show { display: block; animation: fadeIn 0.15s; }
+  .user-dropdown a {
+    display: block;
+    padding: 10px 14px;
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .user-dropdown a:hover { background: var(--bg-soft); }
+  .user-dropdown a.danger { color: var(--accent-deep); }
+  .user-dropdown .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 6px 0;
+  }
+
+  /* ============ DASHBOARD ============ */
+  .greeting {
+    margin-bottom: 24px;
+  }
+  .greeting h2 {
+    font-size: 34px;
+    margin-bottom: 4px;
+  }
+  .greeting p {
+    color: var(--text-muted);
+    font-size: 15px;
+  }
+  .dash-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 760px) {
+    .dash-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  .metric {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .metric-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-dim);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .metric-val {
+    font-family: var(--serif);
+    font-size: 36px;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .metric-val .unit {
+    font-size: 16px;
+    color: var(--text-muted);
+    margin-left: 4px;
+    font-weight: 400;
+  }
+  .metric-sub {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    margin-top: 8px;
+  }
+  .metric-flame {
+    position: absolute;
+    top: 16px; right: 16px;
+    font-size: 20px;
+    opacity: 0.4;
+  }
+  .readiness-ring {
+    position: relative;
+    width: 64px; height: 64px;
+    margin-top: 4px;
+  }
+  .readiness-ring svg { transform: rotate(-90deg); }
+  .readiness-ring .bg { stroke: var(--bg-sunk); }
+  .readiness-ring .fg {
+    stroke: var(--accent);
+    transition: stroke-dashoffset 0.6s ease;
+  }
+  .readiness-ring-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  .dash-row {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 760px) {
+    .dash-row { grid-template-columns: 1fr; }
+  }
+  .today-card h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .today-tag {
+    background: var(--accent-tint);
+    color: var(--accent-deep);
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    font-family: var(--sans);
+  }
+  .today-focus {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+  .today-content {
+    color: var(--text-muted);
+    font-size: 14.5px;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .today-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .mastery-overview {
+    padding: 20px 22px;
+  }
+  .mastery-bar {
+    display: flex;
+    gap: 4px;
+    margin: 14px 0 10px;
+  }
+  .mastery-seg {
+    flex: 1;
+    height: 10px;
+    border-radius: 3px;
+    background: var(--bg-sunk);
+    transition: all 0.3s;
+  }
+  .mastery-seg.learning { background: #E8C99A; }
+  .mastery-seg.confident { background: var(--accent); }
+  .mastery-text {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .upcoming-mini {
+    padding: 16px 20px;
+  }
+  .upcoming-mini .event-date { margin-bottom: 8px; }
+  .upcoming-mini .days-to {
+    font-family: var(--serif);
+    font-size: 26px;
+    color: var(--accent-deep);
+    font-weight: 500;
+  }
+
+  /* Achievement row */
+  .ach-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+  .badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px 8px 10px;
+    background: var(--bg-soft);
+    border-radius: 999px;
+    font-size: 13px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .badge-locked { opacity: 0.4; filter: grayscale(0.6); }
+  .badge-icon { font-size: 16px; }
+
+  /* ============ STATION MASTERY BUTTONS ============ */
+  .mastery-toggle {
+    display: flex;
+    gap: 4px;
+    margin-left: auto;
+    margin-right: 10px;
+  }
+  .mastery-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--bg-sunk);
+    border: 1px solid var(--border-strong);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .mastery-dot.learning { background: #E8C99A; border-color: #C9A665; }
+  .mastery-dot.confident { background: var(--accent); border-color: var(--accent-deep); }
+
+  /* ============ GLOSSARY ============ */
+  .glossary-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 12px;
+  }
+  .glossary-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+  }
+  .glossary-term {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .glossary-pron {
+    font-size: 12px;
+    color: var(--text-dim);
+    font-style: italic;
+    margin-bottom: 8px;
+  }
+  .glossary-def {
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* ============ PROFILE ============ */
+  .profile-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 28px;
+  }
+  .avatar-lg {
+    width: 72px; height: 72px;
+    font-size: 28px;
+  }
+  .profile-name {
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .profile-meta {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-top: 4px;
+  }
+  .profile-section {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .profile-section h3 { margin-bottom: 14px; }
+  .ach-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .ach-card {
+    background: var(--bg-soft);
+    border-radius: 12px;
+    padding: 16px 12px;
+    text-align: center;
+    transition: all 0.2s;
+  }
+  .ach-card.locked { opacity: 0.35; filter: grayscale(0.8); }
+  .ach-card-icon {
+    font-size: 28px;
+    margin-bottom: 6px;
+  }
+  .ach-card-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+  .ach-card-desc {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* ============ CHART ============ */
+  .chart {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .chart svg { display: block; width: 100%; height: 160px; }
+  .chart-bar {
+    fill: var(--accent);
+    transition: fill 0.2s;
+  }
+  .chart-bar:hover { fill: var(--accent-deep); }
+  .chart-empty { fill: var(--bg-sunk); }
+  .chart-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    color: var(--text-dim);
+    font-size: 11px;
+  }
+
+  /* ============ FITNESS ESTIMATOR ============ */
+  .estimator {
+    background: linear-gradient(135deg, var(--bg-card) 0%, #FBF7EC 100%);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .estimator h3 { margin-bottom: 6px; }
+  .estimator-desc { color: var(--text-muted); font-size: 14px; margin-bottom: 18px; }
+  .estimator-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 12px;
+    align-items: end;
+  }
+  @media (max-width: 560px) {
+    .estimator-grid { grid-template-columns: 1fr; }
+  }
+  .estimator-result {
+    margin-top: 18px;
+    padding: 16px 18px;
+    background: var(--accent-tint);
+    border-radius: 10px;
+    font-family: var(--serif);
+    font-size: 16px;
+    color: var(--ink);
+    display: none;
+  }
+  .estimator-result.show { display: block; animation: fadeIn 0.3s; }
+  .estimator-result strong {
+    font-size: 24px;
+    color: var(--accent-deep);
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  /* ============ TOAST ============ */
+  #toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--ink);
+    color: var(--bg);
+    padding: 12px 22px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 10px 30px rgba(26, 25, 21, 0.2);
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    pointer-events: none;
+    max-width: 90vw;
+  }
+  #toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+  #toast.success { background: #2D5F3F; }
+  #toast.achievement {
+    background: var(--accent-deep);
+    padding: 14px 26px;
+    font-family: var(--serif);
+    font-size: 15px;
+  }
+
+  /* ============ JARGON TOOLTIP ============ */
+  .jargon {
+    border-bottom: 1px dotted var(--accent);
+    cursor: help;
+    color: var(--ink);
+  }
+
+  /* ============ DUO LINK CARD ============ */
+  .duo-card {
+    background: linear-gradient(135deg, var(--bg-card) 0%, #FBF7EC 100%);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 26px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .duo-card::before {
+    content: "";
+    position: absolute;
+    right: -30px; top: -30px;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--accent-tint) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .duo-card > * { position: relative; z-index: 1; }
+  .duo-card h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .duo-card-intro {
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 16px;
+    max-width: 540px;
+  }
+  .duo-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+  }
+
+  .duo-compare {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 16px;
+    align-items: stretch;
+    margin-top: 12px;
+  }
+  @media (max-width: 700px) {
+    .duo-compare { grid-template-columns: 1fr; }
+    .duo-compare .vs { display: none; }
+  }
+  .duo-side {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    text-align: center;
+  }
+  .duo-side.you-side { border-top: 3px solid var(--accent); }
+  .duo-side.partner-side { border-top: 3px solid var(--partner-color, #3b82f6); }
+  .duo-side .duo-avatar {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 500;
+    margin: 0 auto 8px;
+  }
+  .duo-side.partner-side .duo-avatar { background: var(--partner-color, #3b82f6); }
+  .duo-side .duo-name {
+    font-family: var(--serif);
+    font-size: 17px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .duo-side .duo-role {
+    font-size: 11px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 12px;
+  }
+  .duo-stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .duo-stat {
+    background: var(--bg-soft);
+    border-radius: 8px;
+    padding: 10px 8px;
+  }
+  .duo-stat-val {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .duo-stat-lbl {
+    font-size: 10px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 4px;
+  }
+  .duo-mastery {
+    display: flex;
+    gap: 3px;
+    justify-content: center;
+    margin-top: 12px;
+  }
+  .duo-mastery .duo-seg {
+    flex: 1;
+    height: 6px;
+    border-radius: 2px;
+    background: var(--bg-sunk);
+    max-width: 14px;
+  }
+  .duo-mastery .duo-seg.learning { background: #E8C99A; }
+  .duo-mastery .duo-seg.confident { background: var(--accent); }
+  .vs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 17px;
+    color: var(--text-dim);
+    padding: 0 6px;
+  }
+  .duo-meta {
+    margin-top: 14px;
+    font-size: 12px;
+    color: var(--text-dim);
+    font-style: italic;
+    font-family: var(--serif);
+    text-align: center;
+  }
+  .duo-cheer {
+    background: var(--accent-tint);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-top: 14px;
+    font-size: 13.5px;
+    color: var(--accent-deep);
+    font-family: var(--serif);
+    font-style: italic;
+    text-align: center;
+  }
+
+  /* ============ MODAL ============ */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(26, 25, 21, 0.5);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    padding: 20px;
+    animation: fadeIn 0.2s ease;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    max-width: 520px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 30px 80px rgba(26, 25, 21, 0.25);
+    animation: fadeIn 0.25s ease;
+  }
+  .modal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 24px 12px;
+  }
+  .modal-head h3 {
+    margin: 0;
+    font-size: 22px;
+  }
+  .modal-close {
+    background: var(--bg-soft);
+    border: none;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .modal-close:hover { background: var(--bg-sunk); color: var(--ink); }
+  .modal-body {
+    padding: 12px 24px 24px;
+  }
+  .modal-body p {
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+  .code-display {
+    background: var(--bg-soft);
+    border: 1px dashed var(--border-strong);
+    border-radius: 10px;
+    padding: 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: var(--ink);
+    word-break: break-all;
+    line-height: 1.5;
+    max-height: 200px;
+    overflow-y: auto;
+    user-select: all;
+  }
+  .code-prefix {
+    background: var(--accent);
+    color: white;
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 10px;
+    letter-spacing: 0.15em;
+  }
+  .code-textarea {
+    background: var(--bg-soft);
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
+    padding: 14px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    width: 100%;
+    min-height: 120px;
+    resize: vertical;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+  .modal-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .modal-success {
+    background: #E1F0E5;
+    color: #1A6B36;
+    padding: 12px 16px;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    font-size: 14px;
+    display: none;
+  }
+  .modal-success.show { display: block; }
+  .modal-error {
+    background: #FAE4DC;
+    color: var(--accent-deep);
+    padding: 12px 16px;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    font-size: 14px;
+    display: none;
+  }
+  .modal-error.show { display: block; }
+</style>
+</head>
+<body>
+<div id="toast"></div>
+
+<!-- ============ MODAL ============ -->
+<div id="modal-overlay" class="modal-overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="modal-title">Modal</h3>
+      <button class="modal-close" id="modal-close">×</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<!-- ============ AUTH SCREEN ============ -->
+<div id="screen-auth" class="screen auth-screen">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="logo-mark">HX</div>
+      <h1>Hyrox Duo</h1>
+      <p id="auth-subtitle">Welcome back</p>
+    </div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" data-auth="signin">Sign in</button>
+      <button class="auth-tab" data-auth="signup">Create account</button>
+    </div>
+    <div class="auth-error" id="auth-error"></div>
+    <form id="auth-form" onsubmit="return false;">
+      <div class="auth-field hidden" data-show="signup">
+        <label for="auth-name">Your name</label>
+        <input id="auth-name" type="text" placeholder="Alex" autocomplete="name" />
+      </div>
+      <div class="auth-field">
+        <label for="auth-email">Email</label>
+        <input id="auth-email" type="email" placeholder="you@example.com" autocomplete="email" />
+      </div>
+      <div class="auth-field">
+        <label for="auth-password">Password</label>
+        <input id="auth-password" type="password" placeholder="At least 6 characters" autocomplete="current-password" />
+      </div>
+      <button type="submit" class="btn btn-lg" id="auth-submit">Sign in</button>
+      <div class="auth-footer">
+        <a href="#" id="guest-link">Or continue as guest →</a>
+      </div>
+    </form>
+    <p class="auth-disclaimer">Your data stays in this browser. No server, no tracking.</p>
+  </div>
+</div>
+
+<!-- ============ ONBOARDING SCREEN ============ -->
+<div id="screen-onboard" class="screen onboard-screen">
+  <div class="onboard-container">
+    <div class="onboard-progress">
+      <div class="onboard-dot active"></div>
+      <div class="onboard-dot"></div>
+      <div class="onboard-dot"></div>
+      <div class="onboard-dot"></div>
+      <div class="onboard-dot"></div>
+    </div>
+
+    <div class="onboard-slide active" data-slide="0">
+      <h2>So, what <em>is</em> Hyrox?</h2>
+      <p>Hyrox is a fitness race anyone can do. There's no gymnastics, no Olympic lifting, no surprises. Just running, rowing, carrying, and pushing — the same format worldwide.</p>
+      <p>You run 1&nbsp;km, complete one workout station, repeat eight times, then finish with 100 wall balls. That's it.</p>
+      <div class="fact-grid">
+        <div class="fact"><div class="fact-val">8&nbsp;km</div><div class="fact-lbl">Total running</div></div>
+        <div class="fact"><div class="fact-val">8</div><div class="fact-lbl">Fitness stations</div></div>
+        <div class="fact"><div class="fact-val">60–120'</div><div class="fact-lbl">Most finish inside</div></div>
+        <div class="fact"><div class="fact-val">90%</div><div class="fact-lbl">Are regular folks</div></div>
+      </div>
+    </div>
+
+    <div class="onboard-slide" data-slide="1">
+      <h2>Why do it as a <em>duo</em>?</h2>
+      <p>In doubles, you race with a partner. You run every kilometre together, but split the station work however you like — one works while the other rests.</p>
+      <p>It's <strong>half the work, twice the fun</strong>. Perfect if you're new to fitness racing, or if you just want to share the pain with someone you like enough.</p>
+      <div class="fact-grid">
+        <div class="fact"><div class="fact-val">Shared</div><div class="fact-lbl">Every run</div></div>
+        <div class="fact"><div class="fact-val">Split</div><div class="fact-lbl">Every station</div></div>
+      </div>
+    </div>
+
+    <div class="onboard-slide" data-slide="2">
+      <h2>What's your level?</h2>
+      <p>Honest answers only. We'll build you the right plan.</p>
+      <div class="choice-list" data-group="level">
+        <button type="button" class="choice" data-value="beginner">
+          <div class="choice-icon">🌱</div>
+          <div class="choice-text">
+            <div class="choice-title">Complete beginner</div>
+            <div class="choice-desc">Little to no current training. We'll start slow.</div>
+          </div>
+        </button>
+        <button type="button" class="choice" data-value="intermediate">
+          <div class="choice-icon">💪</div>
+          <div class="choice-text">
+            <div class="choice-title">Some fitness base</div>
+            <div class="choice-desc">You run or train 1–3× a week already.</div>
+          </div>
+        </button>
+        <button type="button" class="choice" data-value="advanced">
+          <div class="choice-icon">🔥</div>
+          <div class="choice-text">
+            <div class="choice-title">Experienced athlete</div>
+            <div class="choice-desc">Regular training, done endurance events before.</div>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <div class="onboard-slide" data-slide="3">
+      <h2>Pick a goal</h2>
+      <p>Don't overthink it — you can change this anytime.</p>
+      <div class="choice-list" data-group="goal">
+        <button type="button" class="choice" data-value="finish">
+          <div class="choice-icon">🏁</div>
+          <div class="choice-text">
+            <div class="choice-title">Just finish</div>
+            <div class="choice-desc">Cross the line, smile, order pizza.</div>
+          </div>
+        </button>
+        <button type="button" class="choice" data-value="sub90">
+          <div class="choice-icon">⏱️</div>
+          <div class="choice-text">
+            <div class="choice-title">Under 90 minutes</div>
+            <div class="choice-desc">A strong first-timer or returning athlete.</div>
+          </div>
+        </button>
+        <button type="button" class="choice" data-value="sub75">
+          <div class="choice-icon">🎯</div>
+          <div class="choice-text">
+            <div class="choice-title">Under 75 minutes</div>
+            <div class="choice-desc">Competitive amateur duo.</div>
+          </div>
+        </button>
+        <button type="button" class="choice" data-value="sub65">
+          <div class="choice-icon">🏆</div>
+          <div class="choice-text">
+            <div class="choice-title">Under 65 minutes</div>
+            <div class="choice-desc">Podium ambitions.</div>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <div class="onboard-slide" data-slide="4">
+      <h2>Who's your <em>partner</em>?</h2>
+      <p>We'll personalize splits and strategy for the two of you.</p>
+      <div class="auth-field" style="margin-top: 18px;">
+        <label for="partner-name">Partner's name</label>
+        <input id="partner-name" type="text" placeholder="e.g. Sam" />
+      </div>
+      <div class="auth-field">
+        <label>Pick a color for them</label>
+        <div class="avatar-picker" id="avatar-picker">
+          <div class="avatar-swatch selected" style="background: #3b82f6;" data-color="#3b82f6"></div>
+          <div class="avatar-swatch" style="background: #a855f7;" data-color="#a855f7"></div>
+          <div class="avatar-swatch" style="background: #22c55e;" data-color="#22c55e"></div>
+          <div class="avatar-swatch" style="background: #f59e0b;" data-color="#f59e0b"></div>
+          <div class="avatar-swatch" style="background: #ec4899;" data-color="#ec4899"></div>
+          <div class="avatar-swatch" style="background: #06b6d4;" data-color="#06b6d4"></div>
+        </div>
+      </div>
+      <p style="font-size: 13px; color: var(--text-dim); margin-top: 14px; font-style: italic; font-family: var(--serif);">No partner yet? Skip — you can add them later from your profile.</p>
+    </div>
+
+    <div class="onboard-nav">
+      <button class="btn btn-secondary" id="onboard-prev">Back</button>
+      <button class="btn" id="onboard-next">Next</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MAIN APP ============ -->
+<div id="screen-app" class="screen">
+<div class="app">
+
+  <header>
+    <div class="logo">
+      <div class="logo-mark">HX</div>
+      <div>
+        <h1 data-i18n="appTitle">Hyrox Duo</h1>
+        <p data-i18n="appSub">Training companion for doubles</p>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="lang-toggle">
+        <button data-lang="en" class="active">EN</button>
+        <button data-lang="fr">FR</button>
+      </div>
+      <div class="user-menu">
+        <button class="user-btn" id="user-btn">
+          <div class="avatar" id="user-avatar">?</div>
+          <span id="user-name-hdr">Guest</span>
+        </button>
+        <div class="user-dropdown" id="user-dropdown">
+          <a data-tab="profile" id="profile-link">My profile</a>
+          <a data-tab="glossary" id="glossary-link">Glossary</a>
+          <div class="divider"></div>
+          <a id="signout-link" class="danger">Sign out</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <button class="active" data-tab="dashboard" data-i18n="tabDashboard">Dashboard</button>
+    <button data-tab="overview" data-i18n="tabOverview">Overview</button>
+    <button data-tab="stations" data-i18n="tabStations">Stations</button>
+    <button data-tab="plan" data-i18n="tabPlan">Training Plan</button>
+    <button data-tab="exercises" data-i18n="tabExercises">Exercises</button>
+    <button data-tab="strategy" data-i18n="tabStrategy">Race Strategy</button>
+    <button data-tab="timer" data-i18n="tabTimer">Workout Timer</button>
+    <button data-tab="events" data-i18n="tabEvents">Events</button>
+    <button data-tab="progress" data-i18n="tabProgress">Progress</button>
+  </nav>
+
+  <!-- DASHBOARD -->
+  <section class="panel active" id="dashboard">
+    <div class="greeting">
+      <h2 id="greeting-title">Welcome back</h2>
+      <p id="greeting-sub">Let's see where you're at.</p>
+    </div>
+
+    <div class="dash-grid">
+      <div class="metric">
+        <div class="metric-flame">🔥</div>
+        <div class="metric-label" data-i18n="metricStreak">Current streak</div>
+        <div class="metric-val"><span id="stat-streak">0</span><span class="unit" data-i18n="unitDays">days</span></div>
+        <div class="metric-sub" id="stat-streak-sub">Log today to start</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label" data-i18n="metricWeek">This week</div>
+        <div class="metric-val"><span id="stat-week">0</span><span class="unit" id="stat-week-unit">/ 4</span></div>
+        <div class="metric-sub" data-i18n="metricWeekSub">sessions logged</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label" data-i18n="metricTotal">Total sessions</div>
+        <div class="metric-val" id="stat-total">0</div>
+        <div class="metric-sub" data-i18n="metricTotalSub">since you started</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label" data-i18n="metricReady">Race readiness</div>
+        <div class="readiness-ring">
+          <svg width="64" height="64">
+            <circle class="bg" cx="32" cy="32" r="26" stroke-width="6" fill="none"></circle>
+            <circle class="fg" id="ready-ring" cx="32" cy="32" r="26" stroke-width="6" fill="none"
+                    stroke-dasharray="163.36" stroke-dashoffset="163.36" stroke-linecap="round"></circle>
+          </svg>
+          <div class="readiness-ring-text" id="ready-pct">0%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dash-row">
+      <div class="card today-card">
+        <h3>
+          <span data-i18n="todayTitle">Today's suggestion</span>
+          <span class="today-tag" id="today-phase">BASE</span>
+        </h3>
+        <div class="today-focus" id="today-focus">Easy run</div>
+        <div class="today-content" id="today-content">45–60 min Z2, conversational pace.</div>
+        <div class="today-actions">
+          <button class="btn" id="today-log" data-i18n="todayLog">Log this session</button>
+          <button class="btn btn-secondary" id="today-timer" data-i18n="todayTimer">Open timer</button>
+        </div>
+      </div>
+      <div class="card mastery-overview">
+        <h3 data-i18n="masteryTitle">Station mastery</h3>
+        <div class="mastery-bar" id="mastery-bar"></div>
+        <div class="mastery-text" id="mastery-text">0 of 8 confident · 0 learning</div>
+        <p style="font-size: 13px; color: var(--text-muted); margin-top: 10px; line-height: 1.5;" data-i18n="masterySub">Tap the dots on each station to track your progress.</p>
+      </div>
+    </div>
+
+    <div class="duo-card" id="duo-card">
+      <div id="duo-content"></div>
+    </div>
+
+    <div class="dash-row">
+      <div class="card">
+        <h3 data-i18n="achTitle">Recent achievements</h3>
+        <div class="ach-row" id="ach-row"></div>
+      </div>
+      <div class="card upcoming-mini" id="upcoming-card">
+        <div class="metric-label" data-i18n="upcomingTitle">Next race nearby</div>
+        <div id="upcoming-content"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OVERVIEW -->
+  <section class="panel" id="overview">
+    <div class="hero">
+      <h2 data-i18n="heroTitle">Train as one. <em>Race as two.</em></h2>
+      <p data-i18n="heroDesc">Hyrox Doubles is a test of communication, pacing and trust. 8 functional workouts, 8 × 1 km runs, one shared finish line. This companion guides you from base training to race day — tailored to duos.</p>
+      <div class="stat-row">
+        <div class="stat"><div class="stat-val">8×1 km</div><div class="stat-label" data-i18n="statRuns">Runs (shared)</div></div>
+        <div class="stat"><div class="stat-val">8</div><div class="stat-label" data-i18n="statStations">Workout stations</div></div>
+        <div class="stat"><div class="stat-val">~70'</div><div class="stat-label" data-i18n="statElite">Elite duo time</div></div>
+        <div class="stat"><div class="stat-val">~95'</div><div class="stat-label" data-i18n="statAvg">Average duo time</div></div>
+      </div>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="card card-accent">
+        <h3 data-i18n="formatTitle">The Doubles Format</h3>
+        <p style="color: var(--text-dim); line-height: 1.7; margin-top: 8px;" data-i18n="formatDesc">Both partners run each 1 km together. At each station, reps/distances are split freely between you — one works while the other rests. Only one partner at a time may perform the movement. Transitions count towards your total time, so every handoff matters.</p>
+      </div>
+      <div class="card card-accent">
+        <h3 data-i18n="principleTitle">Core Principles for Duos</h3>
+        <ul class="principle-list">
+          <li data-i18n="principle1">Communicate in short numbers, not sentences</li>
+          <li data-i18n="principle2">Match heart-rate, not ego — pace to the weaker runner</li>
+          <li data-i18n="principle3">Pre-agreed splits beat improvisation</li>
+          <li data-i18n="principle4">Transitions are a discipline — practice them</li>
+          <li data-i18n="principle5">Encourage before you suffer</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 data-i18n="quickTitle">Getting Started</h3>
+      <p style="color: var(--text-muted); line-height: 1.7;" data-i18n="quickDesc">New to Hyrox doubles? Start with the <strong>Stations</strong> tab to learn each movement with duo-specific splits. Then pick a phase in the <strong>Training Plan</strong>. Use the <strong>Timer</strong> for ready-made duo workouts and log every session in <strong>Progress</strong>.</p>
+    </div>
+
+    <div class="estimator">
+      <h3 data-i18n="estTitle">Estimate your finish time</h3>
+      <p class="estimator-desc" data-i18n="estDesc">Rough estimate for a first Hyrox Doubles based on your 5&nbsp;km run time.</p>
+      <div class="estimator-grid">
+        <div>
+          <label data-i18n="est5kMin">5 km time — minutes</label>
+          <input type="number" id="est-min" min="12" max="60" placeholder="25" />
+        </div>
+        <div>
+          <label data-i18n="est5kSec">… seconds</label>
+          <input type="number" id="est-sec" min="0" max="59" placeholder="30" />
+        </div>
+        <button class="btn" id="est-go" data-i18n="estGo">Estimate</button>
+      </div>
+      <div class="estimator-result" id="est-result"></div>
+    </div>
+  </section>
+
+  <!-- STATIONS -->
+  <section class="panel" id="stations">
+    <h2 data-i18n="stationsTitle">The 8 Stations</h2>
+    <p class="section-intro" data-i18n="stationsIntro">Click each station to expand technique notes and duo splitting strategies. Order is fixed. Run 1 km, then station, repeat — finish with 100 wall balls.</p>
+    <div id="station-list"></div>
+  </section>
+
+  <!-- TRAINING PLAN -->
+  <section class="panel" id="plan">
+    <h2 data-i18n="planTitle">Weekly Training Plan</h2>
+    <p class="section-intro" data-i18n="planIntro">A 12-week build for duos split into three phases. Train together at least twice a week — partner chemistry is a muscle too.</p>
+
+    <div class="phase-tabs" id="phase-tabs">
+      <button class="phase-tab active" data-phase="base" data-i18n="phaseBase">Base (wk 1-4)</button>
+      <button class="phase-tab" data-phase="build" data-i18n="phaseBuild">Build (wk 5-8)</button>
+      <button class="phase-tab" data-phase="peak" data-i18n="phasePeak">Peak (wk 9-12)</button>
+    </div>
+
+    <div class="week-grid" id="week-grid"></div>
+
+    <div class="card" style="margin-top: 24px;">
+      <h3 data-i18n="planTipsTitle">Pacing guidelines</h3>
+      <ul class="principle-list">
+        <li data-i18n="planTip1">Base: Zone 2 runs, technique over intensity, learn the movements</li>
+        <li data-i18n="planTip2">Build: Race-specific intervals, simulate 2-3 station combos together</li>
+        <li data-i18n="planTip3">Peak: Full or half simulations, taper last 7 days, rehearse transitions</li>
+        <li data-i18n="planTip4">Rest days are non-negotiable — duos need synchronized recovery</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- EXERCISES -->
+  <section class="panel" id="exercises">
+    <h2 data-i18n="exTitle">Exercise Library</h2>
+    <p class="section-intro" data-i18n="exIntro">Accessory and specific work to build a balanced Hyrox athlete. Tags show primary training effect.</p>
+    <div class="grid grid-2" id="ex-grid"></div>
+  </section>
+
+  <!-- STRATEGY -->
+  <section class="panel" id="strategy">
+    <h2 data-i18n="stratTitle">Race Day Strategy</h2>
+    <p class="section-intro" data-i18n="stratIntro">Mindset, fueling, and tactical notes to keep in mind during the race — especially as a duo.</p>
+    <div class="strategy-grid" id="strat-grid"></div>
+  </section>
+
+  <!-- TIMER -->
+  <section class="panel" id="timer">
+    <h2 data-i18n="timerTitle">Workout Timer</h2>
+    <p class="section-intro" data-i18n="timerIntro">Pick a duo workout or set a custom interval timer. Browser must stay open — audio cues will play at each transition.</p>
+
+    <div class="timer-display">
+      <div class="timer-stage" id="timer-stage">Ready</div>
+      <div class="timer-time" id="timer-time">00:00</div>
+      <div class="timer-label" id="timer-label">Press start</div>
+      <div class="timer-controls">
+        <button class="btn" id="timer-start" data-i18n="btnStart">Start</button>
+        <button class="btn btn-secondary" id="timer-pause" data-i18n="btnPause">Pause</button>
+        <button class="btn btn-danger" id="timer-reset" data-i18n="btnReset">Reset</button>
+      </div>
+    </div>
+
+    <h3 style="margin-bottom: 12px;" data-i18n="wodTitle">Pre-built Duo Workouts</h3>
+    <div class="wod-list" id="wod-list"></div>
+
+    <div class="card" style="margin-top: 20px;">
+      <h3 data-i18n="customTitle">Custom Interval (work / rest)</h3>
+      <div class="log-form" style="margin-top: 10px;">
+        <div>
+          <label data-i18n="workSec">Work (sec)</label>
+          <input type="number" id="custom-work" value="40" min="5" />
+        </div>
+        <div>
+          <label data-i18n="restSec">Rest (sec)</label>
+          <input type="number" id="custom-rest" value="20" min="0" />
+        </div>
+        <div>
+          <label data-i18n="rounds">Rounds</label>
+          <input type="number" id="custom-rounds" value="10" min="1" />
+        </div>
+        <div style="display: flex; align-items: flex-end;">
+          <button class="btn" id="custom-start" data-i18n="loadCustom">Load custom</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVENTS -->
+  <section class="panel" id="events">
+    <h2 data-i18n="evTitle">Upcoming Events</h2>
+    <p class="section-intro" data-i18n="evIntro">A curated list of major 2026 Hyrox races. Verify dates on the official site before booking — schedules shift. Filter by region to find something near you.</p>
+
+    <div style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
+      <button class="phase-tab active" data-region="all" data-i18n="regionAll">All</button>
+      <button class="phase-tab" data-region="fr" data-i18n="regionFr">France</button>
+      <button class="phase-tab" data-region="eu" data-i18n="regionEu">Europe</button>
+      <button class="phase-tab" data-region="world" data-i18n="regionWorld">Worldwide</button>
+    </div>
+
+    <div id="event-list"></div>
+
+    <div class="card" style="margin-top: 20px;">
+      <h3 data-i18n="evNoteTitle">Where to register</h3>
+      <p style="color: var(--text-dim); line-height: 1.7;" data-i18n="evNoteDesc">Official registrations are on <a href="https://hyrox.com/find-my-race/" target="_blank" rel="noopener" style="color: var(--accent);">hyrox.com/find-my-race</a>. Popular European races sell out months ahead — sign up early, especially Paris, London and Berlin.</p>
+    </div>
+  </section>
+
+  <!-- PROGRESS -->
+  <section class="panel" id="progress">
+    <h2 data-i18n="progTitle">Session Log</h2>
+    <p class="section-intro" data-i18n="progIntro">Track each training session. Data stays in your browser (localStorage) — no account needed.</p>
+
+    <div class="card">
+      <h3 data-i18n="logNewTitle">Log a session</h3>
+      <div class="log-form" style="margin-top: 10px;">
+        <div>
+          <label data-i18n="fieldDate">Date</label>
+          <input type="date" id="log-date" />
+        </div>
+        <div>
+          <label data-i18n="fieldType">Type</label>
+          <select id="log-type">
+            <option value="Run">Run</option>
+            <option value="Stations">Stations work</option>
+            <option value="Simulation">Full/half simulation</option>
+            <option value="Strength">Strength</option>
+            <option value="Recovery">Recovery</option>
+          </select>
+        </div>
+        <div>
+          <label data-i18n="fieldDuration">Duration (min)</label>
+          <input type="number" id="log-duration" min="0" />
+        </div>
+        <div>
+          <label data-i18n="fieldRpe">RPE (1-10)</label>
+          <input type="number" id="log-rpe" min="1" max="10" />
+        </div>
+      </div>
+      <div style="margin-top: 10px;">
+        <label data-i18n="fieldNotes">Notes (optional)</label>
+        <textarea id="log-notes" rows="2" placeholder="Felt good on wall balls, sled transition slow..."></textarea>
+      </div>
+      <button class="btn" id="log-add" style="margin-top: 12px;" data-i18n="btnAddLog">Add session</button>
+    </div>
+
+    <h3 style="margin: 24px 0 12px;" data-i18n="historyTitle">History</h3>
+
+    <div class="chart" id="chart-wrap">
+      <h3 style="margin-bottom: 14px;" data-i18n="chartTitle">Sessions — last 8 weeks</h3>
+      <svg id="chart-svg" viewBox="0 0 400 160" preserveAspectRatio="none"></svg>
+      <div class="chart-labels" id="chart-labels"></div>
+    </div>
+
+    <div id="log-list"></div>
+  </section>
+
+  <!-- GLOSSARY -->
+  <section class="panel" id="glossary">
+    <h2 data-i18n="glossaryTitle">Glossary</h2>
+    <p class="section-intro" data-i18n="glossaryIntro">Plain-language definitions for every Hyrox term you'll see on this site. Bookmark it if you're new to fitness racing.</p>
+    <div class="glossary-list" id="glossary-list"></div>
+  </section>
+
+  <!-- PROFILE -->
+  <section class="panel" id="profile">
+    <div class="profile-header">
+      <div class="avatar avatar-lg" id="profile-avatar">?</div>
+      <div>
+        <div class="profile-name" id="profile-name">Guest</div>
+        <div class="profile-meta" id="profile-meta"></div>
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <h3 data-i18n="profInfo">Your info</h3>
+      <div class="log-form">
+        <div>
+          <label data-i18n="fieldName">Name</label>
+          <input type="text" id="prof-name" />
+        </div>
+        <div>
+          <label data-i18n="fieldPartner">Partner's name</label>
+          <input type="text" id="prof-partner" />
+        </div>
+        <div>
+          <label data-i18n="fieldLevel">Level</label>
+          <select id="prof-level">
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
+          </select>
+        </div>
+        <div>
+          <label data-i18n="fieldGoal">Goal</label>
+          <select id="prof-goal">
+            <option value="finish">Just finish</option>
+            <option value="sub90">Under 90 min</option>
+            <option value="sub75">Under 75 min</option>
+            <option value="sub65">Under 65 min</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn" id="prof-save" data-i18n="btnSave">Save changes</button>
+    </div>
+
+    <div class="profile-section">
+      <h3 data-i18n="profAchTitle">Achievements</h3>
+      <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 10px;" data-i18n="profAchSub">Unlock badges as you train. Consistency pays.</p>
+      <div class="ach-grid" id="ach-grid"></div>
+    </div>
+
+    <div class="profile-section">
+      <h3 data-i18n="profDangerTitle">Account</h3>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;">
+        <button class="btn btn-secondary" id="prof-signout" data-i18n="btnSignout">Sign out</button>
+        <button class="btn btn-danger" id="prof-delete" data-i18n="btnDelete">Delete account & data</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Hyrox Duo Training Companion · Built for duos who want to finish strong, together.</p>
+  </footer>
+</div>
+</div>
+
+<script>
+// =============== DATA ===============
+const STATIONS = [
+  {
+    num: 1, name: { en: "SkiErg", fr: "SkiErg" },
+    meta: { en: "1000 m · shared", fr: "1000 m · partagé" },
+    technique: {
+      en: [
+        "<strong>Hinge at the hips</strong>, drive the handles with your lats, not your arms",
+        "<strong>Finish with a push</strong> — hands stop at thighs, not below",
+        "<strong>Use gravity</strong> on the return — relax, let body weight reset you",
+        "Target 1:45–2:00 / 500 m pace for duos splitting 250 m each",
+      ],
+      fr: [
+        "<strong>Charnière des hanches</strong>, tire les poignées avec les dorsaux, pas les bras",
+        "<strong>Termine par une poussée</strong> — les mains s'arrêtent aux cuisses",
+        "<strong>Utilise la gravité</strong> au retour — relâche-toi",
+        "Vise 1:45–2:00 / 500 m pour un duo qui alterne tous les 250 m",
+      ],
+    },
+    split: {
+      en: [
+        "<span class='split-label split-a'>Option A</span> 250 m each, 2 rotations — keeps HR under control",
+        "<span class='split-label split-b'>Option B</span> 500 m each, one rotation — faster if both are fit rowers",
+        "<span class='split-label split-a'>Pro tip</span> Stronger partner goes first to set pace",
+      ],
+      fr: [
+        "<span class='split-label split-a'>Option A</span> 250 m chacun, 2 rotations — FC sous contrôle",
+        "<span class='split-label split-b'>Option B</span> 500 m chacun, 1 rotation — plus rapide si vous êtes solides",
+        "<span class='split-label split-a'>Astuce</span> Le plus fort commence pour donner le rythme",
+      ],
+    },
+  },
+  {
+    num: 2, name: { en: "Sled Push", fr: "Poussée de traîneau" },
+    meta: { en: "50 m · one pushes at a time", fr: "50 m · un à la fois" },
+    technique: {
+      en: [
+        "<strong>Low body angle</strong> (~45°), arms locked, drive through the toes",
+        "<strong>Long strides</strong> — quality beats cadence here",
+        "<strong>Don't stop moving</strong> — static sled is twice as hard to restart",
+        "Breathe in nasal, out with force every 2 steps",
+      ],
+      fr: [
+        "<strong>Angle bas</strong> (~45°), bras tendus, pousse sur les orteils",
+        "<strong>Grandes foulées</strong> — la qualité prime sur la cadence",
+        "<strong>Ne t'arrête jamais</strong> — un traîneau à l'arrêt est double peine",
+        "Inspire par le nez, expire fort toutes les 2 foulées",
+      ],
+    },
+    split: {
+      en: [
+        "<span class='split-label split-a'>Standard</span> 25 m each, one rotation in the middle",
+        "<span class='split-label split-b'>Safer</span> 12.5 m each, 4 rotations if legs blow up — costs transitions",
+        "<span class='split-label split-a'>Mental</span> The first 10 m decides the whole station. Commit.",
+      ],
+      fr: [
+        "<span class='split-label split-a'>Standard</span> 25 m chacun, une relève au milieu",
+        "<span class='split-label split-b'>Sécurité</span> 12.5 m chacun, 4 relèves si jambes explosent — coûte en transitions",
+        "<span class='split-label split-a'>Mental</span> Les 10 premiers mètres décident tout. Engage-toi.",
+      ],
+    },
+  },
+  {
+    num: 3, name: { en: "Sled Pull", fr: "Traction de traîneau" },
+    meta: { en: "50 m · arm-over-arm", fr: "50 m · bras sur bras" },
+    technique: {
+      en: [
+        "<strong>Wide stance</strong>, hips back, pull rope low and fast",
+        "<strong>Step backwards</strong> every full pull — closes distance faster",
+        "<strong>Grip economy</strong>: squeeze rope only when pulling, relax in between",
+        "Your back takes over if grip fails — train rows and deadlifts",
+      ],
+      fr: [
+        "<strong>Stance large</strong>, hanches en arrière, tire la corde bas et vite",
+        "<strong>Recule</strong> à chaque traction complète — gagne du terrain",
+        "<strong>Économie de prise</strong> : serre la corde seulement en tirant",
+        "Le dos prend le relais si la prise lâche — entraîne rowing et soulevé de terre",
+      ],
+    },
+    split: {
+      en: [
+        "<span class='split-label split-a'>Standard</span> 25 m each — most efficient for grip",
+        "<span class='split-label split-b'>Recover strategy</span> Partner catches breath / hydrates during other's pull",
+      ],
+      fr: [
+        "<span class='split-label split-a'>Standard</span> 25 m chacun — optimal pour la prise",
+        "<span class='split-label split-b'>Récupération</span> Le partenaire boit / respire pendant la traction de l'autre",
+      ],
+    },
+  },
+  {
+    num: 4, name: { en: "Burpee Broad Jumps", fr: "Burpees avec sauts" },
+    meta: { en: "80 m · alternating or segmented", fr: "80 m · alterné ou segmenté" },
+    technique: {
+      en: [
+        "<strong>Chest + thighs down</strong> every rep, feet behind the line on the jump",
+        "<strong>Minimum effective jump</strong> — no hero leaps, stay low and efficient",
+        "<strong>Rhythm breathing</strong>: in-down, out-up, repeat",
+        "This is a <em>survival</em> station — don't blow the next run",
+      ],
+      fr: [
+        "<strong>Poitrine + cuisses au sol</strong>, pieds derrière la ligne au saut",
+        "<strong>Saut minimal efficace</strong> — pas de héros, reste bas et économe",
+        "<strong>Respiration cadencée</strong> : inspire en bas, expire en haut",
+        "Station de <em>survie</em> — ne brûle pas la course suivante",
+      ],
+    },
+    split: {
+      en: [
+        "<span class='split-label split-a'>5 + 5</span> Swap every 5 reps — keeps both partners hot",
+        "<span class='split-label split-b'>10 + 10</span> If heart rate allows, longer sets mean fewer transitions",
+        "<span class='split-label split-a'>Rule</span> Feet must fully cross the line before partner starts — no overlap",
+      ],
+      fr: [
+        "<span class='split-label split-a'>5 + 5</span> Alterne toutes les 5 reps — les deux restent chauds",
+        "<span class='split-label split-b'>10 + 10</span> Si FC le permet, moins de transitions",
+        "<span class='split-label split-a'>Règle</span> Les pieds doivent dépasser la ligne avant le relais",
+      ],
+    },
+  },
+  {
+    num: 5, name: { en: "Rowing", fr: "Rameur" },
+    meta: { en: "1000 m · shared", fr: "1000 m · partagé" },
+    technique: {
+      en: [
+        "<strong>Legs-back-arms</strong> on drive, <strong>arms-back-legs</strong> on recovery",
+        "<strong>1:2 ratio</strong> (drive:recovery) — never rush the slide back",
+        "<strong>Damper 5-7</strong> — higher feels strong, kills your legs for runs",
+        "Target 1:50–2:05 / 500 m splitting 250 m each",
+      ],
+      fr: [
+        "<strong>Jambes-dos-bras</strong> à la traction, <strong>bras-dos-jambes</strong> au retour",
+        "<strong>Ratio 1:2</strong> (traction:retour) — jamais précipiter le retour",
+        "<strong>Damper 5-7</strong> — plus haut = jambes mortes pour la course",
+        "Vise 1:50–2:05 / 500 m en alternant 250 m chacun",
+      ],
+    },
+    split: {
+      en: [
+        "<span class='split-label split-a'>250 × 4</span> Keeps pace honest, but costs 3 transitions",
+        "<span class='split-label split-b'>500 × 2</span> Fewer transitions, bigger lactic hit",
+        "<span class='split-label split-a'>Strap tip</span> Loosen straps during transition prep, not after",
+      ],
+      fr: [
+        "<span class='split-label split-a'>250 × 4</span> Allure maîtrisée, mais 3 transitions",
+        "<span class='split-label split-b'>500 × 2</span> Moins de transitions, plus de lactique",
+        "<span class='split-label split-a'>Astuce sangles</span> Desserre avant la transition, pas après",
+      ],
+    },
+  },
+  {
+    num: 6, name: { en: "Farmers Carry", fr: "Farmers Carry" },
+    meta: { en: "200 m · 24 kg (M) / 16 kg (F) per hand", fr: "200 m · 24 kg (H) / 16 kg (F) par main" },
+    technique: {
+      en: [
+        "<strong>Stand tall</strong>, shoulders down and back, core braced",
+        "<strong>Short quick steps</strong> — long strides shift the load",
+        "<strong>Hook grip</strong> if available, otherwise thumb-over fingers tight",
+        "Breathe — if you hold breath, grip fails at 100 m",
+      ],
+      fr: [
+        "<strong>Grand et droit</strong>, épaules basses, gainage actif",
+        "<strong>Pas courts et rapides</strong> — les grandes foulées déséquilibrent",
+        "<strong>Prise hameçon</strong> si possible, sinon pouce serré",
+        "Respire — si tu bloques, la prise lâche à 100 m",
+      ],
+    },
+    split: {
+      en: [
+        "<span class='split-label split-a'>100 + 100</span> One switch at midpoint — most common",
+        "<span class='split-label split-b'>50 + 50 × 2</span> Only if grip is the weak link",
+        "<span class='split-label split-a'>Handoff</span> Place kettlebells down together, don't drop",
+      ],
+      fr: [
+        "<span class='split-label split-a'>100 + 100</span> Une relève au milieu — le plus courant",
+        "<span class='split-label split-b'>50 + 50 × 2</span> Uniquement si prise faible",
+        "<span class='split-label split-a'>Relais</span> Pose les kettlebells ensemble, ne les lâche pas",
+      ],
+    },
+  },
+  {
+    num: 7, name: { en: "Sandbag Lunges", fr: "Fentes sac de sable" },
+    meta: { en: "100 m · 20 kg (M) / 10 kg (F)", fr: "100 m · 20 kg (H) / 10 kg (F)" },
+    technique: {
+      en: [
+        "<strong>Back knee must touch</strong> the floor each rep — valid rep",
+        "<strong>Bag on shoulders</strong>, squeeze it into your traps",
+        "<strong>Vertical torso</strong> — leaning forward = penalty reps",
+        "Small steps, faster cadence beats long strides",
+      ],
+      fr: [
+        "<strong>Genou arrière au sol</strong> à chaque rep — répétition valide",
+        "<strong>Sac sur les épaules</strong>, serre-le dans les trapèzes",
+        "<strong>Torse vertical</strong> — pencher = reps à refaire",
+        "Petits pas rapides > grandes foulées",
+      ],
+    },
+    split: {
+      en: [
+        "<span class='split-label split-a'>25 + 25</span> Quick swaps, keep legs from seizing",
+        "<span class='split-label split-b'>50 + 50</span> If one partner is much stronger at lunges",
+        "<span class='split-label split-a'>Warning</span> Legs are cooked for final wall balls — stay composed",
+      ],
+      fr: [
+        "<span class='split-label split-a'>25 + 25</span> Relais rapides, garde les jambes souples",
+        "<span class='split-label split-b'>50 + 50</span> Si un partenaire est nettement plus fort",
+        "<span class='split-label split-a'>Attention</span> Jambes cuites pour les wall balls — reste maître",
+      ],
+    },
+  },
+  {
+    num: 8, name: { en: "Wall Balls", fr: "Wall Balls" },
+    meta: { en: "100 reps · 6 kg (M) / 4 kg (F) · 3 m (M) / 2.7 m (F)", fr: "100 reps · 6 kg (H) / 4 kg (F) · 3 m (H) / 2.7 m (F)" },
+    technique: {
+      en: [
+        "<strong>Hit full squat depth</strong> — hips below knees, no-rep otherwise",
+        "<strong>Ball must hit target</strong> — no air balls count",
+        "<strong>Catch in squat</strong>, use the rebound — don't absorb standing",
+        "Breathe every rep: exhale throw, inhale catch",
+      ],
+      fr: [
+        "<strong>Squat complet</strong> — hanches sous genoux, sinon no-rep",
+        "<strong>La balle doit toucher la cible</strong> — sinon pas compté",
+        "<strong>Réception en squat</strong>, enchaîne le rebond",
+        "Respire chaque rep : expire au lancer, inspire à la réception",
+      ],
+    },
+    split: {
+      en: [
+        "<span class='split-label split-a'>Classic</span> 15/10 or 10/5 — short sets prevent failure",
+        "<span class='split-label split-b'>Endgame</span> Final 20 reps often need 5/5 splits — plan for it",
+        "<span class='split-label split-a'>Swap rule</span> Ball must hit target before switch — practice it",
+      ],
+      fr: [
+        "<span class='split-label split-a'>Classique</span> 15/10 ou 10/5 — séries courtes évitent l'échec",
+        "<span class='split-label split-b'>Finale</span> Les 20 dernières passent souvent en 5/5 — prévois-le",
+        "<span class='split-label split-a'>Règle</span> La balle doit toucher avant le relais — entraîne-le",
+      ],
+    },
+  },
+];
+
+const PLANS = {
+  base: [
+    { day: "Mon", focus: { en: "Easy run", fr: "Footing" }, content: { en: "45-60 min Z2, conversational pace. Solo OK.", fr: "45-60 min Z2, allure conversationnelle. Seul·e possible." } },
+    { day: "Tue", focus: { en: "Strength", fr: "Renforcement" }, content: { en: "Squat, deadlift, row — 4×6. Build base force.", fr: "Squat, soulevé de terre, rowing — 4×6. Construire la base." } },
+    { day: "Wed", focus: { en: "Stations 1-4", fr: "Stations 1-4" }, content: { en: "With partner: practice ski, sled push, sled pull, burpees. Technique only.", fr: "En duo : ski, poussée, traction, burpees. Technique uniquement." } },
+    { day: "Thu", focus: { en: "Recovery", fr: "Récupération" }, content: { en: "Mobility + walk 30-40 min. Stretch hips and shoulders.", fr: "Mobilité + marche 30-40 min. Étire hanches et épaules." } },
+    { day: "Fri", focus: { en: "Tempo run", fr: "Course tempo" }, content: { en: "3× 1 km at target race pace, 2 min rest. Partner optional.", fr: "3× 1 km allure objectif, 2 min récup. Duo optionnel." } },
+    { day: "Sat", focus: { en: "Stations 5-8", fr: "Stations 5-8" }, content: { en: "With partner: row, farmers, lunges, wall balls. Technique + splits.", fr: "En duo : rameur, farmers, fentes, wall balls. Technique + splits." } },
+    { day: "Sun", focus: { en: "Rest", fr: "Repos" }, content: { en: "Full off day. Sleep. Plan the week with your partner.", fr: "Jour off complet. Sommeil. Planifier la semaine ensemble." } },
+  ],
+  build: [
+    { day: "Mon", focus: { en: "Tempo run", fr: "Course tempo" }, content: { en: "5× 1 km @ race pace, 90 sec jog recovery. Run together.", fr: "5× 1 km allure course, 90 sec récup joggée. En duo." } },
+    { day: "Tue", focus: { en: "Duo combo A", fr: "Combo duo A" }, content: { en: "1 km + SkiErg 1000 m + 1 km + Sled push 50 m. Repeat ×2.", fr: "1 km + SkiErg 1000 m + 1 km + poussée 50 m. Répète ×2." } },
+    { day: "Wed", focus: { en: "Strength", fr: "Renforcement" }, content: { en: "Lunges 4×12, Bulgarian split squat 3×10, pull-ups 4×AMRAP.", fr: "Fentes 4×12, squat bulgare 3×10, tractions 4×AMRAP." } },
+    { day: "Thu", focus: { en: "Recovery run", fr: "Footing récup" }, content: { en: "30-40 min very easy. No partner needed.", fr: "30-40 min très facile. Pas besoin du duo." } },
+    { day: "Fri", focus: { en: "Duo combo B", fr: "Combo duo B" }, content: { en: "1 km + Row 1000 m + 1 km + 100 wall balls. Time it.", fr: "1 km + Rameur 1000 m + 1 km + 100 wall balls. Chronomètre." } },
+    { day: "Sat", focus: { en: "Half sim", fr: "Mi-simulation" }, content: { en: "4 runs + 4 stations (halved distances). Practice transitions.", fr: "4 courses + 4 stations (distances divisées). Travaille les transitions." } },
+    { day: "Sun", focus: { en: "Rest", fr: "Repos" }, content: { en: "Rest. Review times, adjust splits for next week.", fr: "Repos. Analyser les temps, ajuster les splits." } },
+  ],
+  peak: [
+    { day: "Mon", focus: { en: "Intervals", fr: "Intervalles" }, content: { en: "8× 400 m @ 5k pace, 60 sec rest. Solo or duo.", fr: "8× 400 m allure 5k, 60 sec récup. Seul ou en duo." } },
+    { day: "Tue", focus: { en: "Full simulation", fr: "Simulation complète" }, content: { en: "Complete Hyrox Doubles — full format. Record everything.", fr: "Hyrox Doubles complet — format total. Enregistre tout." } },
+    { day: "Wed", focus: { en: "Recovery", fr: "Récupération" }, content: { en: "Active recovery: 30 min cycling + mobility.", fr: "Récup active : 30 min vélo + mobilité." } },
+    { day: "Thu", focus: { en: "Transitions", fr: "Transitions" }, content: { en: "Run 500 m + station + run 500 m, 8 rounds. Obsess over handoffs.", fr: "500 m + station + 500 m, 8 rounds. Focus sur les relais." } },
+    { day: "Fri", focus: { en: "Easy run", fr: "Footing" }, content: { en: "30 min easy. Taper starts now.", fr: "30 min facile. Début du tapering." } },
+    { day: "Sat", focus: { en: "Openers", fr: "Réveil musculaire" }, content: { en: "20 min jog + 3 short efforts. Nothing heavy. Race tomorrow/soon.", fr: "20 min jog + 3 efforts courts. Rien de lourd. Course bientôt." } },
+    { day: "Sun", focus: { en: "RACE or rest", fr: "COURSE ou repos" }, content: { en: "Race day or final rest day before event.", fr: "Jour de course ou dernier repos avant l'événement." } },
+  ],
+};
+
+const EXERCISES = [
+  { tag: { en: "Run", fr: "Course" }, title: { en: "Broken 5 km", fr: "5 km fractionné" }, desc: { en: "5× 1 km @ race pace with 60 sec rest. Simulates the fatigue of running between stations.", fr: "5× 1 km allure course avec 60 sec de récup. Simule la fatigue entre stations." } },
+  { tag: { en: "Run", fr: "Course" }, title: { en: "Threshold 4×2 km", fr: "Seuil 4×2 km" }, desc: { en: "4 repeats of 2 km at threshold, 3 min jog. Raises your ceiling.", fr: "4 fois 2 km au seuil, 3 min jog. Repousse tes limites." } },
+  { tag: { en: "Strength", fr: "Force" }, title: { en: "Back Squat", fr: "Back Squat" }, desc: { en: "5×5 at 75-85% 1RM. Foundation for wall balls, lunges and sled.", fr: "5×5 à 75-85% 1RM. Base pour wall balls, fentes et traîneau." } },
+  { tag: { en: "Strength", fr: "Force" }, title: { en: "Romanian Deadlift", fr: "Soulevé de terre roumain" }, desc: { en: "4×8. Posterior chain for sled pull, ski, farmers carry.", fr: "4×8. Chaîne postérieure pour traction, ski, farmers." } },
+  { tag: { en: "Specific", fr: "Spécifique" }, title: { en: "Sandbag carry + lunge", fr: "Sac de sable port + fentes" }, desc: { en: "100 m carry, 50 m lunges, 3 rounds. Transfers directly to station 7.", fr: "100 m port, 50 m fentes, 3 tours. Transfert direct station 7." } },
+  { tag: { en: "Specific", fr: "Spécifique" }, title: { en: "Wall ball EMOM", fr: "Wall ball EMOM" }, desc: { en: "Every minute on the minute: 15 wall balls for 10 minutes. Builds rep stamina.", fr: "Chaque minute : 15 wall balls pendant 10 min. Endurance spécifique." } },
+  { tag: { en: "Conditioning", fr: "Conditionnement" }, title: { en: "Erg stack", fr: "Empilement erg" }, desc: { en: "2 km row + 2 km ski for time. Tests dual-erg capacity.", fr: "2 km rameur + 2 km ski au chrono. Teste la capacité sur les deux ergs." } },
+  { tag: { en: "Conditioning", fr: "Conditionnement" }, title: { en: "Burpee broad jump ladder", fr: "Échelle burpee saut" }, desc: { en: "10, 8, 6, 4, 2 BBJ with 200 m run between. Pacing under fatigue.", fr: "10, 8, 6, 4, 2 BBJ avec 200 m course entre. Gestion sous fatigue." } },
+  { tag: { en: "Grip", fr: "Prise" }, title: { en: "Dead hang + farmer", fr: "Suspension + farmer" }, desc: { en: "Max dead hang, then 40 m heavy farmer. 4 rounds. Grip insurance.", fr: "Suspension max, puis 40 m farmer lourd. 4 tours. Assurance prise." } },
+  { tag: { en: "Grip", fr: "Prise" }, title: { en: "Rope pull intervals", fr: "Tirage corde" }, desc: { en: "Rig a sled or weight: 5× 25 m pulls. Directly mimics station 3.", fr: "Traîneau ou poids : 5× 25 m de traction. Mime directement la station 3." } },
+  { tag: { en: "Mobility", fr: "Mobilité" }, title: { en: "Hip flow 10 min", fr: "Mobilité hanches 10 min" }, desc: { en: "90-90s, couch stretch, deep squat hold. Do daily — lunges thank you.", fr: "90-90, couch stretch, squat profond. Quotidien — les fentes te remercient." } },
+  { tag: { en: "Partner", fr: "Duo" }, title: { en: "Transition drill", fr: "Drill de transition" }, desc: { en: "Both run 200 m, one does 20 wall balls, swap, repeat 4×. Focus on the swap only.", fr: "Les deux 200 m, un fait 20 wall balls, relais, 4×. Focus sur le relais." } },
+];
+
+const STRATEGY = [
+  {
+    icon: "🧠", title: { en: "Mental Game", fr: "Mental" },
+    points: {
+      en: [
+        "Agree on a code word for 'I need a longer turn' and 'I can do more'",
+        "First 30 min: stay under yourself. Pain comes later — save the bullets",
+        "After station 5, it's a mental race. Count reps forward, never backwards",
+        "If partner struggles, take extra reps silently. Debate later.",
+      ],
+      fr: [
+        "Conviens d'un mot-code pour 'j'ai besoin d'un tour plus long' et 'je peux plus'",
+        "Premières 30 min : reste sous toi-même. La douleur vient après",
+        "Après la station 5, c'est mental. Compte les reps en avant, jamais en arrière",
+        "Si ton duo lutte, prends plus de reps en silence. Discute après.",
+      ],
+    },
+  },
+  {
+    icon: "⚡", title: { en: "Pacing", fr: "Allure" },
+    points: {
+      en: [
+        "Target run pace = your easy 5 km pace, not race pace",
+        "Wall balls is the great equalizer — start too fast and you'll die there",
+        "Sled push/pull are max-effort stations, but only those two",
+        "Leave 10% in the tank for the final 1 km run into wall balls",
+      ],
+      fr: [
+        "Allure course visée = ton 5 km facile, pas allure course",
+        "Les wall balls sont l'égalisateur — pars trop vite et tu meurs là",
+        "Poussée et traction = effort max. Seulement ces deux.",
+        "Garde 10% pour le dernier km avant les wall balls",
+      ],
+    },
+  },
+  {
+    icon: "🍌", title: { en: "Fueling", fr: "Nutrition" },
+    points: {
+      en: [
+        "Pre-race (3h before): oats + banana + coffee. No experiments.",
+        "60-90 min before: small gel or dates + sip electrolytes",
+        "During: 1 gel at minute 30 if race is over 70 min",
+        "Hydrate the day before, not the morning of — over-hydration wrecks ski/row",
+      ],
+      fr: [
+        "Pré-course (3h avant) : flocons d'avoine + banane + café. Pas d'expérience.",
+        "60-90 min avant : petit gel ou dattes + gorgées d'électrolytes",
+        "Pendant : 1 gel à 30 min si course > 70 min",
+        "Hydrate-toi la veille, pas le matin — trop d'eau détruit ski/rameur",
+      ],
+    },
+  },
+  {
+    icon: "👟", title: { en: "Gear Checklist", fr: "Équipement" },
+    points: {
+      en: [
+        "Shoes: light trainers with grip — no carbon plates on sled stations",
+        "Socks: tall compression for sled burn",
+        "Gloves: allowed for sled pull — test in training first",
+        "Bring one extra shirt and extra socks to the venue",
+      ],
+      fr: [
+        "Chaussures : running légères avec accroche — pas de plaque carbone pour le traîneau",
+        "Chaussettes : hautes de compression pour le traîneau",
+        "Gants : autorisés pour la traction — teste à l'entraînement",
+        "Prends un t-shirt et des chaussettes de rechange sur place",
+      ],
+    },
+  },
+  {
+    icon: "🤝", title: { en: "Duo Dynamics", fr: "Dynamique duo" },
+    points: {
+      en: [
+        "Decide rep splits BEFORE the race, written on forearm if needed",
+        "Stronger partner absorbs shock: always takes first set, last set",
+        "No negotiations mid-station — just execute the plan",
+        "Eye contact at every handoff — a nod is faster than words",
+      ],
+      fr: [
+        "Décide les splits AVANT la course, écris-les sur l'avant-bras si besoin",
+        "Le partenaire fort absorbe le choc : toujours première et dernière série",
+        "Pas de négociation en pleine station — exécute le plan",
+        "Contact visuel à chaque relais — un hochement vaut mieux qu'un mot",
+      ],
+    },
+  },
+  {
+    icon: "🏁", title: { en: "Last 500 m", fr: "Derniers 500 m" },
+    points: {
+      en: [
+        "Once at station 8, breathe deep. You're done after this.",
+        "Start with bigger set, finish with tiny sets — never the reverse",
+        "Don't look at your partner's chest rising — look at the target",
+        "Finish holding hands. That's the whole point.",
+      ],
+      fr: [
+        "Arrivé à la station 8, respire profondément. C'est la dernière.",
+        "Commence par une grosse série, finis en petites — jamais l'inverse",
+        "Ne regarde pas le thorax de ton duo — regarde la cible",
+        "Finissez main dans la main. C'est tout le sens.",
+      ],
+    },
+  },
+];
+
+const WODS = [
+  {
+    title: { en: "Quick Duo Starter", fr: "Démarrage Duo Express" },
+    desc: { en: "AMRAP 20 min, alternating: 15 wall balls, 12 burpees, 200 m run together", fr: "AMRAP 20 min, en alternance : 15 wall balls, 12 burpees, 200 m ensemble" },
+    intervals: [ { label: "Work", sec: 1200 } ],
+  },
+  {
+    title: { en: "Station Sandwich", fr: "Sandwich de Stations" },
+    desc: { en: "6 rounds: 2 min work, 1 min rest. Rotate: ski / row / wall balls.", fr: "6 tours : 2 min travail, 1 min repos. Ski / rameur / wall balls." },
+    intervals: Array(6).fill(null).flatMap(() => [{ label: "Work", sec: 120 }, { label: "Rest", sec: 60 }]),
+  },
+  {
+    title: { en: "Tabata Finisher", fr: "Finisher Tabata" },
+    desc: { en: "8× 20 sec on / 10 sec off. Partner A wall balls, Partner B plank.", fr: "8× 20 sec / 10 sec. A fait wall balls, B planche." },
+    intervals: Array(8).fill(null).flatMap(() => [{ label: "Work", sec: 20 }, { label: "Rest", sec: 10 }]),
+  },
+  {
+    title: { en: "Race Rehearsal Mini", fr: "Répétition course mini" },
+    desc: { en: "4 rounds: 500 m run + 1 min full-effort station work + 30 sec rest", fr: "4 tours : 500 m + 1 min effort station + 30 sec repos" },
+    intervals: Array(4).fill(null).flatMap(() => [{ label: "Run", sec: 150 }, { label: "Station", sec: 60 }, { label: "Rest", sec: 30 }]),
+  },
+  {
+    title: { en: "Grip Builder", fr: "Renfo Prise" },
+    desc: { en: "5 rounds: 45 sec dead hang / farmer hold / 15 sec rest", fr: "5 tours : 45 sec suspension / port / 15 sec repos" },
+    intervals: Array(5).fill(null).flatMap(() => [{ label: "Hold", sec: 45 }, { label: "Rest", sec: 15 }]),
+  },
+];
+
+const GLOSSARY = [
+  { term: "Hyrox", pron: "high-rocks", def: { en: "A standardized fitness race: 8 × 1 km of running, each followed by a workout station, ending with 100 wall balls. Same format worldwide.", fr: "Course fitness standardisée : 8 × 1 km de course avec une station d'exercice après chaque km, finie par 100 wall balls. Même format partout dans le monde." } },
+  { term: "Doubles", pron: "du-bls", def: { en: "Team of two racing together. Both partners run every kilometre side-by-side; at each station they split the reps however they like.", fr: "Équipe de deux qui court ensemble. Les deux partenaires courent chaque km ensemble ; à chaque station ils partagent les reps comme ils veulent." } },
+  { term: "SkiErg", pron: "ski-urg", def: { en: "A stationary machine that mimics cross-country skiing. You pull two handles down to generate distance on a screen.", fr: "Machine fixe qui imite le ski de fond. Tu tires deux poignées vers le bas pour générer de la distance à l'écran." } },
+  { term: "Sled", pron: "sled", def: { en: "A weighted metal frame you push or pull across the floor. Pure leg and grip work — no technique required, just commit.", fr: "Châssis métallique lesté que tu pousses ou tires au sol. Travail pur des jambes et de la prise — pas de technique, juste engage-toi." } },
+  { term: "Burpee Broad Jump", pron: "bur-pee", def: { en: "Drop to the ground (chest touches), push up, then jump forward as far as you can. Repeat. Station 4 of Hyrox.", fr: "Descends au sol (poitrine au contact), remonte, puis saute en avant le plus loin possible. Répète. Station 4 de Hyrox." } },
+  { term: "Rowing", pron: "ROH-ing", def: { en: "Indoor rowing machine (Concept 2). Drive with legs, then back, then arms. Recover in reverse, three times slower than the drive.", fr: "Rameur d'intérieur (Concept 2). Pousse avec les jambes, puis dos, puis bras. Reviens inversé, 3× plus lent que la traction." } },
+  { term: "Farmers Carry", pron: "FAR-murz", def: { en: "Walk while carrying a heavy weight in each hand. Keeps you honest about grip strength and posture.", fr: "Marche en portant un poids lourd dans chaque main. Révèle sans pitié ta prise et ta posture." } },
+  { term: "Sandbag Lunges", pron: "sand-bag", def: { en: "Forward lunges carrying a sandbag on your shoulders. Back knee must touch the ground each rep — or it doesn't count.", fr: "Fentes avant avec sac de sable sur les épaules. Genou arrière au sol à chaque rep — sinon ça ne compte pas." } },
+  { term: "Wall Ball", pron: "wall-ball", def: { en: "Squat holding a medicine ball, then explode up and throw the ball to a high target (~3m). Catch, squat, repeat — 100 times.", fr: "Squat en tenant une medicine ball, explose vers le haut et lance la balle sur une cible haute (~3m). Réceptionne, squat, répète — 100 fois." } },
+  { term: "RPE", pron: "R-P-E", def: { en: "Rate of Perceived Exertion. Scale of 1 (easy walk) to 10 (all-out effort). A useful shorthand to log how hard a session felt.", fr: "Rate of Perceived Exertion. Échelle de 1 (marche facile) à 10 (effort max). Pratique pour noter l'intensité ressentie." } },
+  { term: "Z2 / Zone 2", pron: "zone two", def: { en: "Easy aerobic pace — you can hold a conversation. Builds your endurance base without breaking you.", fr: "Allure aérobie facile — tu peux parler. Construit ta base d'endurance sans te casser." } },
+  { term: "EMOM", pron: "ee-mom", def: { en: "Every Minute On the Minute. Do a set number of reps at the start of each minute; rest whatever's left. Repeat.", fr: "Every Minute On the Minute. Fais un nombre fixe de reps au début de chaque minute ; récupère le temps restant. Répète." } },
+  { term: "AMRAP", pron: "am-rap", def: { en: "As Many Rounds As Possible (or reps). A timed workout where you rack up as many rounds as you can before the clock stops.", fr: "As Many Rounds As Possible (ou reps). Entraînement chronométré où tu enchaînes un max de tours avant que le chrono s'arrête." } },
+  { term: "Transition", pron: "tran-ZISH-un", def: { en: "The time between the run and the station (and the handoff between partners). Small losses add up — 8 stations = 16 transitions.", fr: "Temps entre la course et la station (et le relais entre partenaires). Les petites pertes s'accumulent — 8 stations = 16 transitions." } },
+  { term: "No-rep", pron: "no-rep", def: { en: "A rep that didn't count — usually depth too shallow, ball didn't hit the target, or form was bad. Judge signals it; you redo.", fr: "Rep qui ne compte pas — souvent profondeur insuffisante, balle qui ne touche pas la cible, ou forme incorrecte. Le juge le signale ; tu refais." } },
+  { term: "Split", pron: "split", def: { en: "How you divide work between partners (e.g. 25 m each on the sled, or 15/10/10 on wall balls). Pre-agree before the race.", fr: "Façon de partager le travail entre partenaires (ex: 25 m chacun au traîneau, ou 15/10/10 aux wall balls). À décider avant la course." } },
+];
+
+const ACHIEVEMENTS = [
+  { id: "first-log", icon: "🌱", name: { en: "Getting started", fr: "C'est parti" }, desc: { en: "Log your first session", fr: "Enregistre ta 1ʳᵉ séance" } },
+  { id: "streak-3", icon: "🔥", name: { en: "On fire", fr: "En feu" }, desc: { en: "3-day streak", fr: "Série de 3 jours" } },
+  { id: "streak-7", icon: "🚀", name: { en: "Unstoppable", fr: "Inarrêtable" }, desc: { en: "7-day streak", fr: "Série de 7 jours" } },
+  { id: "sessions-10", icon: "💪", name: { en: "Committed", fr: "Engagé·e" }, desc: { en: "10 total sessions", fr: "10 séances au total" } },
+  { id: "sessions-25", icon: "🏋️", name: { en: "Machine", fr: "Machine" }, desc: { en: "25 total sessions", fr: "25 séances au total" } },
+  { id: "first-sim", icon: "🎯", name: { en: "Battle tested", fr: "Baptisé·e du feu" }, desc: { en: "Complete a simulation", fr: "Fais une simulation" } },
+  { id: "mastery-half", icon: "⭐", name: { en: "Halfway there", fr: "Mi-chemin" }, desc: { en: "4 stations confident", fr: "4 stations maîtrisées" } },
+  { id: "mastery-full", icon: "👑", name: { en: "Station master", fr: "Maître des stations" }, desc: { en: "All 8 stations confident", fr: "Les 8 stations maîtrisées" } },
+  { id: "partnered", icon: "🤝", name: { en: "Partnered up", fr: "En équipe" }, desc: { en: "Onboarding complete", fr: "Onboarding terminé" } },
+  { id: "timer-pro", icon: "⏱️", name: { en: "Timer pro", fr: "Pro du chrono" }, desc: { en: "Complete a full timer workout", fr: "Termine un WOD au chrono" } },
+];
+
+const EVENTS = [
+  { date: "2026-05-02", m: "May", d: "02", name: "Hyrox Paris", region: "fr", venue: "Paris Expo Porte de Versailles", url: "https://hyrox.com/find-my-race/" },
+  { date: "2026-05-16", m: "May", d: "16", name: "Hyrox London", region: "eu", venue: "ExCeL London", url: "https://hyrox.com/find-my-race/" },
+  { date: "2026-06-06", m: "Jun", d: "06", name: "Hyrox Lyon", region: "fr", venue: "Eurexpo Lyon", url: "https://hyrox.com/find-my-race/" },
+  { date: "2026-06-20", m: "Jun", d: "20", name: "Hyrox Berlin", region: "eu", venue: "Messe Berlin", url: "https://hyrox.com/find-my-race/" },
+  { date: "2026-09-12", m: "Sep", d: "12", name: "Hyrox Barcelona", region: "eu", venue: "Fira de Barcelona", url: "https://hyrox.com/find-my-race/" },
+  { date: "2026-10-03", m: "Oct", d: "03", name: "Hyrox Bordeaux", region: "fr", venue: "Parc des Expositions", url: "https://hyrox.com/find-my-race/" },
+  { date: "2026-10-17", m: "Oct", d: "17", name: "Hyrox Amsterdam", region: "eu", venue: "RAI Amsterdam", url: "https://hyrox.com/find-my-race/" },
+  { date: "2026-11-07", m: "Nov", d: "07", name: "Hyrox New York", region: "world", venue: "Brooklyn", url: "https://hyrox.com/find-my-race/" },
+  { date: "2026-11-21", m: "Nov", d: "21", name: "Hyrox Dubai", region: "world", venue: "Dubai World Trade Centre", url: "https://hyrox.com/find-my-race/" },
+  { date: "2026-12-05", m: "Dec", d: "05", name: "Hyrox Marseille", region: "fr", venue: "Parc Chanot", url: "https://hyrox.com/find-my-race/" },
+  { date: "2027-01-16", m: "Jan", d: "16", name: "Hyrox World Championships", region: "world", venue: "Chicago, USA", url: "https://hyrox.com/find-my-race/" },
+];
+
+// =============== I18N ===============
+const I18N = {
+  en: {
+    appTitle: "Hyrox Duo",
+    appSub: "Training companion for doubles",
+    tabDashboard: "Dashboard",
+    tabOverview: "Overview", tabStations: "Stations", tabPlan: "Training Plan",
+    tabExercises: "Exercises", tabStrategy: "Race Strategy", tabTimer: "Workout Timer",
+    tabEvents: "Events", tabProgress: "Progress",
+    metricStreak: "Current streak", metricWeek: "This week", metricTotal: "Total sessions", metricReady: "Race readiness",
+    metricWeekSub: "sessions logged", metricTotalSub: "since you started",
+    unitDays: "days",
+    todayTitle: "Today's suggestion", todayLog: "Log this session", todayTimer: "Open timer",
+    masteryTitle: "Station mastery", masterySub: "Tap the dots on each station to track your progress.",
+    achTitle: "Recent achievements",
+    upcomingTitle: "Next race nearby",
+    estTitle: "Estimate your finish time",
+    estDesc: "Rough estimate for a first Hyrox Doubles based on your 5 km run time.",
+    est5kMin: "5 km time — minutes", est5kSec: "… seconds", estGo: "Estimate",
+    chartTitle: "Sessions — last 8 weeks",
+    glossaryTitle: "Glossary",
+    glossaryIntro: "Plain-language definitions for every Hyrox term you'll see on this site. Bookmark it if you're new to fitness racing.",
+    profInfo: "Your info",
+    fieldName: "Name", fieldPartner: "Partner's name", fieldLevel: "Level", fieldGoal: "Goal",
+    btnSave: "Save changes", btnSignout: "Sign out", btnDelete: "Delete account & data",
+    profAchTitle: "Achievements", profAchSub: "Unlock badges as you train. Consistency pays.",
+    profDangerTitle: "Account",
+    heroTitle: "Train as one. <em>Race as two.</em>",
+    heroDesc: "Hyrox Doubles is a test of communication, pacing and trust. 8 functional workouts, 8 × 1 km runs, one shared finish line. This companion guides you from base training to race day — tailored to duos.",
+    statRuns: "Runs (shared)", statStations: "Workout stations",
+    statElite: "Elite duo time", statAvg: "Average duo time",
+    formatTitle: "The Doubles Format",
+    formatDesc: "Both partners run each 1 km together. At each station, reps/distances are split freely between you — one works while the other rests. Only one partner at a time may perform the movement. Transitions count towards your total time, so every handoff matters.",
+    principleTitle: "Core Principles for Duos",
+    principle1: "Communicate in short numbers, not sentences",
+    principle2: "Match heart-rate, not ego — pace to the weaker runner",
+    principle3: "Pre-agreed splits beat improvisation",
+    principle4: "Transitions are a discipline — practice them",
+    principle5: "Encourage before you suffer",
+    quickTitle: "Getting Started",
+    quickDesc: "New to Hyrox doubles? Start with the <strong>Stations</strong> tab to learn each movement with duo-specific splits. Then pick a phase in the <strong>Training Plan</strong>. Use the <strong>Timer</strong> for ready-made duo workouts and log every session in <strong>Progress</strong>.",
+    stationsTitle: "The 8 Stations",
+    stationsIntro: "Click each station to expand technique notes and duo splitting strategies. Order is fixed. Run 1 km, then station, repeat — finish with 100 wall balls.",
+    planTitle: "Weekly Training Plan",
+    planIntro: "A 12-week build for duos split into three phases. Train together at least twice a week — partner chemistry is a muscle too.",
+    phaseBase: "Base (wk 1-4)", phaseBuild: "Build (wk 5-8)", phasePeak: "Peak (wk 9-12)",
+    planTipsTitle: "Pacing guidelines",
+    planTip1: "Base: Zone 2 runs, technique over intensity, learn the movements",
+    planTip2: "Build: Race-specific intervals, simulate 2-3 station combos together",
+    planTip3: "Peak: Full or half simulations, taper last 7 days, rehearse transitions",
+    planTip4: "Rest days are non-negotiable — duos need synchronized recovery",
+    exTitle: "Exercise Library",
+    exIntro: "Accessory and specific work to build a balanced Hyrox athlete. Tags show primary training effect.",
+    stratTitle: "Race Day Strategy",
+    stratIntro: "Mindset, fueling, and tactical notes to keep in mind during the race — especially as a duo.",
+    timerTitle: "Workout Timer",
+    timerIntro: "Pick a duo workout or set a custom interval timer. Browser must stay open — audio cues will play at each transition.",
+    btnStart: "Start", btnPause: "Pause", btnReset: "Reset",
+    wodTitle: "Pre-built Duo Workouts",
+    customTitle: "Custom Interval (work / rest)",
+    workSec: "Work (sec)", restSec: "Rest (sec)", rounds: "Rounds",
+    loadCustom: "Load custom",
+    evTitle: "Upcoming Events",
+    evIntro: "A curated list of major 2026 Hyrox races. Verify dates on the official site before booking — schedules shift. Filter by region to find something near you.",
+    regionAll: "All", regionFr: "France", regionEu: "Europe", regionWorld: "Worldwide",
+    evNoteTitle: "Where to register",
+    evNoteDesc: 'Official registrations are on <a href="https://hyrox.com/find-my-race/" target="_blank" rel="noopener" style="color: var(--accent);">hyrox.com/find-my-race</a>. Popular European races sell out months ahead — sign up early, especially Paris, London and Berlin.',
+    progTitle: "Session Log",
+    progIntro: "Track each training session. Data stays in your browser (localStorage) — no account needed.",
+    logNewTitle: "Log a session",
+    fieldDate: "Date", fieldType: "Type", fieldDuration: "Duration (min)",
+    fieldRpe: "RPE (1-10)", fieldNotes: "Notes (optional)",
+    btnAddLog: "Add session",
+    historyTitle: "History",
+  },
+  fr: {
+    appTitle: "Hyrox Duo",
+    appSub: "Companion d'entraînement pour duos",
+    tabDashboard: "Tableau de bord",
+    tabOverview: "Vue d'ensemble", tabStations: "Stations", tabPlan: "Plan",
+    tabExercises: "Exercices", tabStrategy: "Stratégie", tabTimer: "Chrono",
+    tabEvents: "Événements", tabProgress: "Progression",
+    metricStreak: "Série actuelle", metricWeek: "Cette semaine", metricTotal: "Séances totales", metricReady: "Prêt·e course",
+    metricWeekSub: "séances enregistrées", metricTotalSub: "depuis le début",
+    unitDays: "jours",
+    todayTitle: "Suggestion du jour", todayLog: "Enregistrer", todayTimer: "Ouvrir le chrono",
+    masteryTitle: "Maîtrise des stations", masterySub: "Clique sur les points de chaque station pour suivre ta progression.",
+    achTitle: "Derniers succès",
+    upcomingTitle: "Prochaine course",
+    estTitle: "Estime ton temps final",
+    estDesc: "Estimation approximative pour un premier Hyrox Doubles basée sur ton temps au 5 km.",
+    est5kMin: "Temps au 5 km — minutes", est5kSec: "… secondes", estGo: "Estimer",
+    chartTitle: "Séances — 8 dernières semaines",
+    glossaryTitle: "Glossaire",
+    glossaryIntro: "Définitions claires pour chaque terme Hyrox que tu verras ici. À garder sous le coude si tu débutes.",
+    profInfo: "Tes infos",
+    fieldName: "Nom", fieldPartner: "Nom du·de la partenaire", fieldLevel: "Niveau", fieldGoal: "Objectif",
+    btnSave: "Enregistrer", btnSignout: "Se déconnecter", btnDelete: "Supprimer compte & données",
+    profAchTitle: "Succès", profAchSub: "Débloque des badges à force de t'entraîner. La régularité paie.",
+    profDangerTitle: "Compte",
+    heroTitle: "S'entraîner en un. <em>Courir en deux.</em>",
+    heroDesc: "Hyrox Doubles est un test de communication, d'allure et de confiance. 8 stations fonctionnelles, 8 × 1 km de course, une ligne d'arrivée partagée. Ce compagnon te guide de la base au jour de course — taillé pour les duos.",
+    statRuns: "Courses (partagées)", statStations: "Stations",
+    statElite: "Temps duo élite", statAvg: "Temps duo moyen",
+    formatTitle: "Le format Doubles",
+    formatDesc: "Les deux partenaires courent chaque km ensemble. À chaque station, reps/distances se partagent librement — l'un travaille, l'autre récupère. Un seul partenaire effectue le mouvement à la fois. Les transitions comptent dans le temps total, chaque relais compte.",
+    principleTitle: "Principes clés pour duos",
+    principle1: "Communique en chiffres courts, pas en phrases",
+    principle2: "Aligne-toi sur la FC, pas sur l'ego — allure du plus faible",
+    principle3: "Les splits pré-décidés battent l'improvisation",
+    principle4: "Les transitions sont une discipline — entraîne-les",
+    principle5: "Encourage avant de souffrir",
+    quickTitle: "Bien démarrer",
+    quickDesc: "Nouveau en Hyrox doubles ? Commence par l'onglet <strong>Stations</strong> pour apprendre chaque mouvement avec les splits duo. Choisis ensuite une phase dans <strong>Plan</strong>. Utilise le <strong>Chrono</strong> pour des WOD duo et log chaque séance dans <strong>Progression</strong>.",
+    stationsTitle: "Les 8 stations",
+    stationsIntro: "Clique sur chaque station pour développer technique et splits duo. Ordre fixe. 1 km puis station, répète — termine par 100 wall balls.",
+    planTitle: "Plan d'entraînement hebdo",
+    planIntro: "Un build 12 semaines pour duos en trois phases. Entraîne-toi en duo au moins 2× / semaine — l'alchimie est un muscle.",
+    phaseBase: "Base (sem 1-4)", phaseBuild: "Build (sem 5-8)", phasePeak: "Peak (sem 9-12)",
+    planTipsTitle: "Allures conseillées",
+    planTip1: "Base : courses Z2, technique avant intensité, apprendre les mouvements",
+    planTip2: "Build : intervalles spécifiques, combos 2-3 stations en duo",
+    planTip3: "Peak : simulations complètes ou demi, taper les 7 derniers jours",
+    planTip4: "Les jours de repos sont non négociables — duos = récup synchronisée",
+    exTitle: "Bibliothèque d'exercices",
+    exIntro: "Accessoires et travail spécifique pour un athlète Hyrox équilibré. Les tags indiquent l'effet principal.",
+    stratTitle: "Stratégie jour J",
+    stratIntro: "Mental, nutrition, tactique à garder en tête en course — surtout en duo.",
+    timerTitle: "Chrono d'entraînement",
+    timerIntro: "Choisis un WOD duo ou règle un timer personnalisé. Garde l'onglet ouvert — des bips sonneront à chaque transition.",
+    btnStart: "Démarrer", btnPause: "Pause", btnReset: "Reset",
+    wodTitle: "WOD Duo prêts à l'emploi",
+    customTitle: "Intervalles personnalisés",
+    workSec: "Travail (sec)", restSec: "Repos (sec)", rounds: "Tours",
+    loadCustom: "Charger",
+    evTitle: "Événements à venir",
+    evIntro: "Sélection des grandes courses Hyrox 2026. Vérifie les dates sur le site officiel avant de réserver — les calendriers bougent. Filtre par région.",
+    regionAll: "Tous", regionFr: "France", regionEu: "Europe", regionWorld: "Monde",
+    evNoteTitle: "Où s'inscrire",
+    evNoteDesc: 'Inscriptions officielles sur <a href="https://hyrox.com/find-my-race/" target="_blank" rel="noopener" style="color: var(--accent);">hyrox.com/find-my-race</a>. Les courses européennes se remplissent des mois à l\'avance — inscris-toi tôt, surtout Paris, Londres et Berlin.',
+    progTitle: "Journal de séances",
+    progIntro: "Suis chaque séance. Les données restent dans ton navigateur (localStorage) — pas de compte requis.",
+    logNewTitle: "Enregistrer une séance",
+    fieldDate: "Date", fieldType: "Type", fieldDuration: "Durée (min)",
+    fieldRpe: "RPE (1-10)", fieldNotes: "Notes (optionnel)",
+    btnAddLog: "Ajouter",
+    historyTitle: "Historique",
+  },
+};
+
+let currentLang = "en";
+
+// =============== STATE ===============
+let state = {
+  phase: "base",
+  region: "all",
+  user: null,
+  logs: [],
+  stations: {},
+  achievements: [],
+  onboardSlide: 0,
+  onboardData: { level: null, goal: null, partner: "", partnerColor: "#3b82f6" },
+  timer: { running: false, paused: false, intervals: [], idx: 0, elapsed: 0, tickHandle: null, stageStart: 0 },
+};
+
+// =============== AUTH / STORAGE ===============
+function simpleHash(str) {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) { h = ((h << 5) - h) + str.charCodeAt(i); h |= 0; }
+  return h.toString(36);
+}
+function loadAccounts() { return JSON.parse(localStorage.getItem("hyrox-accounts") || "{}"); }
+function saveAccounts(a) { localStorage.setItem("hyrox-accounts", JSON.stringify(a)); }
+function saveSession(email) { localStorage.setItem("hyrox-session", email || ""); }
+function loadUserData(user) {
+  if (!user) return;
+  state.logs = JSON.parse(localStorage.getItem("hyrox-logs-" + user.id) || "[]");
+  state.stations = JSON.parse(localStorage.getItem("hyrox-stations-" + user.id) || "{}");
+  state.achievements = JSON.parse(localStorage.getItem("hyrox-ach-" + user.id) || "[]");
+}
+function persistLogs() { if (state.user) localStorage.setItem("hyrox-logs-" + state.user.id, JSON.stringify(state.logs)); }
+function persistStations() { if (state.user) localStorage.setItem("hyrox-stations-" + state.user.id, JSON.stringify(state.stations)); }
+function persistAchievements() { if (state.user) localStorage.setItem("hyrox-ach-" + state.user.id, JSON.stringify(state.achievements)); }
+function persistUser() {
+  if (!state.user) return;
+  const accounts = loadAccounts();
+  if (accounts[state.user.email]) {
+    accounts[state.user.email] = { ...accounts[state.user.email], ...state.user };
+    saveAccounts(accounts);
+  } else {
+    // guest mode
+    localStorage.setItem("hyrox-guest", JSON.stringify(state.user));
+  }
+}
+
+function signUp(name, email, password) {
+  const accounts = loadAccounts();
+  if (!name || !email || !password) return { error: "Please fill all fields" };
+  if (password.length < 6) return { error: "Password must be at least 6 characters" };
+  if (accounts[email]) return { error: "An account with this email already exists" };
+  const user = {
+    id: simpleHash(email + Date.now()),
+    name, email,
+    passwordHash: simpleHash(password),
+    partner: "", partnerColor: "#3b82f6",
+    level: null, goal: null,
+    onboarded: false,
+    createdAt: Date.now(),
+  };
+  accounts[email] = user;
+  saveAccounts(accounts);
+  saveSession(email);
+  state.user = user;
+  loadUserData(user);
+  return { ok: true };
+}
+
+function signIn(email, password) {
+  const accounts = loadAccounts();
+  const user = accounts[email];
+  if (!user) return { error: "No account with this email" };
+  if (user.passwordHash !== simpleHash(password)) return { error: "Incorrect password" };
+  saveSession(email);
+  state.user = user;
+  loadUserData(user);
+  return { ok: true };
+}
+
+function signInGuest() {
+  let guest = JSON.parse(localStorage.getItem("hyrox-guest") || "null");
+  if (!guest) {
+    guest = {
+      id: "guest-" + simpleHash(String(Date.now())),
+      name: "Guest", email: "", isGuest: true,
+      partner: "", partnerColor: "#3b82f6",
+      level: null, goal: null,
+      onboarded: false,
+      createdAt: Date.now(),
+    };
+    localStorage.setItem("hyrox-guest", JSON.stringify(guest));
+  }
+  saveSession("__guest__");
+  state.user = guest;
+  loadUserData(guest);
+}
+
+function signOut() {
+  saveSession("");
+  state.user = null;
+  state.logs = [];
+  state.stations = {};
+  state.achievements = [];
+  showScreen("auth");
+}
+
+function deleteAccount() {
+  if (!state.user) return;
+  if (!confirm(currentLang === "en" ? "Permanently delete your account and all training data?" : "Supprimer ton compte et toutes tes données d'entraînement ?")) return;
+  const accounts = loadAccounts();
+  if (state.user.email) delete accounts[state.user.email];
+  saveAccounts(accounts);
+  localStorage.removeItem("hyrox-logs-" + state.user.id);
+  localStorage.removeItem("hyrox-stations-" + state.user.id);
+  localStorage.removeItem("hyrox-ach-" + state.user.id);
+  if (state.user.isGuest) localStorage.removeItem("hyrox-guest");
+  signOut();
+}
+
+function loadSavedSession() {
+  const sess = localStorage.getItem("hyrox-session");
+  if (!sess) return false;
+  if (sess === "__guest__") {
+    const guest = JSON.parse(localStorage.getItem("hyrox-guest") || "null");
+    if (guest) { state.user = guest; loadUserData(guest); return true; }
+  } else {
+    const accounts = loadAccounts();
+    if (accounts[sess]) { state.user = accounts[sess]; loadUserData(accounts[sess]); return true; }
+  }
+  return false;
+}
+
+// =============== SCREEN ROUTING ===============
+function showScreen(which) {
+  ["auth", "onboard", "app"].forEach(s => {
+    document.getElementById("screen-" + s).classList.toggle("active", s === which);
+  });
+}
+
+// =============== TOAST ===============
+let toastTimer = null;
+function toast(msg, type) {
+  const el = document.getElementById("toast");
+  el.textContent = msg;
+  el.className = "show " + (type || "");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { el.className = type || ""; }, 3200);
+}
+
+// =============== ACHIEVEMENTS ===============
+function unlockAchievement(id) {
+  if (state.achievements.includes(id)) return;
+  state.achievements.push(id);
+  persistAchievements();
+  const ach = ACHIEVEMENTS.find(a => a.id === id);
+  if (ach) toast(ach.icon + "  " + ach.name[currentLang], "achievement");
+}
+function checkAchievements() {
+  if (state.logs.length >= 1) unlockAchievement("first-log");
+  if (state.logs.length >= 10) unlockAchievement("sessions-10");
+  if (state.logs.length >= 25) unlockAchievement("sessions-25");
+  if (computeStreak() >= 3) unlockAchievement("streak-3");
+  if (computeStreak() >= 7) unlockAchievement("streak-7");
+  if (state.logs.some(l => l.type === "Simulation")) unlockAchievement("first-sim");
+  const confident = Object.values(state.stations).filter(v => v === "confident").length;
+  if (confident >= 4) unlockAchievement("mastery-half");
+  if (confident >= 8) unlockAchievement("mastery-full");
+  if (state.user && state.user.onboarded) unlockAchievement("partnered");
+}
+
+// =============== STATS ===============
+function computeStreak() {
+  if (state.logs.length === 0) return 0;
+  const dates = [...new Set(state.logs.map(l => l.date))].sort().reverse();
+  if (dates.length === 0) return 0;
+  const today = new Date().toISOString().split("T")[0];
+  const yest = new Date(Date.now() - 86400000).toISOString().split("T")[0];
+  if (dates[0] !== today && dates[0] !== yest) return 0;
+  let streak = 1;
+  for (let i = 1; i < dates.length; i++) {
+    const prev = new Date(dates[i - 1]);
+    const curr = new Date(dates[i]);
+    const diff = Math.round((prev - curr) / 86400000);
+    if (diff === 1) streak++;
+    else break;
+  }
+  return streak;
+}
+
+function computeReadiness() {
+  const weekCount = state.logs.filter(l => {
+    const d = new Date(l.date);
+    return (Date.now() - d.getTime()) < 14 * 86400000;
+  }).length;
+  const volumeScore = Math.min(60, (weekCount / 8) * 60);
+  const confident = Object.values(state.stations).filter(v => v === "confident").length;
+  const masteryScore = (confident / 8) * 40;
+  return Math.round(volumeScore + masteryScore);
+}
+
+function weekSessions() {
+  return state.logs.filter(l => {
+    const d = new Date(l.date);
+    return (Date.now() - d.getTime()) < 7 * 86400000;
+  }).length;
+}
+
+function weekTarget() {
+  return { base: 4, build: 5, peak: 6 }[state.phase] || 4;
+}
+
+// =============== RENDER ===============
+function applyLang() {
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    if (I18N[currentLang][key]) el.innerHTML = I18N[currentLang][key];
+  });
+  document.documentElement.lang = currentLang;
+  renderStations();
+  renderPlan();
+  renderExercises();
+  renderStrategy();
+  renderWods();
+  renderEvents();
+  renderGlossary();
+  renderDashboard();
+  renderProfile();
+}
+
+function renderStations() {
+  const list = document.getElementById("station-list");
+  list.innerHTML = "";
+  STATIONS.forEach((s, i) => {
+    const div = document.createElement("div");
+    div.className = "station";
+    const masteryState = state.stations[s.num] || "none";
+    const masteryTitle = currentLang === "en"
+      ? "Click: not started → learning → confident"
+      : "Clic : pas commencé → en apprentissage → maîtrisé";
+    div.innerHTML = `
+      <div class="station-head">
+        <div class="station-num">${s.num}</div>
+        <div class="station-title">
+          <h3>${s.name[currentLang]}</h3>
+          <p>${s.meta[currentLang]}</p>
+        </div>
+        <div class="mastery-toggle" title="${masteryTitle}">
+          <div class="mastery-dot ${masteryState === 'learning' ? 'learning' : ''} ${masteryState === 'confident' ? 'confident' : ''}" data-station="${s.num}"></div>
+        </div>
+        <div class="station-toggle">▼</div>
+      </div>
+      <div class="station-body">
+        <h4>${currentLang === 'en' ? 'Technique' : 'Technique'}</h4>
+        <ul>${s.technique[currentLang].map(t => `<li>${t}</li>`).join("")}</ul>
+        <h4>${currentLang === 'en' ? 'Duo Split Strategy' : 'Stratégie de Split Duo'}</h4>
+        <div class="split-box">
+          ${s.split[currentLang].map(t => `<div>${t}</div>`).join("")}
+        </div>
+      </div>
+    `;
+    div.querySelector(".station-head").addEventListener("click", (e) => {
+      if (e.target.classList.contains("mastery-dot")) return;
+      div.classList.toggle("open");
+    });
+    div.querySelector(".mastery-dot").addEventListener("click", (e) => {
+      e.stopPropagation();
+      const next = { none: "learning", learning: "confident", confident: "none" };
+      const curr = state.stations[s.num] || "none";
+      const newState = next[curr];
+      if (newState === "none") delete state.stations[s.num];
+      else state.stations[s.num] = newState;
+      persistStations();
+      checkAchievements();
+      renderStations();
+      renderDashboard();
+    });
+    list.appendChild(div);
+  });
+}
+
+function renderPlan() {
+  const grid = document.getElementById("week-grid");
+  grid.innerHTML = "";
+  const dayNames = currentLang === "en"
+    ? ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    : ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
+  PLANS[state.phase].forEach((d, i) => {
+    const el = document.createElement("div");
+    el.className = "day";
+    el.innerHTML = `
+      <div class="day-name">${dayNames[i]}</div>
+      <div class="day-focus">${d.focus[currentLang]}</div>
+      <div class="day-content">${d.content[currentLang]}</div>
+    `;
+    grid.appendChild(el);
+  });
+}
+
+function renderExercises() {
+  const grid = document.getElementById("ex-grid");
+  grid.innerHTML = "";
+  EXERCISES.forEach(ex => {
+    const el = document.createElement("div");
+    el.className = "exercise";
+    el.innerHTML = `
+      <div><span class="ex-tag">${ex.tag[currentLang]}</span></div>
+      <div class="ex-title">${ex.title[currentLang]}</div>
+      <div class="ex-desc">${ex.desc[currentLang]}</div>
+    `;
+    grid.appendChild(el);
+  });
+}
+
+function renderStrategy() {
+  const grid = document.getElementById("strat-grid");
+  grid.innerHTML = "";
+  STRATEGY.forEach(s => {
+    const el = document.createElement("div");
+    el.className = "card strat-card";
+    el.innerHTML = `
+      <h3><span class="strat-icon">${s.icon}</span>${s.title[currentLang]}</h3>
+      <ul>${s.points[currentLang].map(p => `<li>${p}</li>`).join("")}</ul>
+    `;
+    grid.appendChild(el);
+  });
+}
+
+function renderWods() {
+  const list = document.getElementById("wod-list");
+  list.innerHTML = "";
+  WODS.forEach((w, i) => {
+    const el = document.createElement("div");
+    el.className = "wod-card";
+    el.innerHTML = `
+      <h4>${w.title[currentLang]}</h4>
+      <p>${w.desc[currentLang]}</p>
+    `;
+    el.addEventListener("click", () => loadTimer(w.intervals, w.title[currentLang]));
+    list.appendChild(el);
+  });
+}
+
+function renderEvents() {
+  const list = document.getElementById("event-list");
+  list.innerHTML = "";
+  const filtered = state.region === "all" ? EVENTS : EVENTS.filter(e => e.region === state.region);
+  if (filtered.length === 0) {
+    list.innerHTML = `<div class="empty">${currentLang === "en" ? "No events for this region" : "Aucun événement pour cette région"}</div>`;
+    return;
+  }
+  filtered.forEach(ev => {
+    const el = document.createElement("div");
+    el.className = "event";
+    el.innerHTML = `
+      <div class="event-date">
+        <div class="m">${ev.m}</div>
+        <div class="d">${ev.d}</div>
+      </div>
+      <div class="event-info">
+        <h4>${ev.name}</h4>
+        <p>${ev.venue}</p>
+      </div>
+      <a href="${ev.url}" target="_blank" rel="noopener" class="event-link">${currentLang === "en" ? "Details" : "Détails"}</a>
+    `;
+    list.appendChild(el);
+  });
+}
+
+function renderLogs() {
+  const list = document.getElementById("log-list");
+  list.innerHTML = "";
+  if (state.logs.length === 0) {
+    list.innerHTML = `<div class="empty">${currentLang === "en" ? "No sessions logged yet" : "Aucune séance enregistrée"}</div>`;
+    renderChart();
+    return;
+  }
+  state.logs
+    .slice()
+    .sort((a, b) => (b.date || "").localeCompare(a.date || ""))
+    .forEach(log => {
+      const el = document.createElement("div");
+      el.className = "log-entry";
+      el.innerHTML = `
+        <div class="log-date">${log.date || ""}</div>
+        <div>
+          <div class="log-type">${log.type} · ${log.duration} min · RPE ${log.rpe || "–"}</div>
+          ${log.notes ? `<div class="log-notes">${log.notes}</div>` : ""}
+        </div>
+        <button class="log-del" data-id="${log.id}" title="Delete">×</button>
+      `;
+      el.querySelector(".log-del").addEventListener("click", () => {
+        state.logs = state.logs.filter(l => l.id !== log.id);
+        persistLogs();
+        renderLogs();
+        renderDashboard();
+      });
+      list.appendChild(el);
+    });
+  renderChart();
+}
+
+// =============== DUO LINK ===============
+function loadPartnerSnapshot() {
+  if (!state.user) return null;
+  const raw = localStorage.getItem("hyrox-partner-" + state.user.id);
+  return raw ? JSON.parse(raw) : null;
+}
+function savePartnerSnapshot(snap) {
+  if (!state.user) return;
+  if (snap) localStorage.setItem("hyrox-partner-" + state.user.id, JSON.stringify(snap));
+  else localStorage.removeItem("hyrox-partner-" + state.user.id);
+}
+
+function buildSnapshot() {
+  const recent = state.logs.slice().sort((a,b) => (b.date||"").localeCompare(a.date||"")).slice(0, 5)
+    .map(l => ({ d: l.date, t: l.type, m: l.duration, r: l.rpe }));
+  return {
+    n: state.user.name || "Anonymous",
+    p: state.user.partner || "",
+    pc: state.user.partnerColor || "#3b82f6",
+    l: state.user.level || "",
+    g: state.user.goal || "",
+    s: { streak: computeStreak(), ready: computeReadiness(), week: weekSessions(), total: state.logs.length },
+    st: state.stations,
+    a: state.achievements,
+    r: recent,
+    t: Date.now(),
+  };
+}
+
+function genCodePrefix() {
+  const chars = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+  let s = "";
+  for (let i = 0; i < 6; i++) s += chars[Math.floor(Math.random() * chars.length)];
+  return s;
+}
+
+function encodeSnapshot(snap) {
+  const json = JSON.stringify(snap);
+  const b64 = btoa(unescape(encodeURIComponent(json)));
+  const prefix = genCodePrefix();
+  return `HX-${prefix}-${b64}`;
+}
+
+function decodeSnapshot(code) {
+  const trimmed = code.trim().replace(/\s+/g, "");
+  if (!trimmed.startsWith("HX-")) throw new Error("invalid_format");
+  const rest = trimmed.slice(3);
+  const dashIdx = rest.indexOf("-");
+  if (dashIdx === -1) throw new Error("invalid_format");
+  const b64 = rest.slice(dashIdx + 1);
+  try {
+    const json = decodeURIComponent(escape(atob(b64)));
+    const data = JSON.parse(json);
+    if (!data.n || !data.s) throw new Error("invalid_data");
+    return data;
+  } catch (e) { throw new Error("invalid_data"); }
+}
+
+function timeAgo(ts) {
+  const diff = Date.now() - ts;
+  const min = Math.floor(diff / 60000);
+  if (min < 1) return currentLang === "en" ? "just now" : "à l'instant";
+  if (min < 60) return currentLang === "en" ? `${min} min ago` : `il y a ${min} min`;
+  const hr = Math.floor(min / 60);
+  if (hr < 24) return currentLang === "en" ? `${hr}h ago` : `il y a ${hr}h`;
+  const d = Math.floor(hr / 24);
+  return currentLang === "en" ? `${d}d ago` : `il y a ${d}j`;
+}
+
+function cheerMessage(you, partner) {
+  // Pick a cheer based on relative stats
+  const youReady = you.s ? you.s.ready : computeReadiness();
+  const partnerReady = partner.s.ready;
+  const diff = Math.abs(youReady - partnerReady);
+  if (currentLang === "en") {
+    if (diff < 10) return `You two are in lockstep — matching readiness within ${diff} points. Race ready.`;
+    if (youReady > partnerReady) return `You're ${diff} points ahead in readiness. Drag ${partner.n.split(" ")[0]} along — partners race together.`;
+    return `${partner.n.split(" ")[0]} is ${diff} points ahead. Catch up — your duo deserves both of you firing.`;
+  } else {
+    if (diff < 10) return `Vous êtes synchros — moins de ${diff} points d'écart. Prêt·e·s pour la course.`;
+    if (youReady > partnerReady) return `Tu as ${diff} points d'avance. Tire ${partner.n.split(" ")[0]} avec toi — un duo court ensemble.`;
+    return `${partner.n.split(" ")[0]} a ${diff} points d'avance. Rattrape — votre duo mérite que vous soyez deux à fond.`;
+  }
+}
+
+function renderDuoCard() {
+  const card = document.getElementById("duo-card");
+  const content = document.getElementById("duo-content");
+  if (!card || !state.user) return;
+  const partner = loadPartnerSnapshot();
+
+  if (!partner) {
+    content.innerHTML = `
+      <h3>🤝 ${currentLang === "en" ? "Link with your duo" : "Connecte-toi à ton duo"}</h3>
+      <p class="duo-card-intro">${currentLang === "en"
+        ? "Share a one-time code with your partner to see each other's training side by side. Streaks, readiness, station mastery — keep each other honest."
+        : "Partage un code unique avec ton·ta partenaire pour voir l'entraînement de l'autre côte à côte. Streaks, prêt·e course, maîtrise des stations — gardez-vous mutuellement engagé·e·s."}</p>
+      <div class="duo-actions">
+        <button class="btn" id="duo-generate-btn">${currentLang === "en" ? "Get my link code" : "Obtenir mon code"}</button>
+        <button class="btn btn-secondary" id="duo-enter-btn">${currentLang === "en" ? "Enter partner's code" : "Entrer le code partenaire"}</button>
+      </div>
+    `;
+    document.getElementById("duo-generate-btn").addEventListener("click", showGenerateModal);
+    document.getElementById("duo-enter-btn").addEventListener("click", showEnterModal);
+    return;
+  }
+
+  // Linked view
+  const yourStreak = computeStreak();
+  const yourReady = computeReadiness();
+  const yourWeek = weekSessions();
+  const yourTotal = state.logs.length;
+  const yourInitials = (state.user.name || "?").split(" ").map(s => s[0]).join("").slice(0, 2).toUpperCase() || "G";
+  const partnerInitials = (partner.n || "?").split(" ").map(s => s[0]).join("").slice(0, 2).toUpperCase();
+
+  const masterySegs = (stations) => {
+    let html = '';
+    for (let i = 1; i <= 8; i++) {
+      const st = stations && stations[i];
+      const cls = st === "confident" ? "confident" : st === "learning" ? "learning" : "";
+      html += `<div class="duo-seg ${cls}"></div>`;
+    }
+    return html;
+  };
+
+  content.innerHTML = `
+    <h3>🤝 ${currentLang === "en" ? "Your duo" : "Ton duo"}</h3>
+    <p class="duo-card-intro">${currentLang === "en"
+      ? "Synced view of your training and your partner's. Send fresh updates anytime to stay in sync."
+      : "Vue synchronisée de ton entraînement et de celui de ton·ta partenaire. Envoyez des mises à jour pour rester synchros."}</p>
+
+    <div class="duo-compare">
+      <div class="duo-side you-side">
+        <div class="duo-avatar">${yourInitials}</div>
+        <div class="duo-name">${state.user.name || (currentLang === "en" ? "You" : "Toi")}</div>
+        <div class="duo-role">${currentLang === "en" ? "You" : "Toi"}</div>
+        <div class="duo-stats-grid">
+          <div class="duo-stat"><div class="duo-stat-val">${yourStreak}</div><div class="duo-stat-lbl">${currentLang === "en" ? "Streak" : "Série"}</div></div>
+          <div class="duo-stat"><div class="duo-stat-val">${yourReady}%</div><div class="duo-stat-lbl">${currentLang === "en" ? "Ready" : "Prêt"}</div></div>
+          <div class="duo-stat"><div class="duo-stat-val">${yourWeek}</div><div class="duo-stat-lbl">${currentLang === "en" ? "This wk" : "Cette sem."}</div></div>
+          <div class="duo-stat"><div class="duo-stat-val">${yourTotal}</div><div class="duo-stat-lbl">${currentLang === "en" ? "Total" : "Total"}</div></div>
+        </div>
+        <div class="duo-mastery">${masterySegs(state.stations)}</div>
+      </div>
+      <div class="vs">vs</div>
+      <div class="duo-side partner-side" style="--partner-color: ${partner.pc || '#3b82f6'};">
+        <div class="duo-avatar">${partnerInitials}</div>
+        <div class="duo-name">${partner.n}</div>
+        <div class="duo-role">${currentLang === "en" ? "Partner" : "Partenaire"}</div>
+        <div class="duo-stats-grid">
+          <div class="duo-stat"><div class="duo-stat-val">${partner.s.streak}</div><div class="duo-stat-lbl">${currentLang === "en" ? "Streak" : "Série"}</div></div>
+          <div class="duo-stat"><div class="duo-stat-val">${partner.s.ready}%</div><div class="duo-stat-lbl">${currentLang === "en" ? "Ready" : "Prêt"}</div></div>
+          <div class="duo-stat"><div class="duo-stat-val">${partner.s.week}</div><div class="duo-stat-lbl">${currentLang === "en" ? "This wk" : "Cette sem."}</div></div>
+          <div class="duo-stat"><div class="duo-stat-val">${partner.s.total}</div><div class="duo-stat-lbl">${currentLang === "en" ? "Total" : "Total"}</div></div>
+        </div>
+        <div class="duo-mastery">${masterySegs(partner.st)}</div>
+      </div>
+    </div>
+
+    <div class="duo-cheer">${cheerMessage({ s: { ready: yourReady } }, partner)}</div>
+
+    <div class="duo-actions">
+      <button class="btn" id="duo-share-btn">${currentLang === "en" ? "Send fresh update" : "Envoyer une mise à jour"}</button>
+      <button class="btn btn-secondary" id="duo-apply-btn">${currentLang === "en" ? "Paste partner's update" : "Coller la mise à jour"}</button>
+      <button class="btn btn-danger" id="duo-unlink-btn">${currentLang === "en" ? "Unlink" : "Délier"}</button>
+    </div>
+    <div class="duo-meta">${currentLang === "en" ? "Last sync" : "Dernière synchro"}: ${timeAgo(partner.t)}</div>
+  `;
+
+  document.getElementById("duo-share-btn").addEventListener("click", showGenerateModal);
+  document.getElementById("duo-apply-btn").addEventListener("click", showEnterModal);
+  document.getElementById("duo-unlink-btn").addEventListener("click", () => {
+    if (!confirm(currentLang === "en" ? "Unlink from your partner? Their data will be removed from your view." : "Délier ton·ta partenaire ? Ses données seront supprimées de ta vue.")) return;
+    savePartnerSnapshot(null);
+    renderDuoCard();
+    toast(currentLang === "en" ? "Unlinked" : "Délié·e");
+  });
+}
+
+// =============== MODAL ===============
+function showModal(title, body) {
+  document.getElementById("modal-title").textContent = title;
+  document.getElementById("modal-body").innerHTML = body;
+  document.getElementById("modal-overlay").classList.add("show");
+}
+function hideModal() {
+  document.getElementById("modal-overlay").classList.remove("show");
+}
+
+function showGenerateModal() {
+  const snap = buildSnapshot();
+  const code = encodeSnapshot(snap);
+  const prefix = code.split("-")[1];
+  showModal(
+    currentLang === "en" ? "Your link code" : "Ton code de liaison",
+    `
+      <p>${currentLang === "en"
+        ? "Share this entire code with your partner. They'll paste it on their side to see your latest stats. Generate a new one anytime to send fresh updates."
+        : "Partage ce code complet avec ton·ta partenaire. Il·elle le collera de son côté pour voir tes stats. Génère-en un nouveau quand tu veux pour mettre à jour."}</p>
+      <div class="code-prefix">${prefix}</div>
+      <div class="code-display" id="code-display">${code}</div>
+      <div class="modal-actions">
+        <button class="btn" id="copy-code-btn">${currentLang === "en" ? "Copy code" : "Copier le code"}</button>
+        <button class="btn btn-secondary" id="modal-cancel-1">${currentLang === "en" ? "Done" : "Terminé"}</button>
+      </div>
+      <p style="margin-top: 14px; font-size: 12px; color: var(--text-dim); font-style: italic; font-family: var(--serif);">${currentLang === "en"
+        ? "Codes contain a snapshot of your training (no password, no email). Safe to share via SMS, WhatsApp, etc."
+        : "Les codes contiennent un instantané de ton entraînement (pas de mot de passe, pas d'email). OK à partager via SMS, WhatsApp, etc."}</p>
+    `
+  );
+  document.getElementById("copy-code-btn").addEventListener("click", () => {
+    navigator.clipboard.writeText(code).then(() => {
+      toast(currentLang === "en" ? "Code copied to clipboard" : "Code copié", "success");
+    }).catch(() => {
+      // Fallback: select the textarea
+      const range = document.createRange();
+      range.selectNode(document.getElementById("code-display"));
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+      toast(currentLang === "en" ? "Code selected — press Ctrl/Cmd+C" : "Code sélectionné — Ctrl/Cmd+C");
+    });
+  });
+  document.getElementById("modal-cancel-1").addEventListener("click", hideModal);
+}
+
+function showEnterModal() {
+  showModal(
+    currentLang === "en" ? "Enter partner's code" : "Entrer le code du·de la partenaire",
+    `
+      <p>${currentLang === "en"
+        ? "Paste the full code your partner sent you. Starts with HX-."
+        : "Colle le code complet que ton·ta partenaire t'a envoyé. Commence par HX-."}</p>
+      <div class="modal-error" id="modal-error"></div>
+      <div class="modal-success" id="modal-success"></div>
+      <textarea class="code-textarea" id="code-input" placeholder="HX-..."></textarea>
+      <div class="modal-actions">
+        <button class="btn" id="apply-code-btn">${currentLang === "en" ? "Link" : "Lier"}</button>
+        <button class="btn btn-secondary" id="modal-cancel-2">${currentLang === "en" ? "Cancel" : "Annuler"}</button>
+      </div>
+    `
+  );
+  document.getElementById("apply-code-btn").addEventListener("click", () => {
+    const input = document.getElementById("code-input").value;
+    const err = document.getElementById("modal-error");
+    const ok = document.getElementById("modal-success");
+    err.classList.remove("show");
+    ok.classList.remove("show");
+    try {
+      const snap = decodeSnapshot(input);
+      savePartnerSnapshot(snap);
+      ok.textContent = currentLang === "en"
+        ? `Linked with ${snap.n} ✓`
+        : `Lié·e avec ${snap.n} ✓`;
+      ok.classList.add("show");
+      setTimeout(() => {
+        hideModal();
+        renderDuoCard();
+        toast(currentLang === "en" ? `Linked with ${snap.n}` : `Lié·e avec ${snap.n}`, "success");
+      }, 900);
+    } catch (e) {
+      err.textContent = currentLang === "en"
+        ? "That code doesn't look right. Make sure you copied the full string starting with HX-."
+        : "Le code ne semble pas correct. Vérifie que tu as bien copié toute la chaîne commençant par HX-.";
+      err.classList.add("show");
+    }
+  });
+  document.getElementById("modal-cancel-2").addEventListener("click", hideModal);
+}
+
+// =============== DASHBOARD ===============
+function greetingText() {
+  const h = new Date().getHours();
+  const name = state.user && state.user.name ? state.user.name.split(" ")[0] : "";
+  if (currentLang === "en") {
+    const prefix = h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening";
+    return name ? `${prefix}, ${name}` : prefix;
+  } else {
+    const prefix = h < 12 ? "Bonjour" : h < 18 ? "Bon après-midi" : "Bonsoir";
+    return name ? `${prefix}, ${name}` : prefix;
+  }
+}
+
+function renderDashboard() {
+  const dash = document.getElementById("dashboard");
+  if (!dash || !state.user) return;
+
+  document.getElementById("greeting-title").textContent = greetingText();
+  const target = weekTarget();
+  const week = weekSessions();
+  const streak = computeStreak();
+  const readiness = computeReadiness();
+
+  const subs = {
+    en: streak === 0 ? "Log today to start" : streak === 1 ? "One day in — keep going." : `${streak} days in a row`,
+    fr: streak === 0 ? "Log aujourd'hui pour démarrer" : streak === 1 ? "1 jour — continue." : `${streak} jours d'affilée`,
+  };
+
+  document.getElementById("stat-streak").textContent = streak;
+  document.getElementById("stat-streak-sub").textContent = subs[currentLang];
+  document.getElementById("stat-week").textContent = week;
+  document.getElementById("stat-week-unit").textContent = "/ " + target;
+  document.getElementById("stat-total").textContent = state.logs.length;
+  document.getElementById("ready-pct").textContent = readiness + "%";
+  const ring = document.getElementById("ready-ring");
+  const circ = 2 * Math.PI * 26;
+  ring.setAttribute("stroke-dasharray", circ);
+  ring.setAttribute("stroke-dashoffset", circ * (1 - readiness / 100));
+
+  // Today's suggestion
+  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const dayIdx = new Date().getDay();
+  const planDay = PLANS[state.phase][(dayIdx + 6) % 7];
+  document.getElementById("today-phase").textContent = state.phase.toUpperCase();
+  document.getElementById("today-focus").textContent = planDay.focus[currentLang];
+  document.getElementById("today-content").textContent = planDay.content[currentLang];
+
+  // Mastery bar
+  const bar = document.getElementById("mastery-bar");
+  bar.innerHTML = "";
+  for (let i = 1; i <= 8; i++) {
+    const seg = document.createElement("div");
+    seg.className = "mastery-seg";
+    const st = state.stations[i];
+    if (st === "learning") seg.classList.add("learning");
+    else if (st === "confident") seg.classList.add("confident");
+    bar.appendChild(seg);
+  }
+  const confident = Object.values(state.stations).filter(v => v === "confident").length;
+  const learning = Object.values(state.stations).filter(v => v === "learning").length;
+  document.getElementById("mastery-text").textContent = currentLang === "en"
+    ? `${confident} of 8 confident · ${learning} learning`
+    : `${confident} maîtrisées sur 8 · ${learning} en cours`;
+
+  // Achievements row
+  const achRow = document.getElementById("ach-row");
+  achRow.innerHTML = "";
+  const earned = ACHIEVEMENTS.filter(a => state.achievements.includes(a.id));
+  const locked = ACHIEVEMENTS.filter(a => !state.achievements.includes(a.id)).slice(0, 3);
+  if (earned.length === 0 && locked.length > 0) {
+    achRow.innerHTML = `<div style="color: var(--text-dim); font-size: 13px; font-style: italic; font-family: var(--serif);">${currentLang === "en" ? "Your first badge is waiting. Log a session to earn it." : "Ton 1ᵉʳ badge t'attend. Log une séance pour le débloquer."}</div>`;
+  }
+  earned.slice(-5).forEach(a => {
+    const el = document.createElement("div");
+    el.className = "badge";
+    el.innerHTML = `<span class="badge-icon">${a.icon}</span><span>${a.name[currentLang]}</span>`;
+    achRow.appendChild(el);
+  });
+
+  // Upcoming event
+  const upcoming = EVENTS
+    .filter(e => new Date(e.date) >= new Date())
+    .sort((a, b) => a.date.localeCompare(b.date))[0];
+  const upEl = document.getElementById("upcoming-content");
+  if (upcoming) {
+    const days2 = Math.ceil((new Date(upcoming.date) - Date.now()) / 86400000);
+    upEl.innerHTML = `
+      <div class="days-to">${days2}<span style="font-size: 14px; color: var(--text-muted); margin-left: 4px;">${currentLang === "en" ? "days" : "jours"}</span></div>
+      <div style="font-family: var(--serif); font-size: 18px; color: var(--ink); margin-top: 4px;">${upcoming.name}</div>
+      <div style="font-size: 13px; color: var(--text-muted); margin-top: 2px;">${upcoming.venue}</div>
+    `;
+  } else {
+    upEl.innerHTML = `<div style="color: var(--text-dim);">${currentLang === "en" ? "No upcoming races" : "Pas de course à venir"}</div>`;
+  }
+
+  // Update header user info
+  if (state.user) {
+    document.getElementById("user-name-hdr").textContent = state.user.name || (currentLang === "en" ? "Guest" : "Invité");
+    const initials = (state.user.name || "?").split(" ").map(s => s[0]).join("").slice(0, 2).toUpperCase() || "G";
+    document.getElementById("user-avatar").textContent = initials;
+  }
+
+  // Duo card
+  renderDuoCard();
+}
+
+// =============== GLOSSARY ===============
+function renderGlossary() {
+  const list = document.getElementById("glossary-list");
+  if (!list) return;
+  list.innerHTML = "";
+  GLOSSARY.forEach(g => {
+    const el = document.createElement("div");
+    el.className = "glossary-item";
+    el.innerHTML = `
+      <div class="glossary-term">${g.term}</div>
+      <div class="glossary-pron">/ ${g.pron} /</div>
+      <div class="glossary-def">${g.def[currentLang]}</div>
+    `;
+    list.appendChild(el);
+  });
+}
+
+// =============== PROFILE ===============
+function renderProfile() {
+  if (!state.user) return;
+  const name = state.user.name || "";
+  document.getElementById("profile-name").textContent = name || (currentLang === "en" ? "Guest" : "Invité");
+  const initials = (name || "?").split(" ").map(s => s[0]).join("").slice(0, 2).toUpperCase() || "G";
+  document.getElementById("profile-avatar").textContent = initials;
+  const meta = [];
+  if (state.user.email) meta.push(state.user.email);
+  if (state.user.level) meta.push(currentLang === "en" ? state.user.level : ({ beginner: "débutant·e", intermediate: "intermédiaire", advanced: "avancé·e" }[state.user.level]));
+  if (state.user.partner) meta.push((currentLang === "en" ? "with " : "avec ") + state.user.partner);
+  document.getElementById("profile-meta").textContent = meta.join(" · ") || (currentLang === "en" ? "Guest mode" : "Mode invité");
+
+  document.getElementById("prof-name").value = state.user.name || "";
+  document.getElementById("prof-partner").value = state.user.partner || "";
+  document.getElementById("prof-level").value = state.user.level || "beginner";
+  document.getElementById("prof-goal").value = state.user.goal || "finish";
+
+  // Achievements grid
+  const grid = document.getElementById("ach-grid");
+  grid.innerHTML = "";
+  ACHIEVEMENTS.forEach(a => {
+    const earned = state.achievements.includes(a.id);
+    const el = document.createElement("div");
+    el.className = "ach-card" + (earned ? "" : " locked");
+    el.innerHTML = `
+      <div class="ach-card-icon">${a.icon}</div>
+      <div class="ach-card-name">${a.name[currentLang]}</div>
+      <div class="ach-card-desc">${a.desc[currentLang]}</div>
+    `;
+    grid.appendChild(el);
+  });
+}
+
+// =============== CHART ===============
+function renderChart() {
+  const svg = document.getElementById("chart-svg");
+  const labels = document.getElementById("chart-labels");
+  if (!svg) return;
+  const now = new Date();
+  const weeks = [];
+  for (let i = 7; i >= 0; i--) {
+    const end = new Date(now);
+    end.setDate(end.getDate() - i * 7);
+    const start = new Date(end);
+    start.setDate(start.getDate() - 6);
+    const count = state.logs.filter(l => {
+      const d = new Date(l.date);
+      return d >= start && d <= end;
+    }).length;
+    weeks.push({ count, label: `W${-i || "0"}` });
+  }
+  const maxCount = Math.max(1, ...weeks.map(w => w.count));
+  const barW = 400 / weeks.length;
+  const pad = barW * 0.2;
+  svg.innerHTML = weeks.map((w, i) => {
+    const h = (w.count / maxCount) * 130;
+    const y = 150 - h;
+    const x = i * barW + pad / 2;
+    const bw = barW - pad;
+    return `<rect class="${w.count > 0 ? 'chart-bar' : 'chart-empty'}" x="${x}" y="${y}" width="${bw}" height="${Math.max(2, h)}" rx="3"></rect>
+            <text x="${x + bw / 2}" y="${y - 4}" text-anchor="middle" font-size="11" fill="#8A8376" font-family="Inter, sans-serif">${w.count || ""}</text>`;
+  }).join("");
+  labels.innerHTML = weeks.map((w, i) => `<span>${i === weeks.length - 1 ? (currentLang === "en" ? "This week" : "Cette sem.") : "-" + (weeks.length - 1 - i) + "w"}</span>`).join("");
+}
+
+// =============== TIMER ===============
+function beep(freq = 880, dur = 150) {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.frequency.value = freq;
+    o.connect(g); g.connect(ctx.destination);
+    g.gain.setValueAtTime(0.3, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + dur / 1000);
+    o.start();
+    o.stop(ctx.currentTime + dur / 1000);
+  } catch (e) {}
+}
+
+function loadTimer(intervals, name) {
+  state.timer.intervals = intervals;
+  state.timer.idx = 0;
+  state.timer.elapsed = 0;
+  state.timer.running = false;
+  state.timer.paused = false;
+  clearInterval(state.timer.tickHandle);
+  document.getElementById("timer-stage").textContent = name || "Ready";
+  document.getElementById("timer-label").textContent = intervals[0].label;
+  document.getElementById("timer-time").textContent = fmtTime(intervals[0].sec);
+  document.querySelector('[data-tab="timer"]').click();
+}
+
+function fmtTime(s) {
+  const m = Math.floor(s / 60);
+  const sec = Math.max(0, Math.floor(s % 60));
+  return `${String(m).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
+}
+
+function timerTick() {
+  const t = state.timer;
+  if (!t.running || t.paused) return;
+  const now = Date.now();
+  const elapsed = (now - t.stageStart) / 1000;
+  const curr = t.intervals[t.idx];
+  const remaining = curr.sec - elapsed;
+  document.getElementById("timer-time").textContent = fmtTime(Math.max(0, remaining));
+  document.getElementById("timer-label").textContent = curr.label;
+  if (remaining <= 0) {
+    beep(curr.label.toLowerCase().includes("rest") ? 440 : 880);
+    t.idx++;
+    if (t.idx >= t.intervals.length) {
+      beep(1200, 500);
+      t.running = false;
+      clearInterval(t.tickHandle);
+      document.getElementById("timer-stage").textContent = currentLang === "en" ? "Done!" : "Terminé !";
+      document.getElementById("timer-label").textContent = currentLang === "en" ? "Great work" : "Beau travail";
+      document.getElementById("timer-time").textContent = "00:00";
+      return;
+    }
+    t.stageStart = now;
+  }
+}
+
+function startTimer() {
+  const t = state.timer;
+  if (t.intervals.length === 0) {
+    loadTimer([{ label: "Work", sec: 60 }], "Quick 60s");
+  }
+  if (t.paused) {
+    t.paused = false;
+    t.stageStart = Date.now() - (t.elapsedInStage || 0);
+  } else if (!t.running) {
+    t.running = true;
+    t.stageStart = Date.now();
+  }
+  t.running = true;
+  clearInterval(t.tickHandle);
+  t.tickHandle = setInterval(timerTick, 100);
+}
+
+function pauseTimer() {
+  const t = state.timer;
+  if (!t.running) return;
+  t.paused = !t.paused;
+  if (t.paused) {
+    t.elapsedInStage = Date.now() - t.stageStart;
+  } else {
+    t.stageStart = Date.now() - (t.elapsedInStage || 0);
+  }
+}
+
+function resetTimer() {
+  const t = state.timer;
+  t.running = false;
+  t.paused = false;
+  t.idx = 0;
+  t.elapsed = 0;
+  clearInterval(t.tickHandle);
+  if (t.intervals.length > 0) {
+    document.getElementById("timer-time").textContent = fmtTime(t.intervals[0].sec);
+    document.getElementById("timer-label").textContent = t.intervals[0].label;
+  } else {
+    document.getElementById("timer-time").textContent = "00:00";
+    document.getElementById("timer-label").textContent = "Press start";
+  }
+  document.getElementById("timer-stage").textContent = "Ready";
+}
+
+// =============== BINDINGS ===============
+document.querySelectorAll("#tabs button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll("#tabs button").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.tab).classList.add("active");
+  });
+});
+
+document.querySelectorAll(".lang-toggle button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".lang-toggle button").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentLang = btn.dataset.lang;
+    applyLang();
+    renderLogs();
+  });
+});
+
+document.querySelectorAll("#phase-tabs .phase-tab").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll("#phase-tabs .phase-tab").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    state.phase = btn.dataset.phase;
+    renderPlan();
+  });
+});
+
+document.querySelectorAll("[data-region]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll("[data-region]").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    state.region = btn.dataset.region;
+    renderEvents();
+  });
+});
+
+document.getElementById("timer-start").addEventListener("click", startTimer);
+document.getElementById("timer-pause").addEventListener("click", pauseTimer);
+document.getElementById("timer-reset").addEventListener("click", resetTimer);
+
+document.getElementById("custom-start").addEventListener("click", () => {
+  const work = parseInt(document.getElementById("custom-work").value) || 40;
+  const rest = parseInt(document.getElementById("custom-rest").value) || 20;
+  const rounds = parseInt(document.getElementById("custom-rounds").value) || 10;
+  const intervals = [];
+  for (let i = 0; i < rounds; i++) {
+    intervals.push({ label: "Work", sec: work });
+    if (rest > 0 && i < rounds - 1) intervals.push({ label: "Rest", sec: rest });
+  }
+  loadTimer(intervals, `${rounds} × ${work}/${rest}`);
+});
+
+document.getElementById("log-add").addEventListener("click", () => {
+  const date = document.getElementById("log-date").value;
+  const type = document.getElementById("log-type").value;
+  const duration = document.getElementById("log-duration").value;
+  const rpe = document.getElementById("log-rpe").value;
+  const notes = document.getElementById("log-notes").value;
+  if (!date || !duration) {
+    toast(currentLang === "en" ? "Please enter date and duration" : "Entre la date et la durée");
+    return;
+  }
+  state.logs.push({ id: Date.now(), date, type, duration, rpe, notes });
+  persistLogs();
+  document.getElementById("log-duration").value = "";
+  document.getElementById("log-rpe").value = "";
+  document.getElementById("log-notes").value = "";
+  checkAchievements();
+  renderLogs();
+  renderDashboard();
+  toast(currentLang === "en" ? "Session saved" : "Séance enregistrée", "success");
+});
+
+// =============== AUTH UI ===============
+let authMode = "signin";
+function setAuthMode(mode) {
+  authMode = mode;
+  document.querySelectorAll(".auth-tab").forEach(b => b.classList.toggle("active", b.dataset.auth === mode));
+  document.querySelectorAll("[data-show]").forEach(el => {
+    el.classList.toggle("hidden", el.dataset.show !== mode);
+  });
+  document.getElementById("auth-submit").textContent = mode === "signin"
+    ? (currentLang === "en" ? "Sign in" : "Se connecter")
+    : (currentLang === "en" ? "Create account" : "Créer un compte");
+  document.getElementById("auth-subtitle").textContent = mode === "signin"
+    ? (currentLang === "en" ? "Welcome back" : "Re-bienvenue")
+    : (currentLang === "en" ? "Let's get you started" : "C'est parti");
+  document.getElementById("auth-error").classList.remove("show");
+}
+
+document.querySelectorAll(".auth-tab").forEach(btn => {
+  btn.addEventListener("click", () => setAuthMode(btn.dataset.auth));
+});
+
+document.getElementById("auth-form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const name = document.getElementById("auth-name").value.trim();
+  const email = document.getElementById("auth-email").value.trim().toLowerCase();
+  const pwd = document.getElementById("auth-password").value;
+  let result;
+  if (authMode === "signup") result = signUp(name, email, pwd);
+  else result = signIn(email, pwd);
+  const err = document.getElementById("auth-error");
+  if (result.error) {
+    err.textContent = result.error;
+    err.classList.add("show");
+    return;
+  }
+  err.classList.remove("show");
+  if (state.user.onboarded) enterApp();
+  else startOnboarding();
+});
+
+document.getElementById("guest-link").addEventListener("click", (e) => {
+  e.preventDefault();
+  signInGuest();
+  if (state.user.onboarded) enterApp();
+  else startOnboarding();
+});
+
+// =============== ONBOARDING ===============
+function renderOnboardSlide() {
+  document.querySelectorAll(".onboard-slide").forEach((s, i) => {
+    s.classList.toggle("active", i === state.onboardSlide);
+  });
+  document.querySelectorAll(".onboard-dot").forEach((d, i) => {
+    d.classList.toggle("active", i <= state.onboardSlide);
+  });
+  document.getElementById("onboard-prev").style.visibility = state.onboardSlide === 0 ? "hidden" : "visible";
+  const isLast = state.onboardSlide === 4;
+  document.getElementById("onboard-next").textContent = isLast
+    ? (currentLang === "en" ? "Let's go" : "C'est parti")
+    : (currentLang === "en" ? "Next" : "Suivant");
+}
+
+function startOnboarding() {
+  state.onboardSlide = 0;
+  state.onboardData = { level: null, goal: null, partner: "", partnerColor: "#3b82f6" };
+  renderOnboardSlide();
+  showScreen("onboard");
+}
+
+document.querySelectorAll('[data-group="level"] .choice').forEach(c => {
+  c.addEventListener("click", () => {
+    document.querySelectorAll('[data-group="level"] .choice').forEach(x => x.classList.remove("selected"));
+    c.classList.add("selected");
+    state.onboardData.level = c.dataset.value;
+  });
+});
+document.querySelectorAll('[data-group="goal"] .choice').forEach(c => {
+  c.addEventListener("click", () => {
+    document.querySelectorAll('[data-group="goal"] .choice').forEach(x => x.classList.remove("selected"));
+    c.classList.add("selected");
+    state.onboardData.goal = c.dataset.value;
+  });
+});
+document.querySelectorAll("#avatar-picker .avatar-swatch").forEach(s => {
+  s.addEventListener("click", () => {
+    document.querySelectorAll("#avatar-picker .avatar-swatch").forEach(x => x.classList.remove("selected"));
+    s.classList.add("selected");
+    state.onboardData.partnerColor = s.dataset.color;
+  });
+});
+
+document.getElementById("onboard-prev").addEventListener("click", () => {
+  if (state.onboardSlide > 0) { state.onboardSlide--; renderOnboardSlide(); }
+});
+document.getElementById("onboard-next").addEventListener("click", () => {
+  if (state.onboardSlide === 2 && !state.onboardData.level) {
+    toast(currentLang === "en" ? "Pick a level to continue" : "Choisis un niveau pour continuer");
+    return;
+  }
+  if (state.onboardSlide === 3 && !state.onboardData.goal) {
+    toast(currentLang === "en" ? "Pick a goal to continue" : "Choisis un objectif pour continuer");
+    return;
+  }
+  if (state.onboardSlide < 4) {
+    state.onboardSlide++;
+    renderOnboardSlide();
+    return;
+  }
+  // Final slide - save
+  state.onboardData.partner = document.getElementById("partner-name").value.trim();
+  state.user.level = state.onboardData.level;
+  state.user.goal = state.onboardData.goal;
+  state.user.partner = state.onboardData.partner;
+  state.user.partnerColor = state.onboardData.partnerColor;
+  state.user.onboarded = true;
+  // Set default phase based on level
+  state.phase = state.onboardData.level === "beginner" ? "base" : state.onboardData.level === "advanced" ? "build" : "base";
+  persistUser();
+  checkAchievements();
+  enterApp();
+  toast(currentLang === "en" ? "You're all set. Let's train." : "Tout est prêt. Allons-y.", "success");
+});
+
+// =============== USER MENU ===============
+const userBtn = document.getElementById("user-btn");
+const userDropdown = document.getElementById("user-dropdown");
+userBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  userDropdown.classList.toggle("show");
+});
+document.addEventListener("click", (e) => {
+  if (!userBtn.contains(e.target) && !userDropdown.contains(e.target)) userDropdown.classList.remove("show");
+});
+document.getElementById("profile-link").addEventListener("click", (e) => {
+  e.preventDefault();
+  userDropdown.classList.remove("show");
+  switchTab("profile");
+});
+document.getElementById("glossary-link").addEventListener("click", (e) => {
+  e.preventDefault();
+  userDropdown.classList.remove("show");
+  switchTab("glossary");
+});
+document.getElementById("signout-link").addEventListener("click", (e) => {
+  e.preventDefault();
+  signOut();
+});
+
+function switchTab(tab) {
+  document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("active", b.dataset.tab === tab));
+  document.querySelectorAll(".panel").forEach(p => p.classList.toggle("active", p.id === tab));
+  window.scrollTo(0, 0);
+}
+
+// =============== PROFILE ACTIONS ===============
+document.getElementById("prof-save").addEventListener("click", () => {
+  state.user.name = document.getElementById("prof-name").value.trim() || state.user.name;
+  state.user.partner = document.getElementById("prof-partner").value.trim();
+  state.user.level = document.getElementById("prof-level").value;
+  state.user.goal = document.getElementById("prof-goal").value;
+  persistUser();
+  renderDashboard();
+  renderProfile();
+  toast(currentLang === "en" ? "Profile saved" : "Profil enregistré", "success");
+});
+document.getElementById("prof-signout").addEventListener("click", () => signOut());
+document.getElementById("prof-delete").addEventListener("click", () => deleteAccount());
+
+// =============== DASHBOARD ACTIONS ===============
+document.getElementById("today-log").addEventListener("click", () => switchTab("progress"));
+document.getElementById("today-timer").addEventListener("click", () => switchTab("timer"));
+
+// =============== FITNESS ESTIMATOR ===============
+document.getElementById("est-go").addEventListener("click", () => {
+  const min = parseInt(document.getElementById("est-min").value) || 0;
+  const sec = parseInt(document.getElementById("est-sec").value) || 0;
+  if (min < 12) {
+    document.getElementById("est-result").innerHTML = currentLang === "en"
+      ? "Enter a realistic 5 km time (minutes ≥ 12)."
+      : "Entre un temps 5 km réaliste (minutes ≥ 12).";
+    document.getElementById("est-result").classList.add("show");
+    return;
+  }
+  const fiveKmSeconds = min * 60 + sec;
+  // Rough duo Hyrox estimate: 5k pace × 1.6 (for 8k shared) + ~25 min stations (split)
+  const perKmSec = fiveKmSeconds / 5;
+  const runningSec = perKmSec * 8 * 1.05; // slight fatigue
+  const stationsSec = 25 * 60 + (perKmSec - 300) * 6; // adjusts with fitness
+  const totalSec = runningSec + Math.max(15 * 60, stationsSec);
+  const totalMin = Math.round(totalSec / 60);
+  const lowerMin = Math.round(totalMin * 0.9);
+  const upperMin = Math.round(totalMin * 1.15);
+  const result = currentLang === "en"
+    ? `<strong>${lowerMin}–${upperMin} min</strong>Rough estimate for a prepared duo. Training quality shifts this a lot.`
+    : `<strong>${lowerMin}–${upperMin} min</strong>Estimation pour un duo préparé. La qualité de l'entraînement fait beaucoup.`;
+  document.getElementById("est-result").innerHTML = result;
+  document.getElementById("est-result").classList.add("show");
+});
+
+// =============== MODAL CLOSE ===============
+document.getElementById("modal-close").addEventListener("click", hideModal);
+document.getElementById("modal-overlay").addEventListener("click", (e) => {
+  if (e.target.id === "modal-overlay") hideModal();
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") hideModal();
+});
+
+// =============== APP ENTRY ===============
+function enterApp() {
+  showScreen("app");
+  applyLang();
+  renderLogs();
+  renderDashboard();
+  switchTab("dashboard");
+}
+
+// Initialize
+document.getElementById("log-date").value = new Date().toISOString().split("T")[0];
+if (loadSavedSession()) {
+  if (state.user.onboarded) enterApp();
+  else startOnboarding();
+} else {
+  showScreen("auth");
+  setAuthMode("signin");
+}
+
+</script>
+</body>
+</html>
