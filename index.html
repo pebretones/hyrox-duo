@@ -3322,7 +3322,7 @@ const I18N = {
   },
 };
 
-let currentLang = "en";
+let currentLang = localStorage.getItem("hyrox-lang") || "en";
 
 // =============== STATE ===============
 let state = {
@@ -3351,6 +3351,8 @@ function loadUserData(user) {
   state.logs = JSON.parse(localStorage.getItem("hyrox-logs-" + user.id) || "[]");
   state.stations = JSON.parse(localStorage.getItem("hyrox-stations-" + user.id) || "{}");
   state.achievements = JSON.parse(localStorage.getItem("hyrox-ach-" + user.id) || "[]");
+  const savedPhase = localStorage.getItem("hyrox-phase-" + user.id);
+  state.phase = savedPhase || (user.level === "advanced" ? "build" : "base");
 }
 function persistLogs() { if (state.user) localStorage.setItem("hyrox-logs-" + state.user.id, JSON.stringify(state.logs)); }
 function persistStations() { if (state.user) localStorage.setItem("hyrox-stations-" + state.user.id, JSON.stringify(state.stations)); }
@@ -3364,6 +3366,31 @@ function persistUser() {
   } else {
     // guest mode
     localStorage.setItem("hyrox-guest", JSON.stringify(state.user));
+  }
+}
+
+function preloadAuthScreen() {
+  const lastEmail = localStorage.getItem("hyrox-last-email");
+  const emailInput = document.getElementById("auth-email");
+  const passInput = document.getElementById("auth-password");
+  const subtitle = document.getElementById("auth-subtitle");
+  // Reset password whenever we land here
+  if (passInput) passInput.value = "";
+  if (lastEmail && emailInput) {
+    emailInput.value = lastEmail;
+    const accounts = loadAccounts();
+    const existing = accounts[lastEmail];
+    if (existing && subtitle) {
+      const fname = (existing.name || "").split(" ")[0] || existing.name || "";
+      subtitle.textContent = currentLang === "en"
+        ? (fname ? `Welcome back, ${fname}` : "Welcome back")
+        : (fname ? `Re-bienvenue, ${fname}` : "Re-bienvenue");
+    } else if (subtitle) {
+      subtitle.textContent = currentLang === "en" ? "Welcome back" : "Re-bienvenue";
+    }
+    setTimeout(() => { if (passInput) passInput.focus(); }, 60);
+  } else if (subtitle) {
+    subtitle.textContent = currentLang === "en" ? "Welcome back" : "Re-bienvenue";
   }
 }
 
@@ -3384,6 +3411,7 @@ function signUp(name, email, password) {
   accounts[email] = user;
   saveAccounts(accounts);
   saveSession(email);
+  localStorage.setItem("hyrox-last-email", email);
   state.user = user;
   loadUserData(user);
   return { ok: true };
@@ -3395,6 +3423,7 @@ function signIn(email, password) {
   if (!user) return { error: "No account with this email" };
   if (user.passwordHash !== simpleHash(password)) return { error: "Incorrect password" };
   saveSession(email);
+  localStorage.setItem("hyrox-last-email", email);
   state.user = user;
   loadUserData(user);
   return { ok: true };
@@ -3424,6 +3453,7 @@ function signOut() {
   state.logs = [];
   state.stations = {};
   state.achievements = [];
+  preloadAuthScreen();
   showScreen("auth");
 }
 
@@ -3602,6 +3632,9 @@ function renderStations() {
 }
 
 function renderPlan() {
+  document.querySelectorAll("#phase-tabs .phase-tab").forEach(b => {
+    b.classList.toggle("active", b.dataset.phase === state.phase);
+  });
   const grid = document.getElementById("week-grid");
   grid.innerHTML = "";
   const dayNames = currentLang === "en"
@@ -4421,9 +4454,15 @@ document.querySelectorAll(".lang-toggle button").forEach(btn => {
     document.querySelectorAll(".lang-toggle button").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
     currentLang = btn.dataset.lang;
+    localStorage.setItem("hyrox-lang", currentLang);
     applyLang();
     renderLogs();
   });
+});
+
+// Reflect saved language on the toggle buttons at startup
+document.querySelectorAll(".lang-toggle button").forEach(b => {
+  b.classList.toggle("active", b.dataset.lang === currentLang);
 });
 
 document.querySelectorAll("#phase-tabs .phase-tab").forEach(btn => {
@@ -4431,7 +4470,9 @@ document.querySelectorAll("#phase-tabs .phase-tab").forEach(btn => {
     document.querySelectorAll("#phase-tabs .phase-tab").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
     state.phase = btn.dataset.phase;
+    if (state.user) localStorage.setItem("hyrox-phase-" + state.user.id, state.phase);
     renderPlan();
+    renderDashboard();
   });
 });
 
@@ -4739,8 +4780,9 @@ if (loadSavedSession()) {
   if (state.user.onboarded) enterApp();
   else startOnboarding();
 } else {
-  showScreen("auth");
   setAuthMode("signin");
+  preloadAuthScreen();
+  showScreen("auth");
 }
 
 </script>
