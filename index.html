@@ -1851,28 +1851,31 @@
   .ex-alts { padding: 6px 0; }
   .ex-alt {
     display: grid;
-    grid-template-columns: 70px 1fr;
-    gap: 14px;
-    padding: 14px 22px;
+    grid-template-columns: 90px 1fr;
+    gap: 16px;
+    padding: 16px 22px;
     align-items: start;
     border-bottom: 1px solid var(--border);
   }
   .ex-alt:last-child { border-bottom: none; }
   @media (max-width: 480px) {
-    .ex-alt { grid-template-columns: 56px 1fr; gap: 10px; padding: 12px 16px; }
+    .ex-alt { grid-template-columns: 70px 1fr; gap: 12px; padding: 14px 16px; }
   }
   .anatomy {
-    width: 70px; height: 100px;
+    width: 80px; height: 130px;
     flex-shrink: 0;
+    display: block;
   }
-  @media (max-width: 480px) { .anatomy { width: 56px; height: 80px; } }
-  .anatomy path, .anatomy circle, .anatomy rect {
+  @media (max-width: 480px) { .anatomy { width: 64px; height: 105px; } }
+  .anatomy path, .anatomy ellipse, .anatomy rect, .anatomy circle {
     transition: fill 0.3s ease;
+    stroke: #C9BFA0;
+    stroke-width: 0.6;
   }
-  .anatomy .muscle-bg { fill: #E8E2D0; }
-  .anatomy .muscle-secondary { fill: #E8C99A; }
-  .anatomy .muscle-primary { fill: var(--accent); }
-  .anatomy .skin { fill: #F0E8DA; stroke: #D9D1BB; stroke-width: 0.4; }
+  .anatomy .muscle-bg { fill: #DED5BD; }
+  .anatomy .muscle-secondary { fill: #E8C26B; stroke: #B8983E; }
+  .anatomy .muscle-primary { fill: var(--accent); stroke: var(--accent-deep); stroke-width: 0.8; }
+  .anatomy .skin { fill: #F0E5D0; stroke: #C9BFA0; stroke-width: 0.6; }
   .ex-alt-body { min-width: 0; }
   .ex-alt-tier {
     display: inline-block;
@@ -2878,14 +2881,6 @@
           <input type="text" id="prof-partner" />
         </div>
         <div>
-          <label data-i18n="fieldLevel">Level</label>
-          <select id="prof-level">
-            <option value="beginner">Beginner</option>
-            <option value="intermediate">Intermediate</option>
-            <option value="advanced">Advanced</option>
-          </select>
-        </div>
-        <div>
           <label data-i18n="fieldGoal">Goal</label>
           <select id="prof-goal">
             <option value="finish">Just finish</option>
@@ -2893,6 +2888,27 @@
             <option value="sub75">Under 75 min</option>
             <option value="sub65">Under 65 min</option>
           </select>
+        </div>
+        <div>
+          <label data-i18n="fieldSex">Sex</label>
+          <select id="prof-sex">
+            <option value="">—</option>
+            <option value="m">Male</option>
+            <option value="f">Female</option>
+            <option value="o">Other / prefer not to say</option>
+          </select>
+        </div>
+        <div>
+          <label data-i18n="fieldAge">Age</label>
+          <input type="number" id="prof-age" min="13" max="100" placeholder="28" />
+        </div>
+        <div>
+          <label data-i18n="fieldHeight">Height (cm)</label>
+          <input type="number" id="prof-height" min="120" max="230" placeholder="178" />
+        </div>
+        <div>
+          <label data-i18n="fieldWeight">Weight (kg)</label>
+          <input type="number" id="prof-weight" min="35" max="200" step="0.1" placeholder="74" />
         </div>
       </div>
       <button class="btn" id="prof-save" data-i18n="btnSave">Save changes</button>
@@ -3558,49 +3574,42 @@ const ANATOMY_PATHS = {
 };
 
 function renderAnatomy(primary = [], secondary = []) {
-  const isPrimary = m => primary.includes(m);
-  const isSecondary = m => secondary.includes(m);
-  const fillFor = m => isPrimary(m) ? "muscle-primary" : isSecondary(m) ? "muscle-secondary" : "muscle-bg";
-  // Map composite muscle keys
-  const muscleClass = (m) => {
-    if (m === "back" || m === "lats" || m === "lowerback") {
-      // Simplified: use chest area as back proxy on front-view; show with overlay if needed
-      return fillFor(m);
-    }
-    return fillFor(m);
+  // Pick the "winning" status for each visible region.
+  // Priority: primary > secondary > inactive.
+  const pick = (...muscles) => {
+    for (const m of muscles) if (primary.includes(m)) return "muscle-primary";
+    for (const m of muscles) if (secondary.includes(m)) return "muscle-secondary";
+    return "muscle-bg";
   };
-  // Build SVG with each muscle group classed appropriately
-  const muscles = {
-    shoulders: muscleClass("shoulders"),
-    chest: muscleClass(primary.includes("back") || primary.includes("lats") || secondary.includes("back") || secondary.includes("lats") ? (primary.includes("back") || primary.includes("lats") ? "back" : "lats") : "chest"),
-    abs: muscleClass(primary.includes("lowerback") || secondary.includes("lowerback") ? "lowerback" : "abs"),
-    obliques: muscleClass("obliques"),
-    biceps: muscleClass("biceps"),
-    forearms: muscleClass("forearms"),
-    triceps: muscleClass("triceps"),
-    hipflexors: muscleClass("hipflexors"),
-    glutes: muscleClass("glutes"),
-    quads: muscleClass(primary.includes("hamstrings") || secondary.includes("hamstrings") ? "hamstrings" : "quads"),
-    calves: muscleClass("calves"),
+  // Front-view regions, mapped to one or more muscle keys
+  const cls = {
+    shoulders: pick("shoulders"),
+    chest:     pick("chest", "back", "lats"),
+    abs:       pick("abs", "lowerback"),
+    obliques:  pick("obliques"),
+    upperarm:  pick("biceps", "triceps"),
+    forearms:  pick("forearms"),
+    hips:      pick("hipflexors", "glutes"),
+    thigh:     pick("quads", "hamstrings", "glutes"),
+    calves:    pick("calves"),
   };
-  return `<svg class="anatomy" viewBox="0 0 200 240">
-    ${ANATOMY_PATHS.head}
-    ${ANATOMY_PATHS.neck}
-    <path class="${muscles.shoulders}" d="M65 50 Q100 38 135 50 L135 60 Q100 50 65 60 Z" />
-    <path class="${muscles.chest}" d="M70 60 Q100 60 130 60 L128 92 Q100 100 72 92 Z" />
-    <path class="${muscles.abs}" d="M82 92 Q100 100 118 92 L116 130 Q100 134 84 130 Z" />
-    <path class="${muscles.obliques}" d="M70 78 Q72 90 84 92 L82 130 Q72 130 68 122 Z" />
-    <path class="${muscles.obliques}" d="M130 78 Q128 90 116 92 L118 130 Q128 130 132 122 Z" />
-    <path class="${muscles.biceps}" d="M58 56 Q66 56 70 60 L70 96 Q60 100 56 96 Z" />
-    <path class="${muscles.biceps}" d="M142 56 Q134 56 130 60 L130 96 Q140 100 144 96 Z" />
-    <path class="${muscles.forearms}" d="M56 96 Q66 100 70 96 L70 130 Q60 134 54 130 Z" />
-    <path class="${muscles.forearms}" d="M144 96 Q134 100 130 96 L130 130 Q140 134 146 130 Z" />
-    <path class="${muscles.hipflexors}" d="M84 130 L116 130 L114 142 L86 142 Z" />
-    <path class="${muscles.glutes}" d="M82 142 Q100 148 118 142 L120 158 Q100 164 80 158 Z" />
-    <path class="${muscles.quads}" d="M82 158 Q92 164 99 158 L98 200 Q90 204 82 200 Z" />
-    <path class="${muscles.quads}" d="M118 158 Q108 164 101 158 L102 200 Q110 204 118 200 Z" />
-    <path class="${muscles.calves}" d="M82 200 Q90 204 98 200 L96 232 Q90 234 84 232 Z" />
-    <path class="${muscles.calves}" d="M118 200 Q110 204 102 200 L104 232 Q110 234 116 232 Z" />
+  return `<svg class="anatomy" viewBox="0 0 120 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+    <ellipse class="skin" cx="60" cy="16" rx="11" ry="13" />
+    <rect class="skin" x="55" y="28" width="10" height="6" rx="2" />
+    <path class="${cls.shoulders}" d="M32 38 Q60 30 88 38 L86 50 Q60 44 34 50 Z" />
+    <path class="${cls.chest}"     d="M36 50 L84 50 L82 80 Q60 86 38 80 Z" />
+    <path class="${cls.abs}"       d="M48 80 L72 80 L70 110 Q60 113 50 110 Z" />
+    <path class="${cls.obliques}"  d="M38 70 L48 80 L50 110 L40 105 Z" />
+    <path class="${cls.obliques}"  d="M82 70 L72 80 L70 110 L80 105 Z" />
+    <path class="${cls.upperarm}"  d="M28 42 Q34 42 36 50 L36 84 Q30 86 26 84 Z" />
+    <path class="${cls.upperarm}"  d="M92 42 Q86 42 84 50 L84 84 Q90 86 94 84 Z" />
+    <path class="${cls.forearms}"  d="M26 84 Q32 84 36 84 L34 116 Q28 117 24 115 Z" />
+    <path class="${cls.forearms}"  d="M94 84 Q88 84 84 84 L86 116 Q92 117 96 115 Z" />
+    <path class="${cls.hips}"      d="M44 110 L76 110 L78 122 L42 122 Z" />
+    <path class="${cls.thigh}"     d="M44 122 L58 122 L57 165 L44 165 Z" />
+    <path class="${cls.thigh}"     d="M76 122 L62 122 L63 165 L76 165 Z" />
+    <path class="${cls.calves}"    d="M44 165 L57 165 L56 195 L46 195 Z" />
+    <path class="${cls.calves}"    d="M76 165 L63 165 L64 195 L74 195 Z" />
   </svg>`;
 }
 
@@ -4483,6 +4492,26 @@ function renderLogs() {
   renderChart();
 }
 
+// =============== USER HEADER ===============
+function renderUserHeader() {
+  const nameEl = document.getElementById("user-name-hdr");
+  const avatarEl = document.getElementById("user-avatar");
+  if (!nameEl || !avatarEl) return;
+  if (!state.user) {
+    nameEl.textContent = currentLang === "en" ? "Sign in" : "Connexion";
+    avatarEl.textContent = "?";
+    avatarEl.style.background = "var(--bg-sunk)";
+    avatarEl.style.color = "var(--text-muted)";
+    return;
+  }
+  const name = state.user.name || (state.user.isGuest ? (currentLang === "en" ? "Guest" : "Invité") : (currentLang === "en" ? "You" : "Toi"));
+  nameEl.textContent = name;
+  const initials = (name || "?").split(/\s+/).map(s => s[0]).join("").slice(0, 2).toUpperCase();
+  avatarEl.textContent = initials || "?";
+  avatarEl.style.background = "var(--accent)";
+  avatarEl.style.color = "var(--bg)";
+}
+
 // =============== EXPERIENCE / STRATEGY ===============
 const EXP_LEVEL_SCORE = { none: 0, casual: 3, regular: 7, competitive: 10 };
 const EVENT_BONUS = { none: 0, "5k": 1, half: 3, full: 5, obstacle: 3 };
@@ -4960,14 +4989,7 @@ function renderDashboard() {
     upEl.innerHTML = `<div style="color: var(--text-dim);">${currentLang === "en" ? "No upcoming races" : "Pas de course à venir"}</div>`;
   }
 
-  // Update header user info
-  if (state.user) {
-    document.getElementById("user-name-hdr").textContent = state.user.name || (currentLang === "en" ? "Guest" : "Invité");
-    const initials = (state.user.name || "?").split(" ").map(s => s[0]).join("").slice(0, 2).toUpperCase() || "G";
-    document.getElementById("user-avatar").textContent = initials;
-  }
-
-  // Duo card
+  renderUserHeader();
   renderDuoCard();
 }
 
@@ -4998,13 +5020,19 @@ function renderProfile() {
   const meta = [];
   if (state.user.email) meta.push(state.user.email);
   if (state.user.level) meta.push(currentLang === "en" ? state.user.level : ({ beginner: "débutant·e", intermediate: "intermédiaire", advanced: "avancé·e" }[state.user.level]));
+  if (state.user.age) meta.push(state.user.age + (currentLang === "en" ? " yo" : " ans"));
+  if (state.user.height) meta.push(state.user.height + " cm");
+  if (state.user.weight) meta.push(state.user.weight + " kg");
   if (state.user.partner) meta.push((currentLang === "en" ? "with " : "avec ") + state.user.partner);
   document.getElementById("profile-meta").textContent = meta.join(" · ") || (currentLang === "en" ? "Guest mode" : "Mode invité");
 
   document.getElementById("prof-name").value = state.user.name || "";
   document.getElementById("prof-partner").value = state.user.partner || "";
-  document.getElementById("prof-level").value = state.user.level || "beginner";
   document.getElementById("prof-goal").value = state.user.goal || "finish";
+  document.getElementById("prof-sex").value = state.user.sex || "";
+  document.getElementById("prof-age").value = state.user.age || "";
+  document.getElementById("prof-height").value = state.user.height || "";
+  document.getElementById("prof-weight").value = state.user.weight || "";
 
   // Reflect saved experience pills
   const exp = state.user.exp || {};
@@ -5412,11 +5440,20 @@ function switchTab(tab) {
 
 // =============== PROFILE ACTIONS ===============
 document.getElementById("prof-save").addEventListener("click", () => {
-  state.user.name = document.getElementById("prof-name").value.trim() || state.user.name;
+  if (!state.user) return;
+  const newName = document.getElementById("prof-name").value.trim();
+  if (newName) state.user.name = newName;
   state.user.partner = document.getElementById("prof-partner").value.trim();
-  state.user.level = document.getElementById("prof-level").value;
   state.user.goal = document.getElementById("prof-goal").value;
+  state.user.sex = document.getElementById("prof-sex").value;
+  const age = parseInt(document.getElementById("prof-age").value, 10);
+  state.user.age = isNaN(age) ? null : age;
+  const h = parseFloat(document.getElementById("prof-height").value);
+  state.user.height = isNaN(h) ? null : h;
+  const w = parseFloat(document.getElementById("prof-weight").value);
+  state.user.weight = isNaN(w) ? null : w;
   persistUser();
+  renderUserHeader();
   renderDashboard();
   renderProfile();
   toast(currentLang === "en" ? "Profile saved" : "Profil enregistré", "success");
@@ -5497,6 +5534,7 @@ document.addEventListener("keydown", (e) => {
 function enterApp() {
   showScreen("app");
   applyLang();
+  renderUserHeader();
   renderLogs();
   renderDashboard();
   switchTab("dashboard");
