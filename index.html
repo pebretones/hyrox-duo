@@ -1809,6 +1809,90 @@
   }
   .modal-error.show { display: block; }
 
+  /* ============ EXPERIENCE PILLS ============ */
+  .exp-section { margin-top: 18px; }
+  .exp-label {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 13.5px;
+    color: var(--ink);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .exp-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .exp-pill {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .exp-pill:hover {
+    border-color: var(--border-strong);
+    color: var(--ink);
+  }
+  .exp-pill.selected {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+
+  /* ============ ROLE STRATEGY ============ */
+  .role-strategy {
+    background: var(--bg-soft);
+    border-radius: 12px;
+    padding: 16px 18px 8px;
+    margin-top: 14px;
+  }
+  .role-strategy h4 {
+    font-family: var(--sans);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent-deep);
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .role-item {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .role-item:last-child { border-bottom: none; }
+  .role-icon {
+    font-size: 18px;
+    width: 32px;
+    flex-shrink: 0;
+    text-align: center;
+    line-height: 1.4;
+  }
+  .role-title {
+    font-family: var(--serif);
+    font-weight: 500;
+    color: var(--ink);
+    font-size: 15px;
+    margin-bottom: 3px;
+    letter-spacing: -0.01em;
+  }
+  .role-text {
+    color: var(--text-muted);
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+  .role-text strong { color: var(--ink); font-weight: 600; }
+
   /* ============ MOBILE ============ */
   @media (max-width: 600px) {
     .app { padding: 16px 14px 60px; }
@@ -2092,30 +2176,38 @@
     </div>
 
     <div class="onboard-slide" data-slide="2">
-      <h2>What's your level?</h2>
-      <p>Honest answers only. We'll build you the right plan.</p>
-      <div class="choice-list" data-group="level">
-        <button type="button" class="choice" data-value="beginner">
-          <div class="choice-icon">🌱</div>
-          <div class="choice-text">
-            <div class="choice-title">Complete beginner</div>
-            <div class="choice-desc">Little to no current training. We'll start slow.</div>
-          </div>
-        </button>
-        <button type="button" class="choice" data-value="intermediate">
-          <div class="choice-icon">💪</div>
-          <div class="choice-text">
-            <div class="choice-title">Some fitness base</div>
-            <div class="choice-desc">You run or train 1–3× a week already.</div>
-          </div>
-        </button>
-        <button type="button" class="choice" data-value="advanced">
-          <div class="choice-icon">🔥</div>
-          <div class="choice-text">
-            <div class="choice-title">Experienced athlete</div>
-            <div class="choice-desc">Regular training, done endurance events before.</div>
-          </div>
-        </button>
+      <h2>What's your <em>background</em>?</h2>
+      <p>Honest answers only. We use this to suggest who does what during the race.</p>
+
+      <div class="exp-section">
+        <div class="exp-label">🏃 Running</div>
+        <div class="exp-row" data-exp="running">
+          <button type="button" class="exp-pill" data-value="none">Rarely</button>
+          <button type="button" class="exp-pill" data-value="casual">Sometimes</button>
+          <button type="button" class="exp-pill" data-value="regular">Several times a week</button>
+          <button type="button" class="exp-pill" data-value="competitive">Train hard / race</button>
+        </div>
+      </div>
+
+      <div class="exp-section">
+        <div class="exp-label">🏋️ Gym / strength</div>
+        <div class="exp-row" data-exp="gym">
+          <button type="button" class="exp-pill" data-value="none">Rarely</button>
+          <button type="button" class="exp-pill" data-value="casual">Sometimes</button>
+          <button type="button" class="exp-pill" data-value="regular">Several times a week</button>
+          <button type="button" class="exp-pill" data-value="competitive">Lifter / functional pro</button>
+        </div>
+      </div>
+
+      <div class="exp-section">
+        <div class="exp-label">🏁 Endurance events done</div>
+        <div class="exp-row" data-exp="events">
+          <button type="button" class="exp-pill" data-value="none">None</button>
+          <button type="button" class="exp-pill" data-value="5k">5k / 10k</button>
+          <button type="button" class="exp-pill" data-value="half">Half marathon</button>
+          <button type="button" class="exp-pill" data-value="full">Marathon+</button>
+          <button type="button" class="exp-pill" data-value="obstacle">OCR / Spartan</button>
+        </div>
       </div>
     </div>
 
@@ -2555,6 +2647,41 @@
         </div>
       </div>
       <button class="btn" id="prof-save" data-i18n="btnSave">Save changes</button>
+    </div>
+
+    <div class="profile-section">
+      <h3 data-i18n="profExpTitle">Your background</h3>
+      <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 14px;" data-i18n="profExpSub">Used to suggest who does what when you're linked with your duo. Update anytime — you'll need to resend your link code so your partner sees it.</p>
+
+      <div class="exp-section" style="margin-top: 4px;">
+        <div class="exp-label">🏃 <span data-i18n="profExpRun">Running</span></div>
+        <div class="exp-row" data-prof-exp="running">
+          <button type="button" class="exp-pill" data-value="none" data-i18n="expRarely">Rarely</button>
+          <button type="button" class="exp-pill" data-value="casual" data-i18n="expSometimes">Sometimes</button>
+          <button type="button" class="exp-pill" data-value="regular" data-i18n="expRegular">Several times a week</button>
+          <button type="button" class="exp-pill" data-value="competitive" data-i18n="expRunPro">Train hard / race</button>
+        </div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-label">🏋️ <span data-i18n="profExpGym">Gym / strength</span></div>
+        <div class="exp-row" data-prof-exp="gym">
+          <button type="button" class="exp-pill" data-value="none" data-i18n="expRarely">Rarely</button>
+          <button type="button" class="exp-pill" data-value="casual" data-i18n="expSometimes">Sometimes</button>
+          <button type="button" class="exp-pill" data-value="regular" data-i18n="expRegular">Several times a week</button>
+          <button type="button" class="exp-pill" data-value="competitive" data-i18n="expGymPro">Lifter / functional pro</button>
+        </div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-label">🏁 <span data-i18n="profExpEvents">Endurance events done</span></div>
+        <div class="exp-row" data-prof-exp="events">
+          <button type="button" class="exp-pill" data-value="none" data-i18n="expEvNone">None</button>
+          <button type="button" class="exp-pill" data-value="5k">5k / 10k</button>
+          <button type="button" class="exp-pill" data-value="half" data-i18n="expEvHalf">Half marathon</button>
+          <button type="button" class="exp-pill" data-value="full" data-i18n="expEvFull">Marathon+</button>
+          <button type="button" class="exp-pill" data-value="obstacle">OCR / Spartan</button>
+        </div>
+      </div>
+      <button class="btn" id="prof-exp-save" style="margin-top: 16px;" data-i18n="btnSaveExp">Save background</button>
     </div>
 
     <div class="profile-section">
@@ -3206,7 +3333,7 @@ let state = {
   stations: {},
   achievements: [],
   onboardSlide: 0,
-  onboardData: { level: null, goal: null, partner: "", partnerColor: "#3b82f6" },
+  onboardData: { level: null, goal: null, partner: "", partnerColor: "#3b82f6", exp: { running: null, gym: null, events: "none" } },
   timer: { running: false, paused: false, intervals: [], idx: 0, elapsed: 0, tickHandle: null, stageStart: 0 },
 };
 
@@ -3595,6 +3722,96 @@ function renderLogs() {
   renderChart();
 }
 
+// =============== EXPERIENCE / STRATEGY ===============
+const EXP_LEVEL_SCORE = { none: 0, casual: 3, regular: 7, competitive: 10 };
+const EVENT_BONUS = { none: 0, "5k": 1, half: 3, full: 5, obstacle: 3 };
+
+function deriveLevel(exp) {
+  if (!exp || (!exp.running && !exp.gym)) return "beginner";
+  const r = EXP_LEVEL_SCORE[exp.running] || 0;
+  const g = EXP_LEVEL_SCORE[exp.gym] || 0;
+  const eventBoost = exp.events && exp.events !== "none" ? 2 : 0;
+  const total = r + g + eventBoost;
+  if (total >= 16) return "advanced";
+  if (total >= 8) return "intermediate";
+  return "beginner";
+}
+
+function expScores(exp) {
+  if (!exp) return { run: 0, gym: 0, endurance: 0 };
+  const r = EXP_LEVEL_SCORE[exp.running] || 0;
+  const g = EXP_LEVEL_SCORE[exp.gym] || 0;
+  const ev = EVENT_BONUS[exp.events] || 0;
+  return {
+    run: Math.min(10, r + ev * 0.5),
+    gym: g,
+    endurance: Math.min(10, r * 0.5 + ev),
+  };
+}
+
+function firstName(full) { return (full || "").split(" ")[0] || full || "—"; }
+
+function generateRoleStrategy(youUser, partnerSnap) {
+  const youExp = youUser.exp || {};
+  const pExp = partnerSnap.e || partnerSnap.exp || {};
+  const yS = expScores(youExp);
+  const pS = expScores(pExp);
+  const yourName = currentLang === "en" ? "You" : "Toi";
+  const partnerName = firstName(partnerSnap.n);
+  const out = [];
+
+  // RUNS
+  const runDiff = yS.run - pS.run;
+  if (runDiff >= 2) {
+    out.push({ icon: "🏃", title: currentLang === "en" ? "Pacer of the runs" : "Meneur·euse de la course", text: currentLang === "en"
+      ? `<strong>${yourName}</strong> sets the pace on every 1 km. Hold <strong>${partnerName}</strong> to a steady rhythm — drag, don't drop them. Loop back if they fall behind.`
+      : `<strong>${yourName}</strong> mène l'allure sur chaque km. Tire <strong>${partnerName}</strong> à un rythme soutenu — entraîne-le·la, ne le·la lâche pas.` });
+  } else if (runDiff <= -2) {
+    out.push({ icon: "🏃", title: currentLang === "en" ? "Pacer of the runs" : "Meneur·euse de la course", text: currentLang === "en"
+      ? `<strong>${partnerName}</strong> paces the runs. Stick to their rhythm — don't push past on the early laps even if you feel good.`
+      : `<strong>${partnerName}</strong> mène la course. Reste sur son rythme — ne pousse pas plus vite sur les premiers tours même si tu te sens bien.` });
+  } else {
+    out.push({ icon: "🏃", title: currentLang === "en" ? "Run side by side" : "Courez côte à côte", text: currentLang === "en"
+      ? "Your running levels match. Trade pacing duties — one km each, eyes locked, no surge attempts."
+      : "Vos niveaux de course sont équivalents. Alternez l'allure — un km chacun·e, regards alignés, pas d'accélérations." });
+  }
+
+  // STRENGTH STATIONS (sled push, sled pull, farmers)
+  const gymDiff = yS.gym - pS.gym;
+  if (gymDiff >= 3) {
+    out.push({ icon: "🏋️", title: currentLang === "en" ? "Strength stations" : "Stations de force", text: currentLang === "en"
+      ? `<strong>${yourName}</strong> takes 60% of sled push, sled pull, and farmers carry. Your gym base lets you eat the heavy work without bonking. <strong>${partnerName}</strong> stays fresh for the runs.`
+      : `<strong>${yourName}</strong> prend 60% du sled push, sled pull et farmers carry. Ta base salle t'absorbe la charge. <strong>${partnerName}</strong> reste frais·che pour les courses.` });
+  } else if (gymDiff <= -3) {
+    out.push({ icon: "🏋️", title: currentLang === "en" ? "Strength stations" : "Stations de force", text: currentLang === "en"
+      ? `<strong>${partnerName}</strong> takes 60% of sled push, sled pull, and farmers carry. Don't be a hero — protect your legs for the runs in between.`
+      : `<strong>${partnerName}</strong> prend 60% du sled push, sled pull et farmers. Ne joue pas les héros — protège tes jambes pour les courses entre les stations.` });
+  } else {
+    out.push({ icon: "🏋️", title: currentLang === "en" ? "Strength stations" : "Stations de force", text: currentLang === "en"
+      ? "Even strength levels. Split clean: sled 25 m each, farmers 100 m each."
+      : "Niveaux de force équivalents. Partage propre : traîneau 25 m chacun·e, farmers 100 m chacun·e." });
+  }
+
+  // ENDURANCE / METABOLIC (rowing, ski, burpees, wall balls)
+  const endDiff = yS.endurance - pS.endurance;
+  if (endDiff >= 2) {
+    out.push({ icon: "🫁", title: currentLang === "en" ? "Endurance grind" : "Stations d'endurance", text: currentLang === "en"
+      ? `On ski/row/burpees/wall balls, you absorb the longer pulls. Take 60% of ski 1000 m and row 1000 m. Save <strong>${partnerName}</strong>'s engine for the late race.`
+      : `Sur ski/rameur/burpees/wall balls, tu prends les plus longues séries. 60% du ski 1000 m et rameur 1000 m. Préserve le moteur de <strong>${partnerName}</strong> pour la fin.` });
+  } else if (endDiff <= -2) {
+    out.push({ icon: "🫁", title: currentLang === "en" ? "Endurance grind" : "Stations d'endurance", text: currentLang === "en"
+      ? `<strong>${partnerName}</strong> grinds out longer ski / row / wall ball sets. You stay sharp for transitions and the final 1 km.`
+      : `<strong>${partnerName}</strong> encaisse les plus longues séries ski / rameur / wall balls. Reste affûté·e pour les transitions et le dernier km.` });
+  }
+
+  // FINAL WALL BALLS — always remind
+  out.push({ icon: "🎯", title: currentLang === "en" ? "Final wall balls" : "Wall balls finales", text: currentLang === "en"
+    ? "Whoever held back fuel takes the bigger first sets (15/10). The other catches up on the last 30 reps with 5/5 splits. Plan it before the race."
+    : "Celui·celle qui a gardé du jus prend les premières grosses séries (15/10). L'autre rattrape les 30 dernières en 5/5. Décidez avant la course." });
+
+  return out;
+}
+
 // =============== DUO LINK ===============
 function loadPartnerSnapshot() {
   if (!state.user) return null;
@@ -3616,6 +3833,7 @@ function buildSnapshot() {
     pc: state.user.partnerColor || "#3b82f6",
     l: state.user.level || "",
     g: state.user.goal || "",
+    e: state.user.exp || null,
     s: { streak: computeStreak(), ready: computeReadiness(), week: weekSessions(), total: state.logs.length },
     st: state.stations,
     a: state.achievements,
@@ -3755,6 +3973,28 @@ function renderDuoCard() {
     </div>
 
     <div class="duo-cheer">${cheerMessage({ s: { ready: yourReady } }, partner)}</div>
+
+    ${(state.user.exp && (partner.e || partner.exp)) ? `
+    <div class="role-strategy">
+      <h4>${currentLang === "en" ? "Suggested role split" : "Répartition suggérée"}</h4>
+      ${generateRoleStrategy(state.user, partner).map(r => `
+        <div class="role-item">
+          <div class="role-icon">${r.icon}</div>
+          <div>
+            <div class="role-title">${r.title}</div>
+            <div class="role-text">${r.text}</div>
+          </div>
+        </div>
+      `).join("")}
+    </div>
+    ` : `
+    <div class="role-strategy">
+      <h4>${currentLang === "en" ? "Role split unavailable" : "Répartition indisponible"}</h4>
+      <div class="role-text" style="padding: 6px 0;">${currentLang === "en"
+        ? "We need both partners' experience info to suggest roles. Ask " + firstName(partner.n) + " to update their profile and resend their code."
+        : "Il faut les infos d'expérience des deux partenaires pour suggérer des rôles. Demande à " + firstName(partner.n) + " de mettre à jour son profil et de renvoyer son code."}</div>
+    </div>
+    `}
 
     <div class="duo-actions">
       <button class="btn" id="duo-share-btn">${currentLang === "en" ? "Send fresh update" : "Envoyer une mise à jour"}</button>
@@ -4004,6 +4244,15 @@ function renderProfile() {
   document.getElementById("prof-partner").value = state.user.partner || "";
   document.getElementById("prof-level").value = state.user.level || "beginner";
   document.getElementById("prof-goal").value = state.user.goal || "finish";
+
+  // Reflect saved experience pills
+  const exp = state.user.exp || {};
+  document.querySelectorAll('[data-prof-exp]').forEach(row => {
+    const dim = row.dataset.profExp;
+    row.querySelectorAll(".exp-pill").forEach(p => {
+      p.classList.toggle("selected", p.dataset.value === exp[dim]);
+    });
+  });
 
   // Achievements grid
   const grid = document.getElementById("ach-grid");
@@ -4301,11 +4550,14 @@ function startOnboarding() {
   showScreen("onboard");
 }
 
-document.querySelectorAll('[data-group="level"] .choice').forEach(c => {
-  c.addEventListener("click", () => {
-    document.querySelectorAll('[data-group="level"] .choice').forEach(x => x.classList.remove("selected"));
-    c.classList.add("selected");
-    state.onboardData.level = c.dataset.value;
+document.querySelectorAll('[data-exp]').forEach(row => {
+  const dim = row.dataset.exp;
+  row.querySelectorAll(".exp-pill").forEach(pill => {
+    pill.addEventListener("click", () => {
+      row.querySelectorAll(".exp-pill").forEach(x => x.classList.remove("selected"));
+      pill.classList.add("selected");
+      state.onboardData.exp[dim] = pill.dataset.value;
+    });
   });
 });
 document.querySelectorAll('[data-group="goal"] .choice').forEach(c => {
@@ -4327,9 +4579,12 @@ document.getElementById("onboard-prev").addEventListener("click", () => {
   if (state.onboardSlide > 0) { state.onboardSlide--; renderOnboardSlide(); }
 });
 document.getElementById("onboard-next").addEventListener("click", () => {
-  if (state.onboardSlide === 2 && !state.onboardData.level) {
-    toast(currentLang === "en" ? "Pick a level to continue" : "Choisis un niveau pour continuer");
-    return;
+  if (state.onboardSlide === 2) {
+    const e = state.onboardData.exp;
+    if (!e.running || !e.gym) {
+      toast(currentLang === "en" ? "Pick running and gym to continue" : "Choisis course et gym pour continuer");
+      return;
+    }
   }
   if (state.onboardSlide === 3 && !state.onboardData.goal) {
     toast(currentLang === "en" ? "Pick a goal to continue" : "Choisis un objectif pour continuer");
@@ -4342,13 +4597,13 @@ document.getElementById("onboard-next").addEventListener("click", () => {
   }
   // Final slide - save
   state.onboardData.partner = document.getElementById("partner-name").value.trim();
-  state.user.level = state.onboardData.level;
+  state.user.exp = state.onboardData.exp;
+  state.user.level = deriveLevel(state.onboardData.exp);
   state.user.goal = state.onboardData.goal;
   state.user.partner = state.onboardData.partner;
   state.user.partnerColor = state.onboardData.partnerColor;
   state.user.onboarded = true;
-  // Set default phase based on level
-  state.phase = state.onboardData.level === "beginner" ? "base" : state.onboardData.level === "advanced" ? "build" : "base";
+  state.phase = state.user.level === "advanced" ? "build" : "base";
   persistUser();
   checkAchievements();
   enterApp();
@@ -4399,6 +4654,35 @@ document.getElementById("prof-save").addEventListener("click", () => {
 });
 document.getElementById("prof-signout").addEventListener("click", () => signOut());
 document.getElementById("prof-delete").addEventListener("click", () => deleteAccount());
+
+// Profile experience pills
+document.querySelectorAll('[data-prof-exp]').forEach(row => {
+  const dim = row.dataset.profExp;
+  row.querySelectorAll(".exp-pill").forEach(pill => {
+    pill.addEventListener("click", () => {
+      row.querySelectorAll(".exp-pill").forEach(x => x.classList.remove("selected"));
+      pill.classList.add("selected");
+    });
+  });
+});
+document.getElementById("prof-exp-save").addEventListener("click", () => {
+  const exp = state.user.exp || { running: null, gym: null, events: "none" };
+  document.querySelectorAll('[data-prof-exp]').forEach(row => {
+    const dim = row.dataset.profExp;
+    const sel = row.querySelector(".exp-pill.selected");
+    if (sel) exp[dim] = sel.dataset.value;
+  });
+  if (!exp.running || !exp.gym) {
+    toast(currentLang === "en" ? "Pick running and gym" : "Choisis course et gym");
+    return;
+  }
+  state.user.exp = exp;
+  state.user.level = deriveLevel(exp);
+  persistUser();
+  renderDashboard();
+  renderProfile();
+  toast(currentLang === "en" ? "Background saved" : "Profil enregistré", "success");
+});
 
 // =============== DASHBOARD ACTIONS ===============
 document.getElementById("today-log").addEventListener("click", () => switchTab("progress"));
