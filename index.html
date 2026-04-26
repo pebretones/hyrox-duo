@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
-<meta name="build" content="2026-04-26-autosave-background" />
+<meta name="build" content="2026-04-26-first-letter-avatar" />
 <title>Hyrox Duo — Training Companion</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2970,7 +2970,7 @@
 
   <footer>
     <p>Hyrox Duo Training Companion · Built for duos who want to finish strong, together.</p>
-    <p style="margin-top: 6px; font-size: 11px; color: var(--text-dim); font-style: normal; font-family: monospace;">build: 2026-04-26 · auto-save background</p>
+    <p style="margin-top: 6px; font-size: 11px; color: var(--text-dim); font-style: normal; font-family: monospace;">build: 2026-04-26 · first-letter avatar</p>
   </footer>
 </div>
 </div>
@@ -4509,10 +4509,13 @@ function renderUserHeader() {
     avatarEl.style.color = "var(--text-muted)";
     return;
   }
-  const name = state.user.name || (state.user.isGuest ? (currentLang === "en" ? "Guest" : "Invité") : (currentLang === "en" ? "You" : "Toi"));
-  nameEl.textContent = name;
-  const initials = (name || "?").split(/\s+/).map(s => s[0]).join("").slice(0, 2).toUpperCase();
-  avatarEl.textContent = initials || "?";
+  // Use the user's actual name; fall back to email local-part; final fallback "?"
+  const rawName = (state.user.name && state.user.name !== "Guest") ? state.user.name : "";
+  const fallbackName = rawName || (state.user.email ? state.user.email.split("@")[0] : "");
+  const firstName = (fallbackName || "").split(/\s+/)[0] || (currentLang === "en" ? "You" : "Toi");
+  const firstLetter = (fallbackName.match(/[A-Za-zÀ-ÖØ-öø-ÿ]/) || ["?"])[0].toUpperCase();
+  nameEl.textContent = firstName;
+  avatarEl.textContent = firstLetter;
   avatarEl.style.background = "var(--accent)";
   avatarEl.style.color = "var(--bg)";
 }
@@ -5159,9 +5162,10 @@ function renderGlossary() {
 function renderProfile() {
   if (!state.user) return;
   const name = state.user.name || "";
-  document.getElementById("profile-name").textContent = name || (currentLang === "en" ? "Guest" : "Invité");
-  const initials = (name || "?").split(" ").map(s => s[0]).join("").slice(0, 2).toUpperCase() || "G";
-  document.getElementById("profile-avatar").textContent = initials;
+  const profDisplayName = (name && name !== "Guest") ? name : (state.user.email ? state.user.email.split("@")[0] : (currentLang === "en" ? "You" : "Toi"));
+  document.getElementById("profile-name").textContent = profDisplayName;
+  const profLetter = (profDisplayName.match(/[A-Za-zÀ-ÖØ-öø-ÿ]/) || ["?"])[0].toUpperCase();
+  document.getElementById("profile-avatar").textContent = profLetter;
   const meta = [];
   if (state.user.email) meta.push(state.user.email);
   if (state.user.level) meta.push(currentLang === "en" ? state.user.level : ({ beginner: "débutant·e", intermediate: "intermédiaire", advanced: "avancé·e" }[state.user.level]));
