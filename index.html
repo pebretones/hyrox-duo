@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
-<meta name="build" content="2026-04-26-animated-diagrams" />
+<meta name="build" content="2026-04-26-silhouette-diagrams" />
 <title>Hyrox Duo — Training Companion</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1814,137 +1814,39 @@
   .modal-error.show { display: block; }
 
   /* ============ MOVEMENT DIAGRAMS ============ */
-  .movement {
-    width: 110px; height: 130px;
+  .diagram {
+    width: 200px; height: 140px;
     flex-shrink: 0;
     display: block;
   }
   @media (max-width: 600px) {
-    .movement { width: 90px; height: 110px; }
+    .diagram { width: 160px; height: 110px; }
   }
-  .move-line {
-    fill: none;
-    stroke: var(--ink);
-    stroke-width: 2.5;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+  .ex-goal-head .diagram { background: #FBF5E8; border-radius: 12px; padding: 6px; }
+  .dia-body { fill: var(--accent); stroke: var(--accent-deep); stroke-width: 1; stroke-linejoin: round; }
+  .dia-body-soft { fill: #E8C99A; stroke: #B8983E; stroke-width: 1; }
+  .dia-line { stroke: var(--ink); stroke-width: 1.6; stroke-linecap: round; fill: none; }
+  .dia-equip { fill: var(--accent-deep); stroke: var(--ink); stroke-width: 0.8; }
+  .dia-equip-soft { fill: #E8C26B; stroke: #B8983E; stroke-width: 0.8; }
+  .dia-ground { stroke: var(--border-strong); stroke-width: 1; stroke-dasharray: 2 3; }
+  .dia-arrow { fill: var(--text-muted); }
+  .dia-label {
+    font-family: var(--serif);
+    font-size: 9px;
+    fill: var(--text-muted);
+    font-style: italic;
+    text-anchor: middle;
   }
-  .move-head { fill: var(--ink); stroke: none; }
-  .move-accent {
-    fill: var(--accent);
-    stroke: var(--accent-deep);
-    stroke-width: 1;
+  .dia-rep {
+    font-family: var(--serif);
+    font-size: 11px;
+    fill: var(--accent-deep);
+    font-weight: 500;
+    text-anchor: middle;
   }
-  .move-bar { stroke: var(--accent-deep); stroke-width: 4; stroke-linecap: round; }
-  .move-ground { stroke: var(--border-strong); stroke-width: 1.5; stroke-dasharray: 3 3; }
-
-  /* ---- squat (used for wall balls, lunges, general squat) ---- */
-  @keyframes squat-body {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(14px); }
-  }
-  @keyframes squat-arms {
-    0%, 100% { transform: rotate(0deg); }
-    50% { transform: rotate(-150deg); }
-  }
-  .move-squat .squat-body { animation: squat-body 2s ease-in-out infinite; transform-origin: 50% 50%; }
-  .move-squat .squat-knee-l { animation: squat-knee-l 2s ease-in-out infinite; transform-origin: 42px 80px; }
-  .move-squat .squat-knee-r { animation: squat-knee-r 2s ease-in-out infinite; transform-origin: 68px 80px; }
-  @keyframes squat-knee-l {
-    0%, 100% { d: path("M 42 80 L 38 110"); }
-    50%      { d: path("M 42 80 L 28 100"); }
-  }
-
-  /* ---- run ---- */
-  @keyframes run-body {
-    0%, 100% { transform: translateY(0); }
-    25%, 75% { transform: translateY(-3px); }
-  }
-  @keyframes run-leg-l {
-    0%, 100% { transform: rotate(-25deg); }
-    50% { transform: rotate(35deg); }
-  }
-  @keyframes run-leg-r {
-    0%, 100% { transform: rotate(35deg); }
-    50% { transform: rotate(-25deg); }
-  }
-  @keyframes run-arm-l {
-    0%, 100% { transform: rotate(30deg); }
-    50% { transform: rotate(-30deg); }
-  }
-  @keyframes run-arm-r {
-    0%, 100% { transform: rotate(-30deg); }
-    50% { transform: rotate(30deg); }
-  }
-  .move-run .run-body { animation: run-body 0.7s ease-in-out infinite; }
-  .move-run .run-leg-l { animation: run-leg-l 0.7s ease-in-out infinite; transform-origin: 55px 70px; }
-  .move-run .run-leg-r { animation: run-leg-r 0.7s ease-in-out infinite; transform-origin: 55px 70px; }
-  .move-run .run-arm-l { animation: run-arm-l 0.7s ease-in-out infinite; transform-origin: 55px 40px; }
-  .move-run .run-arm-r { animation: run-arm-r 0.7s ease-in-out infinite; transform-origin: 55px 40px; }
-
-  /* ---- sled push ---- */
-  @keyframes push-body {
-    0%, 100% { transform: translateX(0); }
-    50% { transform: translateX(8px); }
-  }
-  @keyframes push-sled {
-    0%, 100% { transform: translateX(0); }
-    50% { transform: translateX(8px); }
-  }
-  .move-push .push-figure { animation: push-body 1.4s ease-in-out infinite; }
-  .move-push .push-sled-grp { animation: push-sled 1.4s ease-in-out infinite 0.05s; }
-
-  /* ---- carry (farmer walk) ---- */
-  @keyframes carry-bob {
-    0%, 100% { transform: translateY(0); }
-    25%, 75% { transform: translateY(-2px); }
-  }
-  @keyframes carry-leg-l {
-    0%, 100% { transform: rotate(-12deg); }
-    50% { transform: rotate(12deg); }
-  }
-  @keyframes carry-leg-r {
-    0%, 100% { transform: rotate(12deg); }
-    50% { transform: rotate(-12deg); }
-  }
-  .move-carry .carry-body { animation: carry-bob 0.9s ease-in-out infinite; }
-  .move-carry .carry-leg-l { animation: carry-leg-l 0.9s ease-in-out infinite; transform-origin: 55px 75px; }
-  .move-carry .carry-leg-r { animation: carry-leg-r 0.9s ease-in-out infinite; transform-origin: 55px 75px; }
-
-  /* ---- ski (SkiErg pulldown) ---- */
-  @keyframes ski-arms {
-    0%, 100% { transform: rotate(-160deg); }
-    50% { transform: rotate(-30deg); }
-  }
-  @keyframes ski-hinge {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(8px) rotate(8deg); }
-  }
-  .move-ski .ski-arms-grp { animation: ski-arms 1.6s ease-in-out infinite; transform-origin: 55px 35px; }
-  .move-ski .ski-body-grp { animation: ski-hinge 1.6s ease-in-out infinite; transform-origin: 55px 70px; }
-
-  /* ---- burpee broad jump ---- */
-  @keyframes burpee-cycle {
-    0%, 100% { transform: translateY(0); }
-    25% { transform: translateY(20px); }
-    50% { transform: translateY(20px); }
-    75% { transform: translateY(-8px); }
-  }
-  .move-burpee .burpee-body { animation: burpee-cycle 2s ease-in-out infinite; }
-
-  /* ---- plank ---- */
-  @keyframes plank-breath {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-1.5px); }
-  }
-  .move-plank .plank-body { animation: plank-breath 3s ease-in-out infinite; }
-
-  /* ---- pull (sled pull / row) ---- */
-  @keyframes pull-arms {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-12px) translateX(-6px); }
-  }
-  .move-pull .pull-arms-grp { animation: pull-arms 1.4s ease-in-out infinite; }
+  /* Subtle pulsing on equipment to show it's active */
+  @keyframes dia-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+  .dia-pulse { animation: dia-pulse 2s ease-in-out infinite; }
 
   /* ============ ANATOMY + EXERCISES ============ */
   .ex-goal {
@@ -3103,7 +3005,7 @@
 
   <footer>
     <p>Hyrox Duo Training Companion · Built for duos who want to finish strong, together.</p>
-    <p style="margin-top: 6px; font-size: 11px; color: var(--text-dim); font-style: normal; font-family: monospace;">build: 2026-04-26 · animated diagrams</p>
+    <p style="margin-top: 6px; font-size: 11px; color: var(--text-dim); font-style: normal; font-family: monospace;">build: 2026-04-26 · silhouette diagrams</p>
   </footer>
 </div>
 </div>
@@ -3711,113 +3613,134 @@ const ANATOMY_PATHS = {
   calves_r:    '<path class="m" data-m="calves" d="M118 200 Q110 204 102 200 L104 232 Q110 234 116 232 Z" />',
 };
 
-// Animated stick-figure SVGs for movement patterns. CSS keyframes drive the loop.
+// Polished two-frame silhouette diagrams. Each shows START → END position with a small arrow.
+// All in cream/terracotta on the design palette. Static (no jittery animation).
+// Helper to draw a single body in a given pose. Returns SVG path strings.
+function _bodyShape({ cx, cy, headR = 7, torsoH = 28, lean = 0, hipL = [-6, 22], hipR = [6, 22], kneeL = [-8, 18], kneeR = [8, 18], shoulderL = [-9, -2], shoulderR = [9, -2], handL, handR, ball, sled, kettlebellL, kettlebellR }) {
+  const head = `<circle class="dia-body" cx="${cx}" cy="${cy - torsoH/2}" r="${headR}" />`;
+  // Torso as rounded rect, leaning if lean != 0
+  const tx = cx - 5;
+  const ty = cy - torsoH/2 + 3;
+  const tw = 10;
+  const th = torsoH;
+  const torso = lean
+    ? `<g transform="rotate(${lean} ${cx} ${cy})"><rect class="dia-body" x="${tx}" y="${ty}" width="${tw}" height="${th}" rx="3" /></g>`
+    : `<rect class="dia-body" x="${tx}" y="${ty}" width="${tw}" height="${th}" rx="3" />`;
+  // Arms
+  const sLY = cy - torsoH/2 + 5;
+  const armL = `<line class="dia-line" x1="${cx + shoulderL[0]}" y1="${sLY + shoulderL[1]}" x2="${cx + (handL ? handL[0] : -10)}" y2="${sLY + (handL ? handL[1] : 18)}" />`;
+  const armR = `<line class="dia-line" x1="${cx + shoulderR[0]}" y1="${sLY + shoulderR[1]}" x2="${cx + (handR ? handR[0] : 10)}" y2="${sLY + (handR ? handR[1] : 18)}" />`;
+  // Hips
+  const hipY = cy + torsoH/2 - 3;
+  // Legs (thigh + shin)
+  const thighL = `<line class="dia-line" x1="${cx}" y1="${hipY}" x2="${cx + hipL[0]}" y2="${hipY + hipL[1]}" />`;
+  const thighR = `<line class="dia-line" x1="${cx}" y1="${hipY}" x2="${cx + hipR[0]}" y2="${hipY + hipR[1]}" />`;
+  const shinL = `<line class="dia-line" x1="${cx + hipL[0]}" y1="${hipY + hipL[1]}" x2="${cx + kneeL[0]}" y2="${hipY + hipL[1] + kneeL[1]}" />`;
+  const shinR = `<line class="dia-line" x1="${cx + hipR[0]}" y1="${hipY + hipR[1]}" x2="${cx + kneeR[0]}" y2="${hipY + hipR[1] + kneeR[1]}" />`;
+  // Equipment
+  let eq = "";
+  if (ball) eq += `<circle class="dia-equip" cx="${cx + ball.dx}" cy="${cy + ball.dy}" r="${ball.r || 7}" />`;
+  if (sled) eq += `<rect class="dia-equip" x="${cx + sled.dx}" y="${cy + sled.dy}" width="${sled.w}" height="${sled.h}" rx="2" />`;
+  if (kettlebellL) eq += `<rect class="dia-equip" x="${cx + (handL ? handL[0] : -10) - 5}" y="${sLY + (handL ? handL[1] : 18) - 2}" width="10" height="9" rx="2" />`;
+  if (kettlebellR) eq += `<rect class="dia-equip" x="${cx + (handR ? handR[0] : 10) - 5}" y="${sLY + (handR ? handR[1] : 18) - 2}" width="10" height="9" rx="2" />`;
+  return torso + head + thighL + thighR + shinL + shinR + armL + armR + eq;
+}
+
+function diagramFrame(x, y, width, height, content, label) {
+  return `<g transform="translate(${x}, ${y})">
+    ${content}
+    ${label ? `<text class="dia-label" x="${width/2}" y="${height - 4}">${label}</text>` : ""}
+  </g>`;
+}
+
+function diagramArrow(x, y) {
+  return `<g transform="translate(${x}, ${y})">
+    <path class="dia-arrow" d="M 0 0 L 12 6 L 0 12 L 4 6 Z" opacity="0.6" />
+  </g>`;
+}
+
+function buildDiagram(label1, frame1, label2, frame2, extras = "") {
+  return `<svg class="diagram" viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg">
+    <line class="dia-ground" x1="6" y1="120" x2="86" y2="120" />
+    <line class="dia-ground" x1="114" y1="120" x2="194" y2="120" />
+    ${diagramFrame(0, 0, 90, 130, frame1, label1)}
+    ${diagramArrow(94, 60)}
+    ${diagramFrame(110, 0, 90, 130, frame2, label2)}
+    ${extras}
+  </svg>`;
+}
+
 const MOVE_SVG = {
-  squat: `<svg class="movement move-squat" viewBox="0 0 110 130">
-    <line class="move-ground" x1="10" y1="120" x2="100" y2="120" />
-    <g class="squat-body">
-      <circle class="move-head" cx="55" cy="20" r="7" />
-      <line class="move-line" x1="55" y1="27" x2="55" y2="60" />
-      <g class="squat-arms">
-        <line class="move-line" x1="55" y1="35" x2="38" y2="48" />
-        <line class="move-line" x1="55" y1="35" x2="72" y2="48" />
-      </g>
-    </g>
-    <line class="move-line" x1="55" y1="60" x2="42" y2="80" />
-    <line class="move-line" x1="55" y1="60" x2="68" y2="80" />
-    <line class="move-line squat-knee-l" x1="42" y1="80" x2="38" y2="110" />
-    <line class="move-line squat-knee-r" x1="68" y1="80" x2="72" y2="110" />
-    <circle class="move-accent" cx="55" cy="40" r="8" />
+  squat: buildDiagram(
+    "stand",
+    _bodyShape({ cx: 45, cy: 70, torsoH: 32, hipL: [-3, 30], hipR: [3, 30], kneeL: [-3, 18], kneeR: [3, 18], shoulderL: [-7, 0], shoulderR: [7, 0], handL: [-6, 22], handR: [6, 22] }),
+    "squat",
+    _bodyShape({ cx: 155, cy: 78, torsoH: 26, lean: 8, hipL: [-9, 14], hipR: [9, 14], kneeL: [-7, 18], kneeR: [7, 18], shoulderL: [-7, 0], shoulderR: [7, 0], handL: [-2, -38], handR: [2, -38], ball: { dx: 0, dy: -34, r: 6 } })
+  ),
+  run: buildDiagram(
+    "stride",
+    _bodyShape({ cx: 45, cy: 65, torsoH: 28, hipL: [-9, 22], hipR: [7, 26], kneeL: [-12, 14], kneeR: [12, 18], shoulderL: [-7, 0], shoulderR: [7, 0], handL: [9, 16], handR: [-9, 14] }),
+    "stride",
+    _bodyShape({ cx: 155, cy: 65, torsoH: 28, hipL: [7, 26], hipR: [-9, 22], kneeL: [12, 18], kneeR: [-12, 14], shoulderL: [-7, 0], shoulderR: [7, 0], handL: [-9, 14], handR: [9, 16] })
+  ),
+  push: buildDiagram(
+    "drive",
+    `${_bodyShape({ cx: 35, cy: 75, torsoH: 24, lean: 35, hipL: [-3, 24], hipR: [4, 26], kneeL: [-2, 12], kneeR: [4, 14], shoulderL: [-2, 0], shoulderR: [2, 0], handL: [16, 0], handR: [16, 4] })}
+    <rect class="dia-equip" x="56" y="80" width="28" height="20" rx="2" />
+    <line class="dia-line" x1="68" y1="100" x2="68" y2="118" stroke="var(--text-muted)" stroke-width="1" />`,
+    "step",
+    `${_bodyShape({ cx: 145, cy: 75, torsoH: 24, lean: 35, hipL: [-2, 24], hipR: [5, 28], kneeL: [-1, 12], kneeR: [6, 16], shoulderL: [-2, 0], shoulderR: [2, 0], handL: [16, 0], handR: [16, 4] })}
+    <rect class="dia-equip" x="166" y="80" width="28" height="20" rx="2" />
+    <text class="dia-rep" x="80" y="20">push 50 m</text>`
+  ),
+  carry: buildDiagram(
+    "lift",
+    `${_bodyShape({ cx: 45, cy: 68, torsoH: 30, hipL: [-3, 28], hipR: [3, 28], kneeL: [-3, 18], kneeR: [3, 18], shoulderL: [-8, 0], shoulderR: [8, 0], handL: [-10, 28], handR: [10, 28], kettlebellL: true, kettlebellR: true })}`,
+    "walk",
+    `${_bodyShape({ cx: 155, cy: 66, torsoH: 30, hipL: [-9, 24], hipR: [7, 28], kneeL: [-11, 16], kneeR: [10, 18], shoulderL: [-8, 0], shoulderR: [8, 0], handL: [-10, 28], handR: [10, 28], kettlebellL: true, kettlebellR: true })}
+    <text class="dia-rep" x="100" y="20">200 m</text>`
+  ),
+  ski: buildDiagram(
+    "reach",
+    `<rect class="dia-equip-soft" x="62" y="14" width="14" height="60" rx="2" />
+    <line class="dia-line" x1="62" y1="22" x2="50" y2="22" stroke-width="3" />
+    ${_bodyShape({ cx: 35, cy: 75, torsoH: 28, hipL: [-3, 26], hipR: [3, 26], kneeL: [-3, 16], kneeR: [3, 16], shoulderL: [-6, 0], shoulderR: [6, 0], handL: [11, -38], handR: [11, -38] })}`,
+    "drive",
+    `<rect class="dia-equip-soft" x="172" y="14" width="14" height="60" rx="2" />
+    <line class="dia-line" x1="172" y1="68" x2="160" y2="80" stroke-width="3" />
+    ${_bodyShape({ cx: 145, cy: 80, torsoH: 24, lean: 25, hipL: [-3, 22], hipR: [3, 22], kneeL: [-3, 14], kneeR: [3, 14], shoulderL: [-5, 0], shoulderR: [5, 0], handL: [12, 12], handR: [12, 16] })}`
+  ),
+  burpee: `<svg class="diagram" viewBox="0 0 240 130" xmlns="http://www.w3.org/2000/svg">
+    <line class="dia-ground" x1="6" y1="120" x2="74" y2="120" />
+    <line class="dia-ground" x1="86" y1="120" x2="154" y2="120" />
+    <line class="dia-ground" x1="166" y1="120" x2="234" y2="120" />
+    ${diagramFrame(0, 0, 80, 130, _bodyShape({ cx: 40, cy: 65, torsoH: 30, hipL: [-3, 28], hipR: [3, 28], kneeL: [-3, 18], kneeR: [3, 18], shoulderL: [-7, 0], shoulderR: [7, 0], handL: [-6, 22], handR: [6, 22] }), "1. stand")}
+    ${diagramArrow(80, 60)}
+    ${diagramFrame(80, 0, 80, 130, `<g transform="translate(0, 35)"><circle class="dia-body" cx="35" cy="68" r="6" /><rect class="dia-body" x="38" y="62" width="40" height="10" rx="3" /><line class="dia-line" x1="76" y1="72" x2="78" y2="84" /><line class="dia-line" x1="76" y1="72" x2="68" y2="84" /><line class="dia-line" x1="42" y1="62" x2="36" y2="74" /></g>`, "2. plank")}
+    ${diagramArrow(160, 60)}
+    ${diagramFrame(160, 0, 80, 130, _bodyShape({ cx: 40, cy: 50, torsoH: 28, hipL: [-4, 18], hipR: [4, 18], kneeL: [-6, 14], kneeR: [6, 14], shoulderL: [-6, 0], shoulderR: [6, 0], handL: [3, -22], handR: [-3, -22] }), "3. jump")}
   </svg>`,
-  run: `<svg class="movement move-run" viewBox="0 0 110 130">
-    <line class="move-ground" x1="10" y1="120" x2="100" y2="120" />
-    <g class="run-body">
-      <circle class="move-head" cx="55" cy="22" r="7" />
-      <line class="move-line" x1="55" y1="29" x2="55" y2="70" />
-      <line class="move-line run-arm-l" x1="55" y1="40" x2="42" y2="60" />
-      <line class="move-line run-arm-r" x1="55" y1="40" x2="68" y2="60" />
-      <line class="move-line run-leg-l" x1="55" y1="70" x2="48" y2="105" />
-      <line class="move-line run-leg-r" x1="55" y1="70" x2="62" y2="105" />
+  plank: `<svg class="diagram" viewBox="0 0 200 110" xmlns="http://www.w3.org/2000/svg">
+    <line class="dia-ground" x1="6" y1="100" x2="194" y2="100" />
+    <g transform="translate(20, 30)">
+      <circle class="dia-body" cx="20" cy="22" r="7" />
+      <rect class="dia-body" x="26" y="18" width="100" height="10" rx="3" />
+      <line class="dia-line" x1="20" y1="30" x2="20" y2="68" />
+      <line class="dia-line" x1="125" y1="28" x2="118" y2="68" />
+      <line class="dia-line" x1="125" y1="28" x2="135" y2="68" />
     </g>
+    <text class="dia-rep" x="100" y="22">hold straight, no sag</text>
   </svg>`,
-  push: `<svg class="movement move-push" viewBox="0 0 130 130">
-    <line class="move-ground" x1="5" y1="120" x2="125" y2="120" />
-    <g class="push-figure">
-      <circle class="move-head" cx="35" cy="42" r="7" transform="rotate(-25 35 42)" />
-      <line class="move-line" x1="40" y1="48" x2="65" y2="68" />
-      <line class="move-line" x1="65" y1="68" x2="80" y2="60" />
-      <line class="move-line" x1="65" y1="68" x2="58" y2="100" />
-      <line class="move-line" x1="65" y1="68" x2="78" y2="100" />
-      <line class="move-line" x1="58" y1="100" x2="48" y2="118" />
-      <line class="move-line" x1="78" y1="100" x2="92" y2="118" />
-    </g>
-    <g class="push-sled-grp">
-      <rect class="move-accent" x="84" y="98" width="34" height="20" rx="3" />
-    </g>
-  </svg>`,
-  carry: `<svg class="movement move-carry" viewBox="0 0 110 130">
-    <line class="move-ground" x1="10" y1="120" x2="100" y2="120" />
-    <g class="carry-body">
-      <circle class="move-head" cx="55" cy="20" r="7" />
-      <line class="move-line" x1="55" y1="27" x2="55" y2="75" />
-      <line class="move-line" x1="55" y1="38" x2="38" y2="78" />
-      <line class="move-line" x1="55" y1="38" x2="72" y2="78" />
-      <rect class="move-accent" x="32" y="78" width="14" height="14" rx="2" />
-      <rect class="move-accent" x="64" y="78" width="14" height="14" rx="2" />
-    </g>
-    <line class="move-line carry-leg-l" x1="55" y1="75" x2="48" y2="115" />
-    <line class="move-line carry-leg-r" x1="55" y1="75" x2="62" y2="115" />
-  </svg>`,
-  ski: `<svg class="movement move-ski" viewBox="0 0 110 130">
-    <line class="move-ground" x1="10" y1="120" x2="100" y2="120" />
-    <rect x="80" y="20" width="14" height="80" rx="3" fill="#E8E2D0" stroke="var(--border-strong)" stroke-width="1" />
-    <line class="move-bar" x1="80" y1="28" x2="68" y2="28" />
-    <g class="ski-body-grp">
-      <circle class="move-head" cx="55" cy="35" r="7" />
-      <line class="move-line" x1="55" y1="42" x2="55" y2="78" />
-      <g class="ski-arms-grp">
-        <line class="move-line" x1="55" y1="48" x2="68" y2="32" />
-      </g>
-    </g>
-    <line class="move-line" x1="55" y1="78" x2="48" y2="115" />
-    <line class="move-line" x1="55" y1="78" x2="62" y2="115" />
-  </svg>`,
-  burpee: `<svg class="movement move-burpee" viewBox="0 0 110 130">
-    <line class="move-ground" x1="10" y1="120" x2="100" y2="120" />
-    <g class="burpee-body">
-      <circle class="move-head" cx="55" cy="32" r="7" />
-      <line class="move-line" x1="55" y1="39" x2="55" y2="70" />
-      <line class="move-line" x1="55" y1="50" x2="40" y2="68" />
-      <line class="move-line" x1="55" y1="50" x2="70" y2="68" />
-      <line class="move-line" x1="55" y1="70" x2="46" y2="105" />
-      <line class="move-line" x1="55" y1="70" x2="64" y2="105" />
-      <path class="move-accent" d="M 38 110 L 55 100 L 72 110 Z" opacity="0.4" />
-    </g>
-  </svg>`,
-  plank: `<svg class="movement move-plank" viewBox="0 0 130 100">
-    <line class="move-ground" x1="5" y1="92" x2="125" y2="92" />
-    <g class="plank-body">
-      <circle class="move-head" cx="22" cy="40" r="7" />
-      <line class="move-line" x1="29" y1="40" x2="105" y2="55" />
-      <line class="move-line" x1="22" y1="48" x2="22" y2="88" />
-      <line class="move-line" x1="105" y1="55" x2="98" y2="88" />
-      <line class="move-line" x1="105" y1="55" x2="112" y2="88" />
-    </g>
-  </svg>`,
-  pull: `<svg class="movement move-pull" viewBox="0 0 130 130">
-    <line class="move-ground" x1="5" y1="120" x2="125" y2="120" />
-    <line x1="80" y1="100" x2="115" y2="100" stroke="var(--accent)" stroke-width="3" stroke-dasharray="2 3" />
-    <rect class="move-accent" x="100" y="92" width="22" height="16" rx="2" />
-    <g class="pull-figure">
-      <circle class="move-head" cx="40" cy="32" r="7" />
-      <line class="move-line" x1="40" y1="39" x2="50" y2="72" />
-      <g class="pull-arms-grp">
-        <line class="move-line" x1="42" y1="48" x2="78" y2="68" />
-      </g>
-      <line class="move-line" x1="50" y1="72" x2="38" y2="115" />
-      <line class="move-line" x1="50" y1="72" x2="60" y2="115" />
-    </g>
-  </svg>`,
+  pull: buildDiagram(
+    "reach",
+    `<rect class="dia-equip" x="60" y="100" width="22" height="14" rx="2" />
+    <line x1="58" y1="107" x2="34" y2="80" stroke="var(--accent-deep)" stroke-width="2" stroke-dasharray="2 2" />
+    ${_bodyShape({ cx: 30, cy: 70, torsoH: 26, hipL: [-3, 22], hipR: [3, 22], kneeL: [-7, 16], kneeR: [7, 16], shoulderL: [-5, 0], shoulderR: [5, 0], handL: [12, 16], handR: [12, 18] })}`,
+    "pull",
+    `<rect class="dia-equip" x="155" y="100" width="22" height="14" rx="2" />
+    <line x1="155" y1="107" x2="160" y2="84" stroke="var(--accent-deep)" stroke-width="2" stroke-dasharray="2 2" />
+    ${_bodyShape({ cx: 145, cy: 70, torsoH: 26, hipL: [-3, 22], hipR: [3, 22], kneeL: [-7, 16], kneeR: [7, 16], shoulderL: [-5, 0], shoulderR: [5, 0], handL: [-3, 14], handR: [-3, 16] })}`
+  ),
 };
 
 function renderAnatomy(primary = [], secondary = []) {
