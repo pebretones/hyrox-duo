@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
-<meta name="build" content="2026-04-26-real-photos" />
+<meta name="build" content="2026-04-26-hero-cards" />
 <title>Hyrox Duo — Training Companion</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1813,73 +1813,95 @@
   }
   .modal-error.show { display: block; }
 
-  /* ============ EXERCISE HERO PHOTO ============ */
-  .goal-photo {
+  /* ============ EXERCISE GOAL HERO ============ */
+  .goal-hero {
     display: block;
     position: relative;
     width: 100%;
-    height: 180px;
+    height: 200px;
     overflow: hidden;
-    background: var(--bg-soft);
     text-decoration: none;
     color: white;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
-  .goal-photo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  .goal-hero:hover {
+    transform: translateY(-1px);
+  }
+  .goal-hero-bg {
+    position: absolute;
+    inset: 0;
     transition: transform 0.4s ease;
-    display: block;
   }
-  .goal-photo:hover img { transform: scale(1.04); }
-  .goal-photo-fallback {
+  .goal-hero:hover .goal-hero-bg { transform: scale(1.03); }
+  /* Decorative pattern overlay */
+  .goal-hero-bg::after {
+    content: "";
     position: absolute;
     inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(255,255,255,0.08) 0%, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(255,255,255,0.06) 0%, transparent 40%);
+  }
+  .goal-hero-icon {
+    position: absolute;
+    top: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 76px;
+    line-height: 1;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.18));
+    z-index: 2;
+  }
+  .goal-hero-bottom {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 16px 20px 16px;
+    background: linear-gradient(180deg, transparent 0%, rgba(20,18,14,0.55) 70%);
     display: flex;
     align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%);
-    font-size: 72px;
-    color: rgba(255,255,255,0.4);
-  }
-  .goal-photo-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, transparent 30%, rgba(26,25,21,0.72) 100%);
-    display: flex;
-    align-items: flex-end;
-    padding: 14px 18px;
+    justify-content: space-between;
     gap: 12px;
-    pointer-events: none;
+    z-index: 2;
   }
-  .goal-photo-play {
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    background: var(--accent);
+  .goal-hero-cta {
     display: flex;
     align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 13px;
-    flex-shrink: 0;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.3);
-  }
-  .goal-photo-watch {
-    font-size: 13px;
+    gap: 8px;
+    font-size: 12px;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+    letter-spacing: 0.1em;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.4);
   }
-  .photo-credit {
-    text-align: center;
-    margin-top: 16px;
+  .goal-hero-play {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.95);
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 11px;
-    color: var(--text-dim);
-    font-style: italic;
-    font-family: var(--serif);
+    flex-shrink: 0;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.25);
   }
-  .photo-credit a { color: var(--text-muted); }
+  .goal-hero-tag {
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(4px);
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  @media (max-width: 600px) {
+    .goal-hero { height: 170px; }
+    .goal-hero-icon { font-size: 64px; top: 26px; }
+    .goal-hero-bottom { padding: 14px 16px; }
+    .goal-hero-cta { font-size: 11px; }
+  }
 
   /* ============ DEMO VIDEO LINK ============ */
   .demo-link {
@@ -2891,7 +2913,7 @@
     <h2 data-i18n="exTitle">Exercise Library</h2>
     <p class="section-intro" data-i18n="exIntro">Accessory and specific work to build a balanced Hyrox athlete. Tags show primary training effect.</p>
     <div class="grid grid-2" id="ex-grid"></div>
-    <p class="photo-credit">Photos: <a href="https://loremflickr.com/" target="_blank" rel="noopener">LoremFlickr</a> · CC-licensed via Flickr · Tap any photo for video demos</p>
+    <p style="margin-top: 16px; font-size: 12px; color: var(--text-dim); font-style: italic; font-family: var(--serif); text-align: center;">Tap any card for video demonstrations on YouTube.</p>
   </section>
 
   <!-- STRATEGY -->
@@ -3125,7 +3147,7 @@
 
   <footer>
     <p>Hyrox Duo Training Companion · Built for duos who want to finish strong, together.</p>
-    <p style="margin-top: 6px; font-size: 11px; color: var(--text-dim); font-style: normal; font-family: monospace;">build: 2026-04-26 · real photos via LoremFlickr</p>
+    <p style="margin-top: 6px; font-size: 11px; color: var(--text-dim); font-style: normal; font-family: monospace;">build: 2026-04-26 · designed hero cards</p>
   </footer>
 </div>
 </div>
@@ -3608,7 +3630,8 @@ const PLANS = {
 const EXERCISE_GOALS = [
   {
     id: "run-endurance",
-    icon: "🏃", demoQuery: "hyrox running technique pacing", imageTags: "running,athlete,track", imageSeed: 101,
+    icon: "🏃", demoQuery: "hyrox running technique pacing",
+    color: "linear-gradient(135deg, #C75B32 0%, #8E3F1F 100%)",
     title: { en: "Run endurance — the 8 km base", fr: "Endurance course — la base des 8 km" },
     sub: { en: "Half your race is running. Build the engine that doesn't fade between stations.", fr: "La moitié de la course est de la course à pied. Construis le moteur qui ne lâche pas entre les stations." },
     primary: ["quads", "calves", "hamstrings"],
@@ -3621,7 +3644,8 @@ const EXERCISE_GOALS = [
   },
   {
     id: "sled-power",
-    icon: "🛷", demoQuery: "hyrox sled push technique tutorial", imageTags: "gym,strongman,sled", imageSeed: 102,
+    icon: "🛷", demoQuery: "hyrox sled push technique tutorial",
+    color: "linear-gradient(135deg, #6B3E2A 0%, #3F2418 100%)",
     title: { en: "Sled push & pull power", fr: "Puissance sled push & pull" },
     sub: { en: "Stations 2 + 3. Pure leg drive and brutal posterior chain.", fr: "Stations 2 + 3. Poussée jambes pure et chaîne postérieure brutale." },
     primary: ["quads", "glutes", "calves"],
@@ -3634,7 +3658,8 @@ const EXERCISE_GOALS = [
   },
   {
     id: "carry-grip",
-    icon: "💪", demoQuery: "farmers carry technique grip strength", imageTags: "kettlebell,gym,fitness", imageSeed: 103,
+    icon: "💪", demoQuery: "farmers carry technique grip strength",
+    color: "linear-gradient(135deg, #5C6F3F 0%, #364527 100%)",
     title: { en: "Grip & farmers carry", fr: "Prise & farmers carry" },
     sub: { en: "Station 6. Grip is the silent killer — train it weekly.", fr: "Station 6. La prise est le tueur silencieux — entraîne-la chaque semaine." },
     primary: ["forearms", "lats", "abs"],
@@ -3647,7 +3672,8 @@ const EXERCISE_GOALS = [
   },
   {
     id: "wall-ball-engine",
-    icon: "🏐", demoQuery: "hyrox wall balls technique form", imageTags: "crossfit,gym,workout", imageSeed: 104,
+    icon: "🏐", demoQuery: "hyrox wall balls technique form",
+    color: "linear-gradient(135deg, #C9943B 0%, #8B6520 100%)",
     title: { en: "Wall ball stamina", fr: "Endurance wall balls" },
     sub: { en: "Station 8 — 100 reps. The race-decider for most duos.", fr: "Station 8 — 100 reps. Décide la course pour la plupart des duos." },
     primary: ["quads", "shoulders", "glutes"],
@@ -3660,7 +3686,8 @@ const EXERCISE_GOALS = [
   },
   {
     id: "ski-row-engine",
-    icon: "🚣", demoQuery: "concept2 skierg rowing technique form", imageTags: "rowing,athlete,gym", imageSeed: 105,
+    icon: "🚣", demoQuery: "concept2 skierg rowing technique form",
+    color: "linear-gradient(135deg, #3D6478 0%, #1F3A4A 100%)",
     title: { en: "Erg stamina (ski + row)", fr: "Endurance erg (ski + rameur)" },
     sub: { en: "Stations 1 + 5. 2000 m of erg work split between you. Engine plus technique.", fr: "Stations 1 + 5. 2000 m d'erg partagés. Moteur + technique." },
     primary: ["lats", "quads", "abs"],
@@ -3673,7 +3700,8 @@ const EXERCISE_GOALS = [
   },
   {
     id: "burpee-conditioning",
-    icon: "🔥", demoQuery: "hyrox burpee broad jump technique", imageTags: "fitness,gym,bootcamp", imageSeed: 106,
+    icon: "🔥", demoQuery: "hyrox burpee broad jump technique",
+    color: "linear-gradient(135deg, #B85432 0%, #7A2D17 100%)",
     title: { en: "Burpee broad jump conditioning", fr: "Conditionnement burpees" },
     sub: { en: "Station 4. The pace-killer if you don't pace it. Train the rhythm.", fr: "Station 4. Tue l'allure si tu ne la régules pas. Entraîne le rythme." },
     primary: ["chest", "quads", "abs"],
@@ -3686,7 +3714,8 @@ const EXERCISE_GOALS = [
   },
   {
     id: "lunges-legs",
-    icon: "🦵", demoQuery: "hyrox sandbag lunges technique", imageTags: "lunge,fitness,gym", imageSeed: 107,
+    icon: "🦵", demoQuery: "hyrox sandbag lunges technique",
+    color: "linear-gradient(135deg, #7A4F2C 0%, #4A2D17 100%)",
     title: { en: "Loaded lunge endurance", fr: "Endurance fentes chargées" },
     sub: { en: "Station 7. 100 m of sandbag lunges with cooked legs. Train this honestly.", fr: "Station 7. 100 m de fentes sac de sable avec les jambes cuites. Entraîne ça sincèrement." },
     primary: ["quads", "glutes", "hamstrings"],
@@ -3699,7 +3728,8 @@ const EXERCISE_GOALS = [
   },
   {
     id: "core-stability",
-    icon: "🎯", demoQuery: "core training plank loaded carry", imageTags: "plank,core,fitness", imageSeed: 108,
+    icon: "🎯", demoQuery: "core training plank loaded carry",
+    color: "linear-gradient(135deg, #4A4554 0%, #2A2630 100%)",
     title: { en: "Core under load", fr: "Gainage sous charge" },
     sub: { en: "Carries the entire race. Strong core = stable carries, efficient running, no leak.", fr: "Porte toute la course. Gainage fort = port stable, course efficace, aucune fuite." },
     primary: ["abs", "obliques", "lowerback"],
@@ -4633,21 +4663,20 @@ function renderExercises() {
     const demoUrl = goal.demoQuery
       ? `https://www.youtube.com/results?search_query=${encodeURIComponent(goal.demoQuery)}`
       : "#";
-    const photoUrl = goal.imageTags
-      ? `https://loremflickr.com/720/360/${encodeURIComponent(goal.imageTags)}?lock=${goal.imageSeed || 0}`
-      : null;
-    const photoBanner = photoUrl
-      ? `<a class="goal-photo" href="${demoUrl}" target="_blank" rel="noopener">
-          <div class="goal-photo-fallback">${goal.icon}</div>
-          <img src="${photoUrl}" alt="${goal.title[currentLang]}" loading="lazy" onerror="this.style.display='none'" />
-          <div class="goal-photo-overlay">
-            <div class="goal-photo-play">▶</div>
-            <div class="goal-photo-watch">${currentLang === "en" ? "Watch demos on YouTube" : "Voir les démos sur YouTube"}</div>
-          </div>
-        </a>`
-      : "";
+    const heroBg = goal.color || "linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%)";
+    const hero = `<a class="goal-hero" href="${demoUrl}" target="_blank" rel="noopener">
+      <div class="goal-hero-bg" style="background: ${heroBg};"></div>
+      <div class="goal-hero-icon">${goal.icon}</div>
+      <div class="goal-hero-bottom">
+        <span class="goal-hero-tag">${currentLang === "en" ? "Hyrox" : "Hyrox"}</span>
+        <div class="goal-hero-cta">
+          <span class="goal-hero-play">▶</span>
+          <span>${currentLang === "en" ? "Watch demos" : "Voir démos"}</span>
+        </div>
+      </div>
+    </a>`;
     el.innerHTML = `
-      ${photoBanner}
+      ${hero}
       <div class="ex-goal-head">
         <div class="ex-goal-icon">${goal.icon}</div>
         <div class="ex-goal-text">
