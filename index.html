@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
-<meta name="build" content="2026-04-26-silhouette-diagrams" />
+<meta name="build" content="2026-04-26-watch-demos" />
 <title>Hyrox Duo — Training Companion</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1813,7 +1813,58 @@
   }
   .modal-error.show { display: block; }
 
-  /* ============ MOVEMENT DIAGRAMS ============ */
+  /* ============ DEMO VIDEO LINK ============ */
+  .demo-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 110px;
+    flex-shrink: 0;
+    text-decoration: none;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%);
+    color: white;
+    padding: 14px 8px;
+    border-radius: 14px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    text-align: center;
+    box-shadow: 0 4px 14px rgba(199, 91, 50, 0.15);
+  }
+  .demo-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(199, 91, 50, 0.25);
+  }
+  .demo-play {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.95);
+    color: var(--accent-deep);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    margin-bottom: 2px;
+  }
+  .demo-text-1 {
+    font-family: var(--serif);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.15;
+  }
+  .demo-text-2 {
+    font-size: 9.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.85;
+    font-weight: 600;
+  }
+  @media (max-width: 600px) {
+    .demo-link { width: 92px; padding: 12px 6px; }
+    .demo-play { width: 30px; height: 30px; font-size: 12px; }
+  }
+
+  /* ============ MOVEMENT DIAGRAMS (legacy, unused) ============ */
   .diagram {
     width: 200px; height: 140px;
     flex-shrink: 0;
@@ -3005,7 +3056,7 @@
 
   <footer>
     <p>Hyrox Duo Training Companion · Built for duos who want to finish strong, together.</p>
-    <p style="margin-top: 6px; font-size: 11px; color: var(--text-dim); font-style: normal; font-family: monospace;">build: 2026-04-26 · silhouette diagrams</p>
+    <p style="margin-top: 6px; font-size: 11px; color: var(--text-dim); font-style: normal; font-family: monospace;">build: 2026-04-26 · watch demos on YouTube</p>
   </footer>
 </div>
 </div>
@@ -3488,7 +3539,7 @@ const PLANS = {
 const EXERCISE_GOALS = [
   {
     id: "run-endurance",
-    icon: "🏃", movement: "run",
+    icon: "🏃", demoQuery: "hyrox running technique pacing",
     title: { en: "Run endurance — the 8 km base", fr: "Endurance course — la base des 8 km" },
     sub: { en: "Half your race is running. Build the engine that doesn't fade between stations.", fr: "La moitié de la course est de la course à pied. Construis le moteur qui ne lâche pas entre les stations." },
     primary: ["quads", "calves", "hamstrings"],
@@ -3501,7 +3552,7 @@ const EXERCISE_GOALS = [
   },
   {
     id: "sled-power",
-    icon: "🛷", movement: "push",
+    icon: "🛷", demoQuery: "hyrox sled push technique tutorial",
     title: { en: "Sled push & pull power", fr: "Puissance sled push & pull" },
     sub: { en: "Stations 2 + 3. Pure leg drive and brutal posterior chain.", fr: "Stations 2 + 3. Poussée jambes pure et chaîne postérieure brutale." },
     primary: ["quads", "glutes", "calves"],
@@ -3514,7 +3565,7 @@ const EXERCISE_GOALS = [
   },
   {
     id: "carry-grip",
-    icon: "💪", movement: "carry",
+    icon: "💪", demoQuery: "farmers carry technique grip strength",
     title: { en: "Grip & farmers carry", fr: "Prise & farmers carry" },
     sub: { en: "Station 6. Grip is the silent killer — train it weekly.", fr: "Station 6. La prise est le tueur silencieux — entraîne-la chaque semaine." },
     primary: ["forearms", "lats", "abs"],
@@ -3527,7 +3578,7 @@ const EXERCISE_GOALS = [
   },
   {
     id: "wall-ball-engine",
-    icon: "🏐", movement: "squat",
+    icon: "🏐", demoQuery: "hyrox wall balls technique form",
     title: { en: "Wall ball stamina", fr: "Endurance wall balls" },
     sub: { en: "Station 8 — 100 reps. The race-decider for most duos.", fr: "Station 8 — 100 reps. Décide la course pour la plupart des duos." },
     primary: ["quads", "shoulders", "glutes"],
@@ -3540,7 +3591,7 @@ const EXERCISE_GOALS = [
   },
   {
     id: "ski-row-engine",
-    icon: "🚣", movement: "ski",
+    icon: "🚣", demoQuery: "concept2 skierg rowing technique form",
     title: { en: "Erg stamina (ski + row)", fr: "Endurance erg (ski + rameur)" },
     sub: { en: "Stations 1 + 5. 2000 m of erg work split between you. Engine plus technique.", fr: "Stations 1 + 5. 2000 m d'erg partagés. Moteur + technique." },
     primary: ["lats", "quads", "abs"],
@@ -3553,7 +3604,7 @@ const EXERCISE_GOALS = [
   },
   {
     id: "burpee-conditioning",
-    icon: "🔥", movement: "burpee",
+    icon: "🔥", demoQuery: "hyrox burpee broad jump technique",
     title: { en: "Burpee broad jump conditioning", fr: "Conditionnement burpees" },
     sub: { en: "Station 4. The pace-killer if you don't pace it. Train the rhythm.", fr: "Station 4. Tue l'allure si tu ne la régules pas. Entraîne le rythme." },
     primary: ["chest", "quads", "abs"],
@@ -3566,7 +3617,7 @@ const EXERCISE_GOALS = [
   },
   {
     id: "lunges-legs",
-    icon: "🦵", movement: "squat",
+    icon: "🦵", demoQuery: "hyrox sandbag lunges technique",
     title: { en: "Loaded lunge endurance", fr: "Endurance fentes chargées" },
     sub: { en: "Station 7. 100 m of sandbag lunges with cooked legs. Train this honestly.", fr: "Station 7. 100 m de fentes sac de sable avec les jambes cuites. Entraîne ça sincèrement." },
     primary: ["quads", "glutes", "hamstrings"],
@@ -3579,7 +3630,7 @@ const EXERCISE_GOALS = [
   },
   {
     id: "core-stability",
-    icon: "🎯", movement: "plank",
+    icon: "🎯", demoQuery: "core training plank loaded carry",
     title: { en: "Core under load", fr: "Gainage sous charge" },
     sub: { en: "Carries the entire race. Strong core = stable carries, efficient running, no leak.", fr: "Porte toute la course. Gainage fort = port stable, course efficace, aucune fuite." },
     primary: ["abs", "obliques", "lowerback"],
@@ -4510,10 +4561,19 @@ function renderExercises() {
       ...goal.secondary.map(m => `<span class="muscle-tag">${muscleLabel(m)}</span>`),
     ].join("");
 
-    const movementSvg = goal.movement && MOVE_SVG[goal.movement] ? MOVE_SVG[goal.movement] : "";
+    const demoUrl = goal.demoQuery
+      ? `https://www.youtube.com/results?search_query=${encodeURIComponent(goal.demoQuery)}`
+      : null;
+    const demoLink = demoUrl
+      ? `<a class="demo-link" href="${demoUrl}" target="_blank" rel="noopener">
+          <div class="demo-play">▶</div>
+          <div class="demo-text-1">${goal.icon}</div>
+          <div class="demo-text-2">${currentLang === "en" ? "Watch demos" : "Voir démos"}</div>
+        </a>`
+      : `<div class="ex-goal-icon">${goal.icon}</div>`;
     el.innerHTML = `
       <div class="ex-goal-head">
-        ${movementSvg || `<div class="ex-goal-icon">${goal.icon}</div>`}
+        ${demoLink}
         <div class="ex-goal-text">
           <div class="ex-goal-title">${goal.title[currentLang]}</div>
           <div class="ex-goal-sub">${goal.sub[currentLang]}</div>
