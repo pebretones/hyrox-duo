@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
-<meta name="build" content="2026-04-26-first-letter-avatar" />
+<meta name="build" content="2026-04-26-animated-diagrams" />
 <title>Hyrox Duo — Training Companion</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1813,6 +1813,139 @@
   }
   .modal-error.show { display: block; }
 
+  /* ============ MOVEMENT DIAGRAMS ============ */
+  .movement {
+    width: 110px; height: 130px;
+    flex-shrink: 0;
+    display: block;
+  }
+  @media (max-width: 600px) {
+    .movement { width: 90px; height: 110px; }
+  }
+  .move-line {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .move-head { fill: var(--ink); stroke: none; }
+  .move-accent {
+    fill: var(--accent);
+    stroke: var(--accent-deep);
+    stroke-width: 1;
+  }
+  .move-bar { stroke: var(--accent-deep); stroke-width: 4; stroke-linecap: round; }
+  .move-ground { stroke: var(--border-strong); stroke-width: 1.5; stroke-dasharray: 3 3; }
+
+  /* ---- squat (used for wall balls, lunges, general squat) ---- */
+  @keyframes squat-body {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(14px); }
+  }
+  @keyframes squat-arms {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(-150deg); }
+  }
+  .move-squat .squat-body { animation: squat-body 2s ease-in-out infinite; transform-origin: 50% 50%; }
+  .move-squat .squat-knee-l { animation: squat-knee-l 2s ease-in-out infinite; transform-origin: 42px 80px; }
+  .move-squat .squat-knee-r { animation: squat-knee-r 2s ease-in-out infinite; transform-origin: 68px 80px; }
+  @keyframes squat-knee-l {
+    0%, 100% { d: path("M 42 80 L 38 110"); }
+    50%      { d: path("M 42 80 L 28 100"); }
+  }
+
+  /* ---- run ---- */
+  @keyframes run-body {
+    0%, 100% { transform: translateY(0); }
+    25%, 75% { transform: translateY(-3px); }
+  }
+  @keyframes run-leg-l {
+    0%, 100% { transform: rotate(-25deg); }
+    50% { transform: rotate(35deg); }
+  }
+  @keyframes run-leg-r {
+    0%, 100% { transform: rotate(35deg); }
+    50% { transform: rotate(-25deg); }
+  }
+  @keyframes run-arm-l {
+    0%, 100% { transform: rotate(30deg); }
+    50% { transform: rotate(-30deg); }
+  }
+  @keyframes run-arm-r {
+    0%, 100% { transform: rotate(-30deg); }
+    50% { transform: rotate(30deg); }
+  }
+  .move-run .run-body { animation: run-body 0.7s ease-in-out infinite; }
+  .move-run .run-leg-l { animation: run-leg-l 0.7s ease-in-out infinite; transform-origin: 55px 70px; }
+  .move-run .run-leg-r { animation: run-leg-r 0.7s ease-in-out infinite; transform-origin: 55px 70px; }
+  .move-run .run-arm-l { animation: run-arm-l 0.7s ease-in-out infinite; transform-origin: 55px 40px; }
+  .move-run .run-arm-r { animation: run-arm-r 0.7s ease-in-out infinite; transform-origin: 55px 40px; }
+
+  /* ---- sled push ---- */
+  @keyframes push-body {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(8px); }
+  }
+  @keyframes push-sled {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(8px); }
+  }
+  .move-push .push-figure { animation: push-body 1.4s ease-in-out infinite; }
+  .move-push .push-sled-grp { animation: push-sled 1.4s ease-in-out infinite 0.05s; }
+
+  /* ---- carry (farmer walk) ---- */
+  @keyframes carry-bob {
+    0%, 100% { transform: translateY(0); }
+    25%, 75% { transform: translateY(-2px); }
+  }
+  @keyframes carry-leg-l {
+    0%, 100% { transform: rotate(-12deg); }
+    50% { transform: rotate(12deg); }
+  }
+  @keyframes carry-leg-r {
+    0%, 100% { transform: rotate(12deg); }
+    50% { transform: rotate(-12deg); }
+  }
+  .move-carry .carry-body { animation: carry-bob 0.9s ease-in-out infinite; }
+  .move-carry .carry-leg-l { animation: carry-leg-l 0.9s ease-in-out infinite; transform-origin: 55px 75px; }
+  .move-carry .carry-leg-r { animation: carry-leg-r 0.9s ease-in-out infinite; transform-origin: 55px 75px; }
+
+  /* ---- ski (SkiErg pulldown) ---- */
+  @keyframes ski-arms {
+    0%, 100% { transform: rotate(-160deg); }
+    50% { transform: rotate(-30deg); }
+  }
+  @keyframes ski-hinge {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(8px) rotate(8deg); }
+  }
+  .move-ski .ski-arms-grp { animation: ski-arms 1.6s ease-in-out infinite; transform-origin: 55px 35px; }
+  .move-ski .ski-body-grp { animation: ski-hinge 1.6s ease-in-out infinite; transform-origin: 55px 70px; }
+
+  /* ---- burpee broad jump ---- */
+  @keyframes burpee-cycle {
+    0%, 100% { transform: translateY(0); }
+    25% { transform: translateY(20px); }
+    50% { transform: translateY(20px); }
+    75% { transform: translateY(-8px); }
+  }
+  .move-burpee .burpee-body { animation: burpee-cycle 2s ease-in-out infinite; }
+
+  /* ---- plank ---- */
+  @keyframes plank-breath {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-1.5px); }
+  }
+  .move-plank .plank-body { animation: plank-breath 3s ease-in-out infinite; }
+
+  /* ---- pull (sled pull / row) ---- */
+  @keyframes pull-arms {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px) translateX(-6px); }
+  }
+  .move-pull .pull-arms-grp { animation: pull-arms 1.4s ease-in-out infinite; }
+
   /* ============ ANATOMY + EXERCISES ============ */
   .ex-goal {
     background: var(--bg-card);
@@ -2970,7 +3103,7 @@
 
   <footer>
     <p>Hyrox Duo Training Companion · Built for duos who want to finish strong, together.</p>
-    <p style="margin-top: 6px; font-size: 11px; color: var(--text-dim); font-style: normal; font-family: monospace;">build: 2026-04-26 · first-letter avatar</p>
+    <p style="margin-top: 6px; font-size: 11px; color: var(--text-dim); font-style: normal; font-family: monospace;">build: 2026-04-26 · animated diagrams</p>
   </footer>
 </div>
 </div>
@@ -3453,7 +3586,7 @@ const PLANS = {
 const EXERCISE_GOALS = [
   {
     id: "run-endurance",
-    icon: "🏃",
+    icon: "🏃", movement: "run",
     title: { en: "Run endurance — the 8 km base", fr: "Endurance course — la base des 8 km" },
     sub: { en: "Half your race is running. Build the engine that doesn't fade between stations.", fr: "La moitié de la course est de la course à pied. Construis le moteur qui ne lâche pas entre les stations." },
     primary: ["quads", "calves", "hamstrings"],
@@ -3466,7 +3599,7 @@ const EXERCISE_GOALS = [
   },
   {
     id: "sled-power",
-    icon: "🛷",
+    icon: "🛷", movement: "push",
     title: { en: "Sled push & pull power", fr: "Puissance sled push & pull" },
     sub: { en: "Stations 2 + 3. Pure leg drive and brutal posterior chain.", fr: "Stations 2 + 3. Poussée jambes pure et chaîne postérieure brutale." },
     primary: ["quads", "glutes", "calves"],
@@ -3479,7 +3612,7 @@ const EXERCISE_GOALS = [
   },
   {
     id: "carry-grip",
-    icon: "💪",
+    icon: "💪", movement: "carry",
     title: { en: "Grip & farmers carry", fr: "Prise & farmers carry" },
     sub: { en: "Station 6. Grip is the silent killer — train it weekly.", fr: "Station 6. La prise est le tueur silencieux — entraîne-la chaque semaine." },
     primary: ["forearms", "lats", "abs"],
@@ -3492,7 +3625,7 @@ const EXERCISE_GOALS = [
   },
   {
     id: "wall-ball-engine",
-    icon: "🏐",
+    icon: "🏐", movement: "squat",
     title: { en: "Wall ball stamina", fr: "Endurance wall balls" },
     sub: { en: "Station 8 — 100 reps. The race-decider for most duos.", fr: "Station 8 — 100 reps. Décide la course pour la plupart des duos." },
     primary: ["quads", "shoulders", "glutes"],
@@ -3505,7 +3638,7 @@ const EXERCISE_GOALS = [
   },
   {
     id: "ski-row-engine",
-    icon: "🚣",
+    icon: "🚣", movement: "ski",
     title: { en: "Erg stamina (ski + row)", fr: "Endurance erg (ski + rameur)" },
     sub: { en: "Stations 1 + 5. 2000 m of erg work split between you. Engine plus technique.", fr: "Stations 1 + 5. 2000 m d'erg partagés. Moteur + technique." },
     primary: ["lats", "quads", "abs"],
@@ -3518,7 +3651,7 @@ const EXERCISE_GOALS = [
   },
   {
     id: "burpee-conditioning",
-    icon: "🔥",
+    icon: "🔥", movement: "burpee",
     title: { en: "Burpee broad jump conditioning", fr: "Conditionnement burpees" },
     sub: { en: "Station 4. The pace-killer if you don't pace it. Train the rhythm.", fr: "Station 4. Tue l'allure si tu ne la régules pas. Entraîne le rythme." },
     primary: ["chest", "quads", "abs"],
@@ -3531,7 +3664,7 @@ const EXERCISE_GOALS = [
   },
   {
     id: "lunges-legs",
-    icon: "🦵",
+    icon: "🦵", movement: "squat",
     title: { en: "Loaded lunge endurance", fr: "Endurance fentes chargées" },
     sub: { en: "Station 7. 100 m of sandbag lunges with cooked legs. Train this honestly.", fr: "Station 7. 100 m de fentes sac de sable avec les jambes cuites. Entraîne ça sincèrement." },
     primary: ["quads", "glutes", "hamstrings"],
@@ -3544,7 +3677,7 @@ const EXERCISE_GOALS = [
   },
   {
     id: "core-stability",
-    icon: "🎯",
+    icon: "🎯", movement: "plank",
     title: { en: "Core under load", fr: "Gainage sous charge" },
     sub: { en: "Carries the entire race. Strong core = stable carries, efficient running, no leak.", fr: "Porte toute la course. Gainage fort = port stable, course efficace, aucune fuite." },
     primary: ["abs", "obliques", "lowerback"],
@@ -3576,6 +3709,115 @@ const ANATOMY_PATHS = {
   quads_r:     '<path class="m" data-m="quads" d="M118 158 Q108 164 101 158 L102 200 Q110 204 118 200 Z" />',
   calves_l:    '<path class="m" data-m="calves" d="M82 200 Q90 204 98 200 L96 232 Q90 234 84 232 Z" />',
   calves_r:    '<path class="m" data-m="calves" d="M118 200 Q110 204 102 200 L104 232 Q110 234 116 232 Z" />',
+};
+
+// Animated stick-figure SVGs for movement patterns. CSS keyframes drive the loop.
+const MOVE_SVG = {
+  squat: `<svg class="movement move-squat" viewBox="0 0 110 130">
+    <line class="move-ground" x1="10" y1="120" x2="100" y2="120" />
+    <g class="squat-body">
+      <circle class="move-head" cx="55" cy="20" r="7" />
+      <line class="move-line" x1="55" y1="27" x2="55" y2="60" />
+      <g class="squat-arms">
+        <line class="move-line" x1="55" y1="35" x2="38" y2="48" />
+        <line class="move-line" x1="55" y1="35" x2="72" y2="48" />
+      </g>
+    </g>
+    <line class="move-line" x1="55" y1="60" x2="42" y2="80" />
+    <line class="move-line" x1="55" y1="60" x2="68" y2="80" />
+    <line class="move-line squat-knee-l" x1="42" y1="80" x2="38" y2="110" />
+    <line class="move-line squat-knee-r" x1="68" y1="80" x2="72" y2="110" />
+    <circle class="move-accent" cx="55" cy="40" r="8" />
+  </svg>`,
+  run: `<svg class="movement move-run" viewBox="0 0 110 130">
+    <line class="move-ground" x1="10" y1="120" x2="100" y2="120" />
+    <g class="run-body">
+      <circle class="move-head" cx="55" cy="22" r="7" />
+      <line class="move-line" x1="55" y1="29" x2="55" y2="70" />
+      <line class="move-line run-arm-l" x1="55" y1="40" x2="42" y2="60" />
+      <line class="move-line run-arm-r" x1="55" y1="40" x2="68" y2="60" />
+      <line class="move-line run-leg-l" x1="55" y1="70" x2="48" y2="105" />
+      <line class="move-line run-leg-r" x1="55" y1="70" x2="62" y2="105" />
+    </g>
+  </svg>`,
+  push: `<svg class="movement move-push" viewBox="0 0 130 130">
+    <line class="move-ground" x1="5" y1="120" x2="125" y2="120" />
+    <g class="push-figure">
+      <circle class="move-head" cx="35" cy="42" r="7" transform="rotate(-25 35 42)" />
+      <line class="move-line" x1="40" y1="48" x2="65" y2="68" />
+      <line class="move-line" x1="65" y1="68" x2="80" y2="60" />
+      <line class="move-line" x1="65" y1="68" x2="58" y2="100" />
+      <line class="move-line" x1="65" y1="68" x2="78" y2="100" />
+      <line class="move-line" x1="58" y1="100" x2="48" y2="118" />
+      <line class="move-line" x1="78" y1="100" x2="92" y2="118" />
+    </g>
+    <g class="push-sled-grp">
+      <rect class="move-accent" x="84" y="98" width="34" height="20" rx="3" />
+    </g>
+  </svg>`,
+  carry: `<svg class="movement move-carry" viewBox="0 0 110 130">
+    <line class="move-ground" x1="10" y1="120" x2="100" y2="120" />
+    <g class="carry-body">
+      <circle class="move-head" cx="55" cy="20" r="7" />
+      <line class="move-line" x1="55" y1="27" x2="55" y2="75" />
+      <line class="move-line" x1="55" y1="38" x2="38" y2="78" />
+      <line class="move-line" x1="55" y1="38" x2="72" y2="78" />
+      <rect class="move-accent" x="32" y="78" width="14" height="14" rx="2" />
+      <rect class="move-accent" x="64" y="78" width="14" height="14" rx="2" />
+    </g>
+    <line class="move-line carry-leg-l" x1="55" y1="75" x2="48" y2="115" />
+    <line class="move-line carry-leg-r" x1="55" y1="75" x2="62" y2="115" />
+  </svg>`,
+  ski: `<svg class="movement move-ski" viewBox="0 0 110 130">
+    <line class="move-ground" x1="10" y1="120" x2="100" y2="120" />
+    <rect x="80" y="20" width="14" height="80" rx="3" fill="#E8E2D0" stroke="var(--border-strong)" stroke-width="1" />
+    <line class="move-bar" x1="80" y1="28" x2="68" y2="28" />
+    <g class="ski-body-grp">
+      <circle class="move-head" cx="55" cy="35" r="7" />
+      <line class="move-line" x1="55" y1="42" x2="55" y2="78" />
+      <g class="ski-arms-grp">
+        <line class="move-line" x1="55" y1="48" x2="68" y2="32" />
+      </g>
+    </g>
+    <line class="move-line" x1="55" y1="78" x2="48" y2="115" />
+    <line class="move-line" x1="55" y1="78" x2="62" y2="115" />
+  </svg>`,
+  burpee: `<svg class="movement move-burpee" viewBox="0 0 110 130">
+    <line class="move-ground" x1="10" y1="120" x2="100" y2="120" />
+    <g class="burpee-body">
+      <circle class="move-head" cx="55" cy="32" r="7" />
+      <line class="move-line" x1="55" y1="39" x2="55" y2="70" />
+      <line class="move-line" x1="55" y1="50" x2="40" y2="68" />
+      <line class="move-line" x1="55" y1="50" x2="70" y2="68" />
+      <line class="move-line" x1="55" y1="70" x2="46" y2="105" />
+      <line class="move-line" x1="55" y1="70" x2="64" y2="105" />
+      <path class="move-accent" d="M 38 110 L 55 100 L 72 110 Z" opacity="0.4" />
+    </g>
+  </svg>`,
+  plank: `<svg class="movement move-plank" viewBox="0 0 130 100">
+    <line class="move-ground" x1="5" y1="92" x2="125" y2="92" />
+    <g class="plank-body">
+      <circle class="move-head" cx="22" cy="40" r="7" />
+      <line class="move-line" x1="29" y1="40" x2="105" y2="55" />
+      <line class="move-line" x1="22" y1="48" x2="22" y2="88" />
+      <line class="move-line" x1="105" y1="55" x2="98" y2="88" />
+      <line class="move-line" x1="105" y1="55" x2="112" y2="88" />
+    </g>
+  </svg>`,
+  pull: `<svg class="movement move-pull" viewBox="0 0 130 130">
+    <line class="move-ground" x1="5" y1="120" x2="125" y2="120" />
+    <line x1="80" y1="100" x2="115" y2="100" stroke="var(--accent)" stroke-width="3" stroke-dasharray="2 3" />
+    <rect class="move-accent" x="100" y="92" width="22" height="16" rx="2" />
+    <g class="pull-figure">
+      <circle class="move-head" cx="40" cy="32" r="7" />
+      <line class="move-line" x1="40" y1="39" x2="50" y2="72" />
+      <g class="pull-arms-grp">
+        <line class="move-line" x1="42" y1="48" x2="78" y2="68" />
+      </g>
+      <line class="move-line" x1="50" y1="72" x2="38" y2="115" />
+      <line class="move-line" x1="50" y1="72" x2="60" y2="115" />
+    </g>
+  </svg>`,
 };
 
 function renderAnatomy(primary = [], secondary = []) {
@@ -4345,9 +4587,10 @@ function renderExercises() {
       ...goal.secondary.map(m => `<span class="muscle-tag">${muscleLabel(m)}</span>`),
     ].join("");
 
+    const movementSvg = goal.movement && MOVE_SVG[goal.movement] ? MOVE_SVG[goal.movement] : "";
     el.innerHTML = `
       <div class="ex-goal-head">
-        <div class="ex-goal-icon">${goal.icon}</div>
+        ${movementSvg || `<div class="ex-goal-icon">${goal.icon}</div>`}
         <div class="ex-goal-text">
           <div class="ex-goal-title">${goal.title[currentLang]}</div>
           <div class="ex-goal-sub">${goal.sub[currentLang]}</div>
