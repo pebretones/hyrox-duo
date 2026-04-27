@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
-<meta name="build" content="2026-04-26-hero-cards" />
+<meta name="build" content="2026-04-26-photo-plus-overlay" />
 <title>Hyrox Duo — Training Companion</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1818,45 +1818,55 @@
     display: block;
     position: relative;
     width: 100%;
-    height: 200px;
+    height: 240px;
     overflow: hidden;
     text-decoration: none;
     color: white;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease;
+    background: var(--bg-soft);
   }
-  .goal-hero:hover {
-    transform: translateY(-1px);
+  @media (max-width: 600px) {
+    .goal-hero { height: 200px; }
   }
+  .goal-hero:hover { transform: translateY(-1px); }
   .goal-hero-bg {
     position: absolute;
     inset: 0;
     transition: transform 0.4s ease;
+    background-size: cover;
+    background-position: center;
   }
-  .goal-hero:hover .goal-hero-bg { transform: scale(1.03); }
-  /* Decorative pattern overlay */
-  .goal-hero-bg::after {
-    content: "";
+  .goal-hero:hover .goal-hero-bg { transform: scale(1.04); }
+  .goal-hero-img {
     position: absolute;
     inset: 0;
-    background-image:
-      radial-gradient(circle at 20% 30%, rgba(255,255,255,0.08) 0%, transparent 40%),
-      radial-gradient(circle at 80% 70%, rgba(255,255,255,0.06) 0%, transparent 40%);
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.4s ease;
+  }
+  .goal-hero:hover .goal-hero-img { transform: scale(1.04); }
+  /* Color tint + dark gradient over the photo for legible text */
+  .goal-hero-tint {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
   }
   .goal-hero-icon {
     position: absolute;
-    top: 32px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 76px;
+    top: 24px;
+    right: 24px;
+    font-size: 56px;
     line-height: 1;
-    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.18));
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
     z-index: 2;
   }
   .goal-hero-bottom {
     position: absolute;
     bottom: 0; left: 0; right: 0;
-    padding: 16px 20px 16px;
-    background: linear-gradient(180deg, transparent 0%, rgba(20,18,14,0.55) 70%);
+    padding: 18px 20px 16px;
+    background: linear-gradient(180deg, transparent 0%, rgba(15,13,10,0.7) 60%, rgba(15,13,10,0.85) 100%);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1897,8 +1907,7 @@
     border: 1px solid rgba(255,255,255,0.2);
   }
   @media (max-width: 600px) {
-    .goal-hero { height: 170px; }
-    .goal-hero-icon { font-size: 64px; top: 26px; }
+    .goal-hero-icon { font-size: 44px; top: 18px; right: 18px; }
     .goal-hero-bottom { padding: 14px 16px; }
     .goal-hero-cta { font-size: 11px; }
   }
@@ -2913,7 +2922,7 @@
     <h2 data-i18n="exTitle">Exercise Library</h2>
     <p class="section-intro" data-i18n="exIntro">Accessory and specific work to build a balanced Hyrox athlete. Tags show primary training effect.</p>
     <div class="grid grid-2" id="ex-grid"></div>
-    <p style="margin-top: 16px; font-size: 12px; color: var(--text-dim); font-style: italic; font-family: var(--serif); text-align: center;">Tap any card for video demonstrations on YouTube.</p>
+    <p style="margin-top: 16px; font-size: 12px; color: var(--text-dim); font-style: italic; font-family: var(--serif); text-align: center;">Tap any card for video demos on YouTube · photos via <a href="https://loremflickr.com/" target="_blank" rel="noopener" style="color: var(--text-muted);">LoremFlickr</a> (CC-licensed Flickr)</p>
   </section>
 
   <!-- STRATEGY -->
@@ -3147,7 +3156,7 @@
 
   <footer>
     <p>Hyrox Duo Training Companion · Built for duos who want to finish strong, together.</p>
-    <p style="margin-top: 6px; font-size: 11px; color: var(--text-dim); font-style: normal; font-family: monospace;">build: 2026-04-26 · designed hero cards</p>
+    <p style="margin-top: 6px; font-size: 11px; color: var(--text-dim); font-style: normal; font-family: monospace;">build: 2026-04-26 · photo + overlay</p>
   </footer>
 </div>
 </div>
@@ -3632,6 +3641,7 @@ const EXERCISE_GOALS = [
     id: "run-endurance",
     icon: "🏃", demoQuery: "hyrox running technique pacing",
     color: "linear-gradient(135deg, #C75B32 0%, #8E3F1F 100%)",
+    photoTags: "running,athlete,track", photoSeed: 41,
     title: { en: "Run endurance — the 8 km base", fr: "Endurance course — la base des 8 km" },
     sub: { en: "Half your race is running. Build the engine that doesn't fade between stations.", fr: "La moitié de la course est de la course à pied. Construis le moteur qui ne lâche pas entre les stations." },
     primary: ["quads", "calves", "hamstrings"],
@@ -3646,6 +3656,7 @@ const EXERCISE_GOALS = [
     id: "sled-power",
     icon: "🛷", demoQuery: "hyrox sled push technique tutorial",
     color: "linear-gradient(135deg, #6B3E2A 0%, #3F2418 100%)",
+    photoTags: "gym,strength,training", photoSeed: 42,
     title: { en: "Sled push & pull power", fr: "Puissance sled push & pull" },
     sub: { en: "Stations 2 + 3. Pure leg drive and brutal posterior chain.", fr: "Stations 2 + 3. Poussée jambes pure et chaîne postérieure brutale." },
     primary: ["quads", "glutes", "calves"],
@@ -3660,6 +3671,7 @@ const EXERCISE_GOALS = [
     id: "carry-grip",
     icon: "💪", demoQuery: "farmers carry technique grip strength",
     color: "linear-gradient(135deg, #5C6F3F 0%, #364527 100%)",
+    photoTags: "kettlebell,fitness,training", photoSeed: 43,
     title: { en: "Grip & farmers carry", fr: "Prise & farmers carry" },
     sub: { en: "Station 6. Grip is the silent killer — train it weekly.", fr: "Station 6. La prise est le tueur silencieux — entraîne-la chaque semaine." },
     primary: ["forearms", "lats", "abs"],
@@ -3674,6 +3686,7 @@ const EXERCISE_GOALS = [
     id: "wall-ball-engine",
     icon: "🏐", demoQuery: "hyrox wall balls technique form",
     color: "linear-gradient(135deg, #C9943B 0%, #8B6520 100%)",
+    photoTags: "crossfit,workout,fitness", photoSeed: 44,
     title: { en: "Wall ball stamina", fr: "Endurance wall balls" },
     sub: { en: "Station 8 — 100 reps. The race-decider for most duos.", fr: "Station 8 — 100 reps. Décide la course pour la plupart des duos." },
     primary: ["quads", "shoulders", "glutes"],
@@ -3688,6 +3701,7 @@ const EXERCISE_GOALS = [
     id: "ski-row-engine",
     icon: "🚣", demoQuery: "concept2 skierg rowing technique form",
     color: "linear-gradient(135deg, #3D6478 0%, #1F3A4A 100%)",
+    photoTags: "rowing,fitness,gym", photoSeed: 45,
     title: { en: "Erg stamina (ski + row)", fr: "Endurance erg (ski + rameur)" },
     sub: { en: "Stations 1 + 5. 2000 m of erg work split between you. Engine plus technique.", fr: "Stations 1 + 5. 2000 m d'erg partagés. Moteur + technique." },
     primary: ["lats", "quads", "abs"],
@@ -3702,6 +3716,7 @@ const EXERCISE_GOALS = [
     id: "burpee-conditioning",
     icon: "🔥", demoQuery: "hyrox burpee broad jump technique",
     color: "linear-gradient(135deg, #B85432 0%, #7A2D17 100%)",
+    photoTags: "fitness,bootcamp,workout", photoSeed: 46,
     title: { en: "Burpee broad jump conditioning", fr: "Conditionnement burpees" },
     sub: { en: "Station 4. The pace-killer if you don't pace it. Train the rhythm.", fr: "Station 4. Tue l'allure si tu ne la régules pas. Entraîne le rythme." },
     primary: ["chest", "quads", "abs"],
@@ -3716,6 +3731,7 @@ const EXERCISE_GOALS = [
     id: "lunges-legs",
     icon: "🦵", demoQuery: "hyrox sandbag lunges technique",
     color: "linear-gradient(135deg, #7A4F2C 0%, #4A2D17 100%)",
+    photoTags: "lunge,squat,fitness", photoSeed: 47,
     title: { en: "Loaded lunge endurance", fr: "Endurance fentes chargées" },
     sub: { en: "Station 7. 100 m of sandbag lunges with cooked legs. Train this honestly.", fr: "Station 7. 100 m de fentes sac de sable avec les jambes cuites. Entraîne ça sincèrement." },
     primary: ["quads", "glutes", "hamstrings"],
@@ -3730,6 +3746,7 @@ const EXERCISE_GOALS = [
     id: "core-stability",
     icon: "🎯", demoQuery: "core training plank loaded carry",
     color: "linear-gradient(135deg, #4A4554 0%, #2A2630 100%)",
+    photoTags: "plank,core,yoga", photoSeed: 48,
     title: { en: "Core under load", fr: "Gainage sous charge" },
     sub: { en: "Carries the entire race. Strong core = stable carries, efficient running, no leak.", fr: "Porte toute la course. Gainage fort = port stable, course efficace, aucune fuite." },
     primary: ["abs", "obliques", "lowerback"],
@@ -4663,12 +4680,18 @@ function renderExercises() {
     const demoUrl = goal.demoQuery
       ? `https://www.youtube.com/results?search_query=${encodeURIComponent(goal.demoQuery)}`
       : "#";
-    const heroBg = goal.color || "linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%)";
+    const heroColor = goal.color || "linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%)";
+    const photoUrl = goal.photoTags
+      ? `https://loremflickr.com/800/600/${encodeURIComponent(goal.photoTags)}?lock=${goal.photoSeed || 0}`
+      : null;
+    // Photo as background, color tint on top, then designed overlay
     const hero = `<a class="goal-hero" href="${demoUrl}" target="_blank" rel="noopener">
-      <div class="goal-hero-bg" style="background: ${heroBg};"></div>
+      <div class="goal-hero-bg" style="background: ${heroColor};"></div>
+      ${photoUrl ? `<img class="goal-hero-img" src="${photoUrl}" alt="${goal.title[currentLang]}" loading="lazy" onerror="this.style.display='none'" />` : ""}
+      <div class="goal-hero-tint" style="background: linear-gradient(135deg, rgba(199,91,50,0.35) 0%, rgba(20,18,14,0.55) 100%);"></div>
       <div class="goal-hero-icon">${goal.icon}</div>
       <div class="goal-hero-bottom">
-        <span class="goal-hero-tag">${currentLang === "en" ? "Hyrox" : "Hyrox"}</span>
+        <span class="goal-hero-tag">${goal.title[currentLang].split("—")[0].trim()}</span>
         <div class="goal-hero-cta">
           <span class="goal-hero-play">▶</span>
           <span>${currentLang === "en" ? "Watch demos" : "Voir démos"}</span>
